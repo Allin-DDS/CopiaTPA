@@ -1,7 +1,7 @@
 
 public class MailAAmigos implements Observador{
 
-	public void notificarBajaDeInscSinReemplazo(Partido partido) {
+	public void notificarReemplazoDeInscSinSustituto(Partido partido) {
 		// TODO Auto-generated method stub
 		// método vacío
 	}

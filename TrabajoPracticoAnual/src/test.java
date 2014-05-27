@@ -1,8 +1,7 @@
 import static org.junit.Assert.*;
-
+import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test; 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import excepciones.Hay10EstandarException;
@@ -39,6 +38,8 @@ public class test {
 	private Jugador gordo;
 	private InscripcionSolidaria inscripciongordo;
 	
+	private MailAAdministrador mailAAdministradorMock;
+	private MailAAmigos mailAAmigosMock;
 	
 	@Before
 	public void init(){
@@ -103,11 +104,44 @@ public class test {
 		inscripciongordo= new InscripcionSolidaria();
 		inscripciongordo.setJugador(gordo);
 		
+		mailAAdministradorMock= mock(MailAAdministrador.class);
+		mailAAmigosMock= mock(MailAAmigos.class);
+	}
+	@Test 
+	public void agregar1Condicional_ContarLosCondicionales(){
+		semifinal.agregarInscripcion(inscripcionJose);
+		assertEquals(1,semifinal.cantidadInscriptosCondicionales());
+	}
+	
+	@Test 
+	public void agregar2Soldiarios_ContarLosEstandar(){
+		semifinal.agregarInscripcion(inscripcionJuan);
+		semifinal.agregarInscripcion(inscripcionEsteban);
+		assertEquals(2,semifinal.getCantidadInscriptosEstandar());
+	}
+	
+	@Test 
+	public void agregar2Estandar_ContarLosSolidarios(){
+		semifinal.agregarInscripcion(inscripciongordo);
+		semifinal.agregarInscripcion(inscripcionMaria);
+		assertEquals(2,semifinal.cantidadInscriptosSolidarios());
+	}
+	
+	@Test 
+	public void agregar2Estandar2SolidariaY1Condicional_ContarTotal(){
+		semifinal.agregarInscripcion(inscripcionJuan);
+		semifinal.agregarInscripcion(inscripcionEsteban);
 		
+		semifinal.agregarInscripcion(inscripcionJose);
+		
+		semifinal.agregarInscripcion(inscripcionMaria);
+		semifinal.agregarInscripcion(inscripciongordo);
+		
+		assertEquals(5,semifinal.cantidadTotalInscriptos());
 	}
 	
 	@Test
-	public void agregar8Estandar1Condicional2Solidarios_Quedan10enPosibles10(){
+	public void agregar8Estandar1Condicional2SolidariosYCompletarPosibles10_cantidadInscriptosPosiblesEs10(){
 		semifinal.agregarInscripcion(inscripcionJuan);
 		semifinal.agregarInscripcion(inscripcionEsteban);
 		semifinal.agregarInscripcion(inscripcionramiro);
@@ -126,7 +160,7 @@ public class test {
 	}
 	
 	@Test
-	public void agregar8Estandar1Condicional2Solidarios_Sobra1Solidario(){
+	public void agregar8Estandar1Condicional2SolidariosYcompletarPosibles10_Sobra1Solidario(){
 		semifinal.agregarInscripcion(inscripcionJuan);
 		semifinal.agregarInscripcion(inscripcionEsteban);
 		semifinal.agregarInscripcion(inscripcionramiro);
@@ -162,7 +196,7 @@ public class test {
 	}
 	
 	@Test
-	public void agregar8Estandar1Condicional1SolidarioYReemplazo1SolidarioPorOtro_NoSobraSolidarios(){
+	public void agregar8Estandar1Condicional1SolidarioYReemplazo1SolidarioPorOtro_NoSobranSolidarios(){
 		semifinal.agregarInscripcion(inscripcionJuan);
 		semifinal.agregarInscripcion(inscripcionEsteban);
 		semifinal.agregarInscripcion(inscripcionramiro);
@@ -178,5 +212,43 @@ public class test {
 		semifinal.reemplazarInscripcion(inscripcionMaria,inscripciongordo);
 		semifinal.completarPosibles10();
 		assertEquals(0,semifinal.pilaInscripcionesSolidarias.size());
+	}
+	
+	@Test
+	public void reemplazo1SolidarioSinSustituto_AgregarInfraccion(){
+		semifinal.agregarInscripcion(inscripcionMaria);
+		semifinal.reemplazarInscripcion(inscripcionMaria,null);
+		semifinal.completarPosibles10();
+		assertEquals(1,maria.getCantidadInfracPorNoTenerSustituto());	
+	}
+	
+	@Test
+	public void agregarInscripcion_AvisarAAdmin(){
+		semifinal.agregarInscripcion(inscripcionJuan);
+		mailAAdministradorMock.notificarNuevaInscripcion(juan,semifinal);
+		verify(mailAAdministradorMock).notificarNuevaInscripcion(juan,semifinal);
+	}
+	
+	@Test
+	public void agregarInscripcion_AvisarAAMigos(){
+		semifinal.agregarInscripcion(inscripcionJuan);
+		mailAAmigosMock.notificarNuevaInscripcion(juan,semifinal);
+		verify(mailAAmigosMock).notificarNuevaInscripcion(juan,semifinal);
+	}
+	
+	@Test
+	public void reemplazarInscripcionSinSusitucion_AvisarAAdmin(){
+		semifinal.agregarInscripcion(inscripcionJuan);
+		semifinal.reemplazarInscripcion(inscripcionJuan, null);
+		mailAAdministradorMock.notificarReemplazoDeInscSinSustituto(semifinal);
+		verify(mailAAdministradorMock).notificarReemplazoDeInscSinSustituto(semifinal);
+	}
+	
+	@Test
+	public void reemplazarInscripcionSinSusitucion_AvisarAAmigos(){
+		semifinal.agregarInscripcion(inscripcionJuan);
+		semifinal.reemplazarInscripcion(inscripcionJuan, null);
+		mailAAmigosMock.notificarReemplazoDeInscSinSustituto(semifinal);
+		verify(mailAAmigosMock).notificarReemplazoDeInscSinSustituto(semifinal);
 	}
 }

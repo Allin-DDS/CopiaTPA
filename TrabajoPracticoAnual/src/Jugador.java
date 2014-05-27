@@ -23,7 +23,11 @@ public class Jugador {
 		this.edad = edad;
 	}
 	
-	void incrementarcantidadInfracPorNoTenerSustituto(){
+	public void incrementarcantidadInfracPorNoTenerSustituto(){
 		cantidadInfracPorNoTenerSustituto++;
+	}
+	
+	public int getCantidadInfracPorNoTenerSustituto(){
+		return cantidadInfracPorNoTenerSustituto;
 	}
 }

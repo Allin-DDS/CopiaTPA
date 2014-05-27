@@ -64,7 +64,7 @@ public class Partido {
 		observadores.add(observador);
 	}
 	
-	public int cantidadTotalinscriptos(){
+	public int cantidadTotalInscriptos(){
 		return this.cantidadInscriptosPosibles10() + this.cantidadInscriptosCondicionales() + this.cantidadInscriptosSolidarios();  
 	}
 	
@@ -159,7 +159,7 @@ public class Partido {
 			cantidadInscriptosEstandar --;
 			inscripcionBaja.jugador.incrementarcantidadInfracPorNoTenerSustituto();
 			for (Observador observador : observadores)  
-				observador.notificarBajaDeInscSinReemplazo(this);
+				observador.notificarReemplazoDeInscSinSustituto(this);
 		}
 	}
 	
@@ -171,7 +171,7 @@ public class Partido {
 		else{
 			inscripcionBaja.jugador.incrementarcantidadInfracPorNoTenerSustituto();
 			for (Observador observador : observadores)  
-				observador.notificarBajaDeInscSinReemplazo(this);
+				observador.notificarReemplazoDeInscSinSustituto(this);
 		}
 	}
 	
@@ -184,7 +184,7 @@ public class Partido {
 		else{
 			inscripcionBaja.jugador.incrementarcantidadInfracPorNoTenerSustituto();
 			for (Observador observador : observadores)  
-				observador.notificarBajaDeInscSinReemplazo(this);
+				observador.notificarReemplazoDeInscSinSustituto(this);
 		}
 	}
 
