@@ -6,10 +6,9 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
+
+
+
 
 import excepciones.Hay10EstandarException;
 
@@ -92,14 +91,22 @@ public class test {
 	
 		maria= new Jugador();
 		maria.setEdad(22);
-		inscripcionMaria= new InscripcionSolidaria(maria,3);
+		inscripcionMaria= new InscripcionSolidaria(maria);
 		gordo= new Jugador();
 		gordo.setEdad(22);
-		inscripciongordo= new InscripcionSolidaria(gordo,4);
+		inscripciongordo= new InscripcionSolidaria(gordo);
 		
 		mailAAdministradorMock= mock(MailAAdministrador.class);
 		mailAAmigosMock= mock(MailAAmigos.class);
 	}
+	
+	@Test 
+	public void verificarPrioridadesDeLas2InscripcionesSolidariosCreadas(){
+		
+		assertEquals(99,inscripcionMaria.getPrioridad());
+		assertEquals(98,inscripciongordo.getPrioridad());	
+	}
+	
 	@Test 
 	public void agregar1Condicional_ContarLosCondicionales(){
 		semifinal.altaInscripcion(inscripcionJose);
@@ -107,21 +114,22 @@ public class test {
 	}
 	
 	@Test 
-	public void agregar2Soldiarios_ContarLosEstandar(){
+	public void agregar2Estandar_ContarLosEstandar(){
 		semifinal.altaInscripcion(inscripcionJuan);
 		semifinal.altaInscripcion(inscripcionEsteban);
 		assertEquals(2,semifinal.cantidadInscriptosEstandar());
 	}
 	
 	@Test 
-	public void agregar2Estandar_ContarLosSolidarios(){
+	public void agregar2Solidarios_ContarLosSolidarios(){
 		semifinal.altaInscripcion(inscripciongordo);
 		semifinal.altaInscripcion(inscripcionMaria);
 		assertEquals(2,semifinal.cantidadInscriptosSolidarios());
 	}
 	
+	
 	@Test 
-	public void agregar2Estandar2SolidariaY1Condicional_ContarTotal(){
+	public void agregar2Estandar2SolidariaY1Condicional_cantidadTotalInscriptos(){
 		semifinal.altaInscripcion(inscripcionJuan);
 		semifinal.altaInscripcion(inscripcionEsteban);
 		
@@ -132,22 +140,42 @@ public class test {
 		
 		assertEquals(5,semifinal.cantidadTotalInscriptos());
 	}
-	/*
-	ESTE DA FALLA, NO SE Q MENSAJE USAR EN VEZ DE assertEquals()...
+	
 	@Test
 	public void agregar2Solidarios1Estandar1Condicional_VerificarOrdenCorrecto(){
 		semifinal.altaInscripcion(inscripcionMaria);
 		semifinal.altaInscripcion(inscripciongordo);
 		semifinal.altaInscripcion(inscripcionJuan);
 		semifinal.altaInscripcion(inscripcionJose);
-		PriorityQueue<Inscripcion> colec = new PriorityQueue<Inscripcion>();
-		colec.add(inscripcionJuan);
-		colec.add(inscripciongordo);
-		colec.add(inscripcionJose);
-		colec.add(inscripcionMaria);
-		assertEquals(colec,semifinal.getInscripciones());
+		
+		assertEquals(inscripcionJuan,semifinal.getInscripciones().poll());
+		assertEquals(inscripcionJose,semifinal.getInscripciones().poll());
+		assertEquals(inscripciongordo,semifinal.getInscripciones().poll());
+		assertEquals(inscripcionMaria,semifinal.getInscripciones().poll());		
 	}
-	*/
+
+
+/*cambiar para test de generarEquipos
+@Test
+public void agregar8Estandar1Condicional2Solidario_generarEquipos(){
+	semifinal.altaInscripcion(inscripcionJuan);
+	semifinal.altaInscripcion(inscripcionEsteban);
+	semifinal.altaInscripcion(inscripcionramiro);
+	semifinal.altaInscripcion(inscripcionmario);
+	semifinal.altaInscripcion(inscripcionadrian);
+	semifinal.altaInscripcion(inscripcionmarcos);
+	semifinal.altaInscripcion(inscripcioncarlos);
+	semifinal.altaInscripcion(inscripcionturco);
+	
+	semifinal.altaInscripcion(inscripcionJose);
+	
+	semifinal.altaInscripcion(inscripcionMaria);
+	semifinal.altaInscripcion(inscripciongordo);
+	
+	semifinal.generarEquipos();
+}
+*/
+	
 	@Test (expected=Hay10EstandarException.class)
 	public void agregar10EstandarY1Solidaria_Hay10EstandarException(){
 		semifinal.altaInscripcion(inscripcionJuan);
@@ -162,25 +190,6 @@ public class test {
 		semifinal.altaInscripcion(inscripcionmati);
 		
 		semifinal.altaInscripcion(inscripcionMaria);
-	}
-	
-	@Test
-	public void agregar8Estandar1Condicional1SolidarioYReemplazo1SolidarioPorOtro_cantidadTotalInscriptosEs10(){
-		semifinal.altaInscripcion(inscripcionJuan);
-		semifinal.altaInscripcion(inscripcionEsteban);
-		semifinal.altaInscripcion(inscripcionramiro);
-		semifinal.altaInscripcion(inscripcionmario);
-		semifinal.altaInscripcion(inscripcionadrian);
-		semifinal.altaInscripcion(inscripcionmarcos);
-		semifinal.altaInscripcion(inscripcioncarlos);
-		semifinal.altaInscripcion(inscripcionturco);
-		
-		semifinal.altaInscripcion(inscripcionJose);
-		
-		semifinal.altaInscripcion(inscripcionMaria);
-		semifinal.BajaInscripcion(inscripcionMaria,inscripciongordo);
-		
-		assertEquals(10,semifinal.cantidadTotalInscriptos());
 	}
 	
 	@Test
@@ -220,4 +229,5 @@ public class test {
 		mailAAmigosMock.notificarReemplazoDeInscSinSustituto(semifinal);
 		verify(mailAAmigosMock).notificarReemplazoDeInscSinSustituto(semifinal);
 	}
+	
 }

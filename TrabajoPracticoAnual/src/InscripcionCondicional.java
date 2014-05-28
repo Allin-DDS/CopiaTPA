@@ -1,6 +1,6 @@
 
 public class InscripcionCondicional extends Inscripcion {
-	Condicion condicion;
+	private Condicion condicion;
 	
 	public InscripcionCondicional(Jugador jugador,Condicion condicion){
 		this.jugador=jugador;

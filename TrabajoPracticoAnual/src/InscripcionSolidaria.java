@@ -1,8 +1,19 @@
 
 public class InscripcionSolidaria extends Inscripcion{
-	public InscripcionSolidaria(Jugador jugador,int prioridad){
+	private static int contadorDeInstacias=100;
+	
+	public InscripcionSolidaria(Jugador jugador){
+		InscripcionSolidaria.setContadorDeInstacias(InscripcionSolidaria.getContadorDeInstacias() - 1);
 		this.jugador=jugador;
-		this.prioridad=prioridad;
+		this.prioridad=getContadorDeInstacias();				
+	}
+
+	public static int getContadorDeInstacias() {
+		return contadorDeInstacias;
+	}
+
+	public static void setContadorDeInstacias(int contadorDeInstacias) {
+		InscripcionSolidaria.contadorDeInstacias = contadorDeInstacias;
 	}
 }
 

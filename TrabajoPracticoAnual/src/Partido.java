@@ -3,7 +3,9 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.PriorityQueue;
+
 import excepciones.Hay10EstandarException;
 
 public class Partido {
@@ -11,13 +13,14 @@ public class Partido {
 	private LocalDate fecha;
 	private String lugar;
 	private boolean decisionSobrePropuesta;
+	private String motivoRechazo; 
 	
-	private Collection<Observador> observadores = new ArrayList<Observador>();
-	private PriorityQueue<Inscripcion> inscripciones = new PriorityQueue<>(Comparator.comparing(inscripcion -> inscripcion.getPrioridad()));
+	private Collection<Observador> observadores = new ArrayList<>();
+	private PriorityQueue<Inscripcion> inscripciones=(new PriorityQueue<>(Comparator.comparing(inscripcion->inscripcion.getPrioridad())));
 	private Collection<Inscripcion> equipo1 = new ArrayList<>();
 	private Collection<Inscripcion> equipo2 = new ArrayList<>();
-	private Collection<Inscripcion> inscripcionesPropuestas = new ArrayList<Inscripcion>();
-	private Collection<Inscripcion> inscripcionesRechazadas = new ArrayList<Inscripcion>();
+	private Collection<Inscripcion> inscripcionesPropuestas = new ArrayList<>();
+	private HashMap<String,LocalDate> inscripcionesRechazadas= new HashMap<>();
 	
 	public Partido(LocalDate dia, LocalTime hora,String lugar) {
 		this.fecha= dia;
@@ -73,12 +76,12 @@ public class Partido {
 		inscripcionesPropuestas.add(inscripcion);
 	}
 	
-	public Collection<Inscripcion> getInscripcionesRechazadas() {
+	public HashMap<String, LocalDate> getInscripcionesRechazadas() {
 		return inscripcionesRechazadas;
 	}
 
-	public void agregarInscripcionRechazada(Inscripcion inscripcion) {
-		inscripcionesRechazadas.add(inscripcion);
+	public void agregarInscripcionRechazada(String motivo, LocalDate fecha) {
+		inscripcionesRechazadas.put(motivo,fecha);
 	}
 	
 	public  PriorityQueue<Inscripcion> getInscripciones(){
@@ -124,9 +127,9 @@ public class Partido {
 				observador.notificarReemplazoDeInscSinSustituto(this);
 		}
 	}
-	
-	/*HAY Q ARREGLARLO PQ LSO MENSAJES NO SON VALIDOS PARA EL TIPO DE COLECCION
-	public void generarEquipos(){		
+	/*
+	HAY Q ARREGLARLO PQ LOS MENSAJES NO SON VALIDOS PARA EL TIPO DE COLECCION
+	public void generarEquispos(){		
 		equipo1=inscripciones.take(5);
 		equipo2=inscripciones.take(10).skip(5);
 	}
@@ -137,7 +140,7 @@ public class Partido {
 			if(decisionSobrePropuesta)
 				this.altaInscripcion(inscripcion);
 			else
-				this.agregarInscripcionRechazada(inscripcion);//FALTA ALMACENAR LA FECHA...
+				this.agregarInscripcionRechazada(motivoRechazo,LocalDate.now());
 		}
 	}	
 }
