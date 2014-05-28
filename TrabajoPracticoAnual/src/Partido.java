@@ -1,27 +1,28 @@
-import java.time.LocalTime;
 import java.time.LocalDate;
-import java.util.ArrayList; 
+import java.time.LocalTime;
+import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
-
+import java.util.PriorityQueue;
 import excepciones.Hay10EstandarException;
 
 public class Partido {
+	private LocalTime horario;
+	private LocalDate fecha;
+	private String lugar;
+	private boolean decisionSobrePropuesta;
 	
-	LocalTime horario;
-	LocalDate fecha;
-	String lugar;
-	int cantidadInscriptosEstandar=0;
-	Collection<Observador> observadores = new ArrayList<Observador>();
-	Collection<Inscripcion> posibles10 = new ArrayList<Inscripcion>();
-	Queue<InscripcionCondicional> colaInscripcionesCondicionales = new LinkedList<InscripcionCondicional>();
-	Stack<InscripcionSolidaria> pilaInscripcionesSolidarias = new Stack <InscripcionSolidaria>();
+	private Collection<Observador> observadores = new ArrayList<Observador>();
+	private PriorityQueue<Inscripcion> inscripciones = new PriorityQueue<>(Comparator.comparing(inscripcion -> inscripcion.getPrioridad()));
+	private Collection<Inscripcion> equipo1 = new ArrayList<>();
+	private Collection<Inscripcion> equipo2 = new ArrayList<>();
+	private Collection<Inscripcion> inscripcionesPropuestas = new ArrayList<Inscripcion>();
+	private Collection<Inscripcion> inscripcionesRechazadas = new ArrayList<Inscripcion>();
 	
 	public Partido(LocalDate dia, LocalTime hora,String lugar) {
 		this.fecha= dia;
 		this.horario= hora;
+		this.lugar=lugar;
 	}	
 	
 	public LocalTime getHorario() {
@@ -48,14 +49,14 @@ public class Partido {
 		this.lugar = lugar;
 	}
 	
-	public int getCantidadInscriptosEstandar() {
-		return cantidadInscriptosEstandar;
+	public boolean getDecisionSobrePropuesta() {
+		return decisionSobrePropuesta;
 	}
 
-	public void setCantidadInscriptosEstandar(int cantidadInscriptosEstandar) {
-		this.cantidadInscriptosEstandar = cantidadInscriptosEstandar;
+	public void setDecisionSobrePropuesta(boolean decisionSobrePropuesta) {
+		this.decisionSobrePropuesta = decisionSobrePropuesta;
 	}
-	
+
 	public Collection<Observador> getObservadores() {
 		return observadores;
 	}
@@ -64,57 +65,45 @@ public class Partido {
 		observadores.add(observador);
 	}
 	
-	public int cantidadTotalInscriptos(){
-		return this.cantidadInscriptosPosibles10() + this.cantidadInscriptosCondicionales() + this.cantidadInscriptosSolidarios();  
+	public Collection<Inscripcion> getInscripcionesPropuestas() {
+		return inscripcionesPropuestas;
+	}
+
+	public void agregarInscripcionPropuesta(Inscripcion inscripcion) {
+		inscripcionesPropuestas.add(inscripcion);
+	}
+	
+	public Collection<Inscripcion> getInscripcionesRechazadas() {
+		return inscripcionesRechazadas;
+	}
+
+	public void agregarInscripcionRechazada(Inscripcion inscripcion) {
+		inscripcionesRechazadas.add(inscripcion);
+	}
+	
+	public  PriorityQueue<Inscripcion> getInscripciones(){
+		return inscripciones;
+	}
+	
+	public int cantidadInscriptosEstandar() {
+		return (int) inscripciones.stream().filter(inscripcion -> inscripcion instanceof InscripcionEstandar).count();
 	}
 	
 	public int cantidadInscriptosCondicionales() {
-		return colaInscripcionesCondicionales.size();
+		return (int) inscripciones.stream().filter(inscripcion -> inscripcion instanceof InscripcionCondicional).count();
 	}
 	
 	public int cantidadInscriptosSolidarios() {
-		return pilaInscripcionesSolidarias.size();
+		return (int) inscripciones.stream().filter(inscripcion -> inscripcion instanceof InscripcionSolidaria).count();
 	}
 	
-	public int cantidadInscriptosPosibles10() {
-		return posibles10.size();
+	public int cantidadTotalInscriptos(){
+		return inscripciones.size();  
 	}
 	
-	public void completarPosibles10(){//Estaban solo los estandar, si son menos de 10, completa en lo posible en condicionales y solidarios
-		
-		while(cantidadInscriptosPosibles10()<10 && hayJugadoresCondicionalesInscriptos()){
-			agregarInscripcionesCondicionales();
-		}
-		
-		while(cantidadInscriptosPosibles10()<10 && hayJugadoresSolidariosInscriptos()){	
-			agregarinscripcionSolidaria();
-		}
-	}
-	
-	public boolean hayJugadoresCondicionalesInscriptos(){
-		return !(this.colaInscripcionesCondicionales.isEmpty());
-	}
-	
-	public boolean hayJugadoresSolidariosInscriptos(){
-		return !(this.pilaInscripcionesSolidarias.isEmpty());
-	}
-	
-	private void agregarInscripcionesCondicionales() {
-		InscripcionCondicional inscripcionCondicional = (this.colaInscripcionesCondicionales.element());
-		posibles10.add(inscripcionCondicional);
-		this.colaInscripcionesCondicionales.remove();	
-	}
-	
-	private void agregarinscripcionSolidaria() {
-		InscripcionSolidaria inscripcionSolidaria = this.pilaInscripcionesSolidarias.peek();
-		posibles10.add(inscripcionSolidaria);
-		this.pilaInscripcionesSolidarias.pop();		
-	}
-	
-	public void agregarInscripcion(InscripcionEstandar inscripcion) {
-		if(cantidadInscriptosEstandar<10){
-			posibles10.add(inscripcion);
-			cantidadInscriptosEstandar ++;
+	public void altaInscripcion(Inscripcion inscripcion) {
+		if(cantidadInscriptosEstandar()<10){
+			inscripciones.add(inscripcion);
 			 for (Observador observador : observadores)  
 				 observador.notificarNuevaInscripcion(inscripcion.jugador,this);
 		}
@@ -125,49 +114,10 @@ public class Partido {
 		
 	}
 	
-	public void agregarInscripcion(InscripcionCondicional inscripcion) {
-		if(cantidadInscriptosEstandar<10 && inscripcion.getCondicion().condicionDelJugador()){
-			colaInscripcionesCondicionales.add(inscripcion);
-			for (Observador observador : observadores)  
-				 observador.notificarNuevaInscripcion(inscripcion.jugador,this);
-		}
-		else
-		{
-			throw new Hay10EstandarException("No se puede realizar la inscripcion porque ya hay 10 inscriptos en modo estandar para el partido");
-		}
-		
-	}
-
-	public void agregarInscripcion(InscripcionSolidaria inscripcion) {
-			if(cantidadInscriptosEstandar<10){
-			pilaInscripcionesSolidarias.add(inscripcion);
-			for (Observador observador : observadores)  
-				 observador.notificarNuevaInscripcion(inscripcion.jugador,this);
-		}
-		else
-		{
-			throw new Hay10EstandarException("No se puede realizar la inscripcion porque ya hay 10 inscriptos en modo estandar para el partido");
-		}	
-	}
-
-	public void reemplazarInscripcion(InscripcionEstandar inscripcionBaja, InscripcionEstandar inscripcionAlta){
-		posibles10.remove(inscripcionBaja);
-		if(inscripcionAlta!= null){
-			this.agregarInscripcion(inscripcionAlta);
-		}
-		else{
-			cantidadInscriptosEstandar --;
-			inscripcionBaja.jugador.incrementarcantidadInfracPorNoTenerSustituto();
-			for (Observador observador : observadores)  
-				observador.notificarReemplazoDeInscSinSustituto(this);
-		}
-	}
-	
-	public void reemplazarInscripcion(InscripcionCondicional inscripcionBaja, InscripcionEstandar inscripcionAlta){
-		colaInscripcionesCondicionales.remove(inscripcionBaja);
-		if(inscripcionAlta!= null){
-			this.agregarInscripcion(inscripcionAlta);
-		}
+	public void BajaInscripcion(Inscripcion inscripcionBaja, Inscripcion inscripcionAlta){
+		inscripciones.remove(inscripcionBaja);
+		if(inscripcionAlta!= null)
+			this.altaInscripcion(inscripcionAlta);
 		else{
 			inscripcionBaja.jugador.incrementarcantidadInfracPorNoTenerSustituto();
 			for (Observador observador : observadores)  
@@ -175,18 +125,20 @@ public class Partido {
 		}
 	}
 	
-	
-	public void reemplazarInscripcion(InscripcionSolidaria inscripcionBaja, InscripcionSolidaria inscripcionAlta){
-		pilaInscripcionesSolidarias.remove(inscripcionBaja);
-		if(inscripcionAlta!= null){
-			this.agregarInscripcion(inscripcionAlta);
-		}
-		else{
-			inscripcionBaja.jugador.incrementarcantidadInfracPorNoTenerSustituto();
-			for (Observador observador : observadores)  
-				observador.notificarReemplazoDeInscSinSustituto(this);
-		}
+	/*HAY Q ARREGLARLO PQ LSO MENSAJES NO SON VALIDOS PARA EL TIPO DE COLECCION
+	public void generarEquipos(){		
+		equipo1=inscripciones.take(5);
+		equipo2=inscripciones.take(10).skip(5);
 	}
-
+	*/
+	
+	public void procesarInscripcionesPropuestas(){
+		for(Inscripcion inscripcion : inscripcionesPropuestas){
+			if(decisionSobrePropuesta)
+				this.altaInscripcion(inscripcion);
+			else
+				this.agregarInscripcionRechazada(inscripcion);//FALTA ALMACENAR LA FECHA...
+		}
+	}	
 }
 

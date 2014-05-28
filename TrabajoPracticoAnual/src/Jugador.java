@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import excepciones.PropuestaDeJugadorNoAmigoException;
 
 public class Jugador {
-	int edad;
-	int cantidadInfracPorFaltar;
-	int cantidadInfracPorNoTenerSustituto;
-	Collection<Jugador> amigos = new ArrayList<Jugador>();
+	private int edad;
+	private int cantidadInfracPorFaltar;
+	private int cantidadInfracPorNoTenerSustituto;
+	private Collection<Jugador> amigos = new ArrayList<Jugador>();
 	
 	public Collection<Jugador> mostrar(){
 		return amigos;
@@ -30,4 +31,14 @@ public class Jugador {
 	public int getCantidadInfracPorNoTenerSustituto(){
 		return cantidadInfracPorNoTenerSustituto;
 	}
+	
+	public void proponer(Inscripcion inscripcion,Partido partido){
+		if(amigos.contains(inscripcion.getJugador()) ){
+			partido.agregarInscripcionPropuesta(inscripcion);
+		}
+		else{
+			throw new PropuestaDeJugadorNoAmigoException("no se puede proponer a un jugador que no es amigo");
+		}
+	}
+	
 }

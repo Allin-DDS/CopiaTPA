@@ -1,9 +1,16 @@
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test; 
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import excepciones.Hay10EstandarException;
 
 public class test {
@@ -49,205 +56,167 @@ public class test {
 		
 		juan= new Jugador();
 		juan.setEdad(21);
-		inscripcionJuan= new InscripcionEstandar();
-		inscripcionJuan.setJugador(juan);
+		inscripcionJuan= new InscripcionEstandar(juan);
 		esteban= new Jugador();
 		esteban.setEdad(21);
-		inscripcionEsteban= new InscripcionEstandar();
-		inscripcionEsteban.setJugador(esteban);
+		inscripcionEsteban= new InscripcionEstandar(esteban);
 		ramiro= new Jugador();
 		ramiro.setEdad(21);
-		inscripcionramiro= new InscripcionEstandar();
-		inscripcionramiro.setJugador(ramiro);
+		inscripcionramiro= new InscripcionEstandar(ramiro);
 		mario= new Jugador();
 		mario.setEdad(21);
-		inscripcionmario= new InscripcionEstandar();
-		inscripcionmario.setJugador(mario);
+		inscripcionmario= new InscripcionEstandar(mario);
 		adrian= new Jugador();
 		adrian.setEdad(21);
-		inscripcionadrian= new InscripcionEstandar();
-		inscripcionadrian.setJugador(adrian);
+		inscripcionadrian= new InscripcionEstandar(adrian);
 		marcos= new Jugador();
 		marcos.setEdad(21);
-		inscripcionmarcos= new InscripcionEstandar();
-		inscripcionmarcos.setJugador(marcos);
+		inscripcionmarcos= new InscripcionEstandar(marcos);
 		carlos= new Jugador();
 		carlos.setEdad(21);
-		inscripcioncarlos= new InscripcionEstandar();
-		inscripcioncarlos.setJugador(carlos);
+		inscripcioncarlos= new InscripcionEstandar(carlos);
 		turco= new Jugador();
 		turco.setEdad(21);
-		inscripcionturco= new InscripcionEstandar();
-		inscripcionturco.setJugador(turco);
+		inscripcionturco= new InscripcionEstandar(turco);
 		coqui= new Jugador();
 		coqui.setEdad(21);
-		inscripcioncoqui= new InscripcionEstandar();
-		inscripcioncoqui.setJugador(coqui);
+		inscripcioncoqui= new InscripcionEstandar(coqui);
 		mati= new Jugador();
 		mati.setEdad(21);
-		inscripcionmati= new InscripcionEstandar();
-		inscripcionmati.setJugador(mati);
+		inscripcionmati= new InscripcionEstandar(mati);
 		
 		jose= new Jugador();
 		jose.setEdad(22);
-		inscripcionJose= new InscripcionCondicional();
-		inscripcionJose.setJugador(jose);
 		condicionJose = new Condicion();
-		inscripcionJose.setCondicion(condicionJose);
-		
+		inscripcionJose= new InscripcionCondicional(jose,condicionJose);
+	
 		maria= new Jugador();
 		maria.setEdad(22);
-		inscripcionMaria= new InscripcionSolidaria();
-		inscripcionMaria.setJugador(maria);
+		inscripcionMaria= new InscripcionSolidaria(maria,3);
 		gordo= new Jugador();
 		gordo.setEdad(22);
-		inscripciongordo= new InscripcionSolidaria();
-		inscripciongordo.setJugador(gordo);
+		inscripciongordo= new InscripcionSolidaria(gordo,4);
 		
 		mailAAdministradorMock= mock(MailAAdministrador.class);
 		mailAAmigosMock= mock(MailAAmigos.class);
 	}
 	@Test 
 	public void agregar1Condicional_ContarLosCondicionales(){
-		semifinal.agregarInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionJose);
 		assertEquals(1,semifinal.cantidadInscriptosCondicionales());
 	}
 	
 	@Test 
 	public void agregar2Soldiarios_ContarLosEstandar(){
-		semifinal.agregarInscripcion(inscripcionJuan);
-		semifinal.agregarInscripcion(inscripcionEsteban);
-		assertEquals(2,semifinal.getCantidadInscriptosEstandar());
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		assertEquals(2,semifinal.cantidadInscriptosEstandar());
 	}
 	
 	@Test 
 	public void agregar2Estandar_ContarLosSolidarios(){
-		semifinal.agregarInscripcion(inscripciongordo);
-		semifinal.agregarInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.altaInscripcion(inscripcionMaria);
 		assertEquals(2,semifinal.cantidadInscriptosSolidarios());
 	}
 	
 	@Test 
 	public void agregar2Estandar2SolidariaY1Condicional_ContarTotal(){
-		semifinal.agregarInscripcion(inscripcionJuan);
-		semifinal.agregarInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
 		
-		semifinal.agregarInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionJose);
 		
-		semifinal.agregarInscripcion(inscripcionMaria);
-		semifinal.agregarInscripcion(inscripciongordo);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
 		
 		assertEquals(5,semifinal.cantidadTotalInscriptos());
 	}
-	
+	/*
+	ESTE DA FALLA, NO SE Q MENSAJE USAR EN VEZ DE assertEquals()...
 	@Test
-	public void agregar8Estandar1Condicional2SolidariosYCompletarPosibles10_cantidadInscriptosPosiblesEs10(){
-		semifinal.agregarInscripcion(inscripcionJuan);
-		semifinal.agregarInscripcion(inscripcionEsteban);
-		semifinal.agregarInscripcion(inscripcionramiro);
-		semifinal.agregarInscripcion(inscripcionmario);
-		semifinal.agregarInscripcion(inscripcionadrian);
-		semifinal.agregarInscripcion(inscripcionmarcos);
-		semifinal.agregarInscripcion(inscripcioncarlos);
-		semifinal.agregarInscripcion(inscripcionturco);
-		
-		semifinal.agregarInscripcion(inscripcionJose);
-		
-		semifinal.agregarInscripcion(inscripcionMaria);
-		semifinal.agregarInscripcion(inscripciongordo);
-		semifinal.completarPosibles10();
-		assertEquals(10,semifinal.cantidadInscriptosPosibles10());
+	public void agregar2Solidarios1Estandar1Condicional_VerificarOrdenCorrecto(){
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionJose);
+		PriorityQueue<Inscripcion> colec = new PriorityQueue<Inscripcion>();
+		colec.add(inscripcionJuan);
+		colec.add(inscripciongordo);
+		colec.add(inscripcionJose);
+		colec.add(inscripcionMaria);
+		assertEquals(colec,semifinal.getInscripciones());
 	}
-	
-	@Test
-	public void agregar8Estandar1Condicional2SolidariosYcompletarPosibles10_Sobra1Solidario(){
-		semifinal.agregarInscripcion(inscripcionJuan);
-		semifinal.agregarInscripcion(inscripcionEsteban);
-		semifinal.agregarInscripcion(inscripcionramiro);
-		semifinal.agregarInscripcion(inscripcionmario);
-		semifinal.agregarInscripcion(inscripcionadrian);
-		semifinal.agregarInscripcion(inscripcionmarcos);
-		semifinal.agregarInscripcion(inscripcioncarlos);
-		semifinal.agregarInscripcion(inscripcionturco);
-		
-		semifinal.agregarInscripcion(inscripcionJose);
-		
-		semifinal.agregarInscripcion(inscripcionMaria);
-		semifinal.agregarInscripcion(inscripciongordo);
-		semifinal.completarPosibles10();
-		assertEquals(1,semifinal.pilaInscripcionesSolidarias.size());
-	}
-	
+	*/
 	@Test (expected=Hay10EstandarException.class)
 	public void agregar10EstandarY1Solidaria_Hay10EstandarException(){
-		semifinal.agregarInscripcion(inscripcionJuan);
-		semifinal.agregarInscripcion(inscripcionEsteban);
-		semifinal.agregarInscripcion(inscripcionramiro);
-		semifinal.agregarInscripcion(inscripcionmario);
-		semifinal.agregarInscripcion(inscripcionadrian);
-		semifinal.agregarInscripcion(inscripcionmarcos);
-		semifinal.agregarInscripcion(inscripcioncarlos);
-		semifinal.agregarInscripcion(inscripcionturco);
-		semifinal.agregarInscripcion(inscripcioncoqui);
-		semifinal.agregarInscripcion(inscripcionmati);
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripcionmarcos);
+		semifinal.altaInscripcion(inscripcioncarlos);
+		semifinal.altaInscripcion(inscripcionturco);
+		semifinal.altaInscripcion(inscripcioncoqui);
+		semifinal.altaInscripcion(inscripcionmati);
 		
-		semifinal.agregarInscripcion(inscripcionMaria);
-		semifinal.completarPosibles10();
+		semifinal.altaInscripcion(inscripcionMaria);
 	}
 	
 	@Test
-	public void agregar8Estandar1Condicional1SolidarioYReemplazo1SolidarioPorOtro_NoSobranSolidarios(){
-		semifinal.agregarInscripcion(inscripcionJuan);
-		semifinal.agregarInscripcion(inscripcionEsteban);
-		semifinal.agregarInscripcion(inscripcionramiro);
-		semifinal.agregarInscripcion(inscripcionmario);
-		semifinal.agregarInscripcion(inscripcionadrian);
-		semifinal.agregarInscripcion(inscripcionmarcos);
-		semifinal.agregarInscripcion(inscripcioncarlos);
-		semifinal.agregarInscripcion(inscripcionturco);
+	public void agregar8Estandar1Condicional1SolidarioYReemplazo1SolidarioPorOtro_cantidadTotalInscriptosEs10(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripcionmarcos);
+		semifinal.altaInscripcion(inscripcioncarlos);
+		semifinal.altaInscripcion(inscripcionturco);
 		
-		semifinal.agregarInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionJose);
 		
-		semifinal.agregarInscripcion(inscripcionMaria);
-		semifinal.reemplazarInscripcion(inscripcionMaria,inscripciongordo);
-		semifinal.completarPosibles10();
-		assertEquals(0,semifinal.pilaInscripcionesSolidarias.size());
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.BajaInscripcion(inscripcionMaria,inscripciongordo);
+		
+		assertEquals(10,semifinal.cantidadTotalInscriptos());
 	}
 	
 	@Test
 	public void reemplazo1SolidarioSinSustituto_AgregarInfraccion(){
-		semifinal.agregarInscripcion(inscripcionMaria);
-		semifinal.reemplazarInscripcion(inscripcionMaria,null);
-		semifinal.completarPosibles10();
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.BajaInscripcion(inscripcionMaria,null);
+		
 		assertEquals(1,maria.getCantidadInfracPorNoTenerSustituto());	
 	}
 	
 	@Test
 	public void agregarInscripcion_AvisarAAdmin(){
-		semifinal.agregarInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionJuan);
 		mailAAdministradorMock.notificarNuevaInscripcion(juan,semifinal);
 		verify(mailAAdministradorMock).notificarNuevaInscripcion(juan,semifinal);
 	}
 	
 	@Test
 	public void agregarInscripcion_AvisarAAMigos(){
-		semifinal.agregarInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionJuan);
 		mailAAmigosMock.notificarNuevaInscripcion(juan,semifinal);
 		verify(mailAAmigosMock).notificarNuevaInscripcion(juan,semifinal);
 	}
 	
 	@Test
 	public void reemplazarInscripcionSinSusitucion_AvisarAAdmin(){
-		semifinal.agregarInscripcion(inscripcionJuan);
-		semifinal.reemplazarInscripcion(inscripcionJuan, null);
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.BajaInscripcion(inscripcionJuan, null);
 		mailAAdministradorMock.notificarReemplazoDeInscSinSustituto(semifinal);
 		verify(mailAAdministradorMock).notificarReemplazoDeInscSinSustituto(semifinal);
 	}
 	
 	@Test
 	public void reemplazarInscripcionSinSusitucion_AvisarAAmigos(){
-		semifinal.agregarInscripcion(inscripcionJuan);
-		semifinal.reemplazarInscripcion(inscripcionJuan, null);
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.BajaInscripcion(inscripcionJuan, null);
 		mailAAmigosMock.notificarReemplazoDeInscSinSustituto(semifinal);
 		verify(mailAAmigosMock).notificarReemplazoDeInscSinSustituto(semifinal);
 	}

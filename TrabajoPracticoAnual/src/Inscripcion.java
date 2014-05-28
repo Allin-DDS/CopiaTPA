@@ -1,7 +1,9 @@
 
-public class Inscripcion {
+
+public class Inscripcion{
 	Jugador jugador;
-		
+	int prioridad;
+	
 	public Jugador getJugador() {
 		return jugador;
 	}
@@ -10,5 +12,13 @@ public class Inscripcion {
 		this.jugador = jugador;
 	}
 
+	public int getPrioridad() {
+		return prioridad;
+	}
+
+	public void setPrioridad(int prioridad) {
+		this.prioridad = prioridad;
+	}
+	
 }
 
