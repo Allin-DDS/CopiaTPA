@@ -1,16 +1,11 @@
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
 import org.junit.Before;
 import org.junit.Test; 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-
-
-
 import excepciones.Hay10EstandarException;
+import excepciones.NoHay10InscriptosParaGenerarEquiposException;
 
 public class test {
 	private Partido semifinal;
@@ -38,6 +33,12 @@ public class test {
 	private Jugador jose;
 	private InscripcionCondicional inscripcionJose;
 	private Condicion condicionJose;
+	private Jugador franco;
+	private InscripcionCondicional inscripcionfranco;
+	private Condicion condicionfranco;
+	private Jugador dani;
+	private InscripcionCondicional inscripciondani;
+	private Condicion condiciondani;
 	
 	private Jugador maria;
 	private InscripcionSolidaria inscripcionMaria;
@@ -88,6 +89,14 @@ public class test {
 		jose.setEdad(22);
 		condicionJose = new Condicion();
 		inscripcionJose= new InscripcionCondicional(jose,condicionJose);
+		franco= new Jugador();
+		franco.setEdad(22);
+		condicionfranco = new Condicion();
+		inscripcionfranco= new InscripcionCondicional(franco,condicionfranco);
+		dani= new Jugador();
+		dani.setEdad(22);
+		condiciondani = new Condicion();
+		inscripciondani= new InscripcionCondicional(jose,condiciondani);
 	
 		maria= new Jugador();
 		maria.setEdad(22);
@@ -155,26 +164,50 @@ public class test {
 	}
 
 
-/*cambiar para test de generarEquipos
-@Test
-public void agregar8Estandar1Condicional2Solidario_generarEquipos(){
-	semifinal.altaInscripcion(inscripcionJuan);
-	semifinal.altaInscripcion(inscripcionEsteban);
-	semifinal.altaInscripcion(inscripcionramiro);
-	semifinal.altaInscripcion(inscripcionmario);
-	semifinal.altaInscripcion(inscripcionadrian);
-	semifinal.altaInscripcion(inscripcionmarcos);
-	semifinal.altaInscripcion(inscripcioncarlos);
-	semifinal.altaInscripcion(inscripcionturco);
+
+	@Test
+	public void agregar5Estandar3Condicional2Solidario_generarEquipos(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
 	
-	semifinal.altaInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
 	
-	semifinal.altaInscripcion(inscripcionMaria);
-	semifinal.altaInscripcion(inscripciongordo);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.generarEquipos();
 	
-	semifinal.generarEquipos();
+		assertTrue(semifinal.getEquipo1().contains(inscripcionJuan));
+		assertTrue(semifinal.getEquipo1().contains(inscripcionEsteban));
+		assertTrue(semifinal.getEquipo1().contains(inscripcionramiro));
+		assertTrue(semifinal.getEquipo1().contains(inscripcionmario));
+		assertTrue(semifinal.getEquipo1().contains(inscripcionadrian));
+		assertTrue(semifinal.getEquipo2().contains(inscripciondani));
+		assertTrue(semifinal.getEquipo2().contains(inscripcionfranco));
+		assertTrue(semifinal.getEquipo2().contains(inscripcionMaria));
+		assertTrue(semifinal.getEquipo2().contains(inscripcionJose));
+		assertTrue(semifinal.getEquipo2().contains(inscripciongordo));
 }
-*/
+
+
+	@Test(expected=NoHay10InscriptosParaGenerarEquiposException.class)
+	public void agregar5Estandar3CondicionalYGenerarEquipos_SeGeneraExcepcionPqNoHay10Inscriptos(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+	
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+		
+		semifinal.generarEquipos();
+}
 	
 	@Test (expected=Hay10EstandarException.class)
 	public void agregar10EstandarY1Solidaria_Hay10EstandarException(){

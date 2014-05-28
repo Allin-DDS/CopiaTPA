@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 import excepciones.Hay10EstandarException;
+import excepciones.NoHay10InscriptosParaGenerarEquiposException;
 
 public class Partido {
 	private LocalTime horario;
@@ -59,7 +60,23 @@ public class Partido {
 	public void setDecisionSobrePropuesta(boolean decisionSobrePropuesta) {
 		this.decisionSobrePropuesta = decisionSobrePropuesta;
 	}
+	
+	public Collection<Inscripcion> getEquipo1() {
+		return equipo1;
+	}
 
+	public void agregarEquipo1(Inscripcion insc) {
+		this.equipo1.add(insc);
+	}
+
+	public Collection<Inscripcion> getEquipo2() {
+		return equipo2;
+	}
+
+	public void agregarEquipo2(Inscripcion insc) {
+		this.equipo1.add(insc);
+	}
+	
 	public Collection<Observador> getObservadores() {
 		return observadores;
 	}
@@ -127,13 +144,17 @@ public class Partido {
 				observador.notificarReemplazoDeInscSinSustituto(this);
 		}
 	}
-	/*
-	HAY Q ARREGLARLO PQ LOS MENSAJES NO SON VALIDOS PARA EL TIPO DE COLECCION
-	public void generarEquispos(){		
-		equipo1=inscripciones.take(5);
-		equipo2=inscripciones.take(10).skip(5);
+	
+	public void generarEquipos(){
+		if(this.cantidadTotalInscriptos()>=10){
+			for(int i=1; i<=5; i++)
+				equipo1.add(inscripciones.poll());
+			for(int i=1; i<=5; i++)
+				equipo2.add(inscripciones.poll());
+		}
+			else
+				throw new NoHay10InscriptosParaGenerarEquiposException("No se puede realizar generar ");			
 	}
-	*/
 	
 	public void procesarInscripcionesPropuestas(){
 		for(Inscripcion inscripcion : inscripcionesPropuestas){
@@ -142,6 +163,6 @@ public class Partido {
 			else
 				this.agregarInscripcionRechazada(motivoRechazo,LocalDate.now());
 		}
-	}	
+	}
 }
 
