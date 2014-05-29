@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 import excepciones.Hay10EstandarException;
@@ -15,13 +16,13 @@ public class Partido {
 	private String lugar;
 	private boolean decisionSobrePropuesta;
 	private String motivoRechazo; 
-	
 	private Collection<Observador> observadores = new ArrayList<>();
 	private PriorityQueue<Inscripcion> inscripciones=(new PriorityQueue<>(Comparator.comparing(inscripcion->inscripcion.getPrioridad())));
-	private Collection<Inscripcion> equipo1 = new ArrayList<>();
-	private Collection<Inscripcion> equipo2 = new ArrayList<>();
+	private Collection<Inscripcion> equipo1 = new LinkedList<>();
+	private Collection<Inscripcion> equipo2 = new LinkedList<>();
 	private Collection<Inscripcion> inscripcionesPropuestas = new ArrayList<>();
 	private HashMap<String,LocalDate> inscripcionesRechazadas= new HashMap<>();
+	private Collection<Calificacion> calificaciones = new ArrayList<>();
 	
 	public Partido(LocalDate dia, LocalTime hora,String lugar) {
 		this.fecha= dia;
@@ -153,7 +154,7 @@ public class Partido {
 				equipo2.add(inscripciones.poll());
 		}
 			else
-				throw new NoHay10InscriptosParaGenerarEquiposException("No se puede realizar generar ");			
+				throw new NoHay10InscriptosParaGenerarEquiposException("No se puede generarEquipos pq no hay 10 jugadores ");			
 	}
 	
 	public void procesarInscripcionesPropuestas(){
@@ -163,6 +164,12 @@ public class Partido {
 			else
 				this.agregarInscripcionRechazada(motivoRechazo,LocalDate.now());
 		}
+	}
+
+	public void agregarCalificacion(Inscripcion inscripcionCalificacdora,Inscripcion inscripcionACalificar,String  comentario,int  nota){
+		Calificacion calificacion= new Calificacion(inscripcionCalificacdora,inscripcionACalificar,nota,comentario);
+		calificaciones.add(calificacion);
+		
 	}
 }
 

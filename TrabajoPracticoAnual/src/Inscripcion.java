@@ -20,5 +20,9 @@ public class Inscripcion{
 		this.jugador = jugador;
 	}
 	
+	public void calificarA(Inscripcion inscripcionACalificar, Partido partido, String critica, int calificacion){
+		partido.agregarCalificacion(this,inscripcionACalificar,critica,calificacion);
+		
+	}
 }
 
