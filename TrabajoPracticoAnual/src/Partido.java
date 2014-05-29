@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
+
+
+import excepciones.ElPartidoNoSeJugoException;
 import excepciones.Hay10EstandarException;
 import excepciones.NoHay10InscriptosParaGenerarEquiposException;
 
@@ -15,7 +18,8 @@ public class Partido {
 	private LocalDate fecha;
 	private String lugar;
 	private boolean decisionSobrePropuesta;
-	private String motivoRechazo; 
+	private String motivoRechazo;
+	private boolean partidoJugado;
 	private Collection<Observador> observadores = new ArrayList<>();
 	private PriorityQueue<Inscripcion> inscripciones=(new PriorityQueue<>(Comparator.comparing(inscripcion->inscripcion.getPrioridad())));
 	private Collection<Inscripcion> equipo1 = new LinkedList<>();
@@ -60,6 +64,14 @@ public class Partido {
 
 	public void setDecisionSobrePropuesta(boolean decisionSobrePropuesta) {
 		this.decisionSobrePropuesta = decisionSobrePropuesta;
+	}
+	
+	public boolean isPartidoJugado() {
+		return partidoJugado;
+	}
+
+	public void setPartidoJugado(boolean partidoJugado) {
+		this.partidoJugado = partidoJugado;
 	}
 	
 	public Collection<Inscripcion> getEquipo1() {
@@ -123,16 +135,12 @@ public class Partido {
 	}
 	
 	public void altaInscripcion(Inscripcion inscripcion) {
-		if(cantidadInscriptosEstandar()<10){
+		if(cantidadInscriptosEstandar()>=10){
+			throw new Hay10EstandarException("No se puede realizar la inscripcion porque ya hay 10 inscriptos en modo estandar para el partido");
+		}
 			inscripciones.add(inscripcion);
 			 for (Observador observador : observadores)  
 				 observador.notificarNuevaInscripcion(inscripcion.jugador,this);
-		}
-		else
-		{
-			throw new Hay10EstandarException("No se puede realizar la inscripcion porque ya hay 10 inscriptos en modo estandar para el partido");
-		}
-		
 	}
 	
 	public void BajaInscripcion(Inscripcion inscripcionBaja, Inscripcion inscripcionAlta){
@@ -147,14 +155,13 @@ public class Partido {
 	}
 	
 	public void generarEquipos(){
-		if(this.cantidadTotalInscriptos()>=10){
+		if(this.cantidadTotalInscriptos()<10){
+			throw new NoHay10InscriptosParaGenerarEquiposException("No se puede generarEquipos pq no hay 10 jugadores ");
+		}
 			for(int i=1; i<=5; i++)
 				equipo1.add(inscripciones.poll());
 			for(int i=1; i<=5; i++)
-				equipo2.add(inscripciones.poll());
-		}
-			else
-				throw new NoHay10InscriptosParaGenerarEquiposException("No se puede generarEquipos pq no hay 10 jugadores ");			
+				equipo2.add(inscripciones.poll());					
 	}
 	
 	public void procesarInscripcionesPropuestas(){
@@ -167,9 +174,11 @@ public class Partido {
 	}
 
 	public void agregarCalificacion(Inscripcion inscripcionCalificacdora,Inscripcion inscripcionACalificar,String  comentario,int  nota){
+		if(this.isPartidoJugado()){
+			throw new ElPartidoNoSeJugoException("El partido no se jugo, no se puede hacer evaluaciones");
+		}
 		Calificacion calificacion= new Calificacion(inscripcionCalificacdora,inscripcionACalificar,nota,comentario);
 		calificaciones.add(calificacion);
-		
 	}
 }
 
