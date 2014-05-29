@@ -1,3 +1,4 @@
+package clases;
 
 public class InscripcionSolidaria extends Inscripcion{
 	private static int contadorDeInstacias=100;

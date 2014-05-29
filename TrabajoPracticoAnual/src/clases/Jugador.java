@@ -1,10 +1,12 @@
+package clases;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import excepciones.PropuestaDeJugadorNoAmigoException;
 
 public class Jugador {
 	private int edad;
-	private int cantidadInfracPorFaltar;
+	//private int cantidadInfracPorFaltar;
 	private int cantidadInfracPorNoTenerSustituto;
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
 	

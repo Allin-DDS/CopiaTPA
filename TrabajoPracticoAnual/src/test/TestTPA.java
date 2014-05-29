@@ -1,13 +1,30 @@
+package test;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test; 
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 import excepciones.Hay10EstandarException;
 import excepciones.NoHay10InscriptosParaGenerarEquiposException;
 
-public class test {
+
+
+import clases.Condicion;
+import clases.InscripcionCondicional;
+import clases.InscripcionEstandar;
+import clases.InscripcionSolidaria;
+import clases.Jugador;
+import clases.MailAAdministrador;
+import clases.MailAAmigos;
+import clases.Partido;
+
+public class TestTPA {
+
 	private Partido semifinal;
 	private Jugador juan;
 	private InscripcionEstandar inscripcionJuan;
@@ -264,3 +281,4 @@ public class test {
 	}
 	
 }
+

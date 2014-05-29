@@ -1,3 +1,4 @@
+package clases;
 
 public class InscripcionCondicional extends Inscripcion {
 	private Condicion condicion;

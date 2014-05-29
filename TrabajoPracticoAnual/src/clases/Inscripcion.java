@@ -1,3 +1,4 @@
+package clases;
 
 
 public class Inscripcion{
@@ -19,7 +20,7 @@ public class Inscripcion{
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
-	
+	//El jugador deberia conocer las calificaciones, el partido no. No me acuerdo si habia q cambiarlo si o si
 	public void calificarA(Inscripcion inscripcionACalificar, Partido partido, String critica, int calificacion){
 		partido.agregarCalificacion(this,inscripcionACalificar,critica,calificacion);
 		
