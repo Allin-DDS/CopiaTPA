@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-import excepciones.ElPartidoNoSeJugoException;
 import excepciones.Hay10EstandarException;
 import excepciones.NoHay10InscriptosParaGenerarEquiposException;
 
@@ -15,15 +14,14 @@ public class Partido {
 	private LocalTime horario;
 	private LocalDate fecha;
 	private String lugar;
-	private String motivoRechazo;
 	private boolean partidoJugado;
 	private Collection<Observador> observadores = new ArrayList<>();
-	private PriorityQueue<Inscripcion> inscripciones=(new PriorityQueue<>(Comparator.comparing(inscripcion->inscripcion.getPrioridad())));
+	private PriorityQueue<Inscripcion> inscripciones=(new PriorityQueue<>(Comparator.
+			comparing(inscripcion->inscripcion.getPrioridad())));
 	private Collection<Inscripcion> equipo1 = new LinkedList<>();
 	private Collection<Inscripcion> equipo2 = new LinkedList<>();
-	private Collection<Inscripcion> inscripcionesPropuestas = new ArrayList<>();
-	private Collection<InscripcionRechazada> inscripcionesRechazadas= new LinkedList<>();
-	private Collection<Calificacion> calificaciones = new ArrayList<>();
+	private Collection<Criterio> criteriosDeOrganizacion= new LinkedList<>();
+	
 	
 	public Partido(LocalDate dia, LocalTime hora,String lugar) {
 		this.fecha= dia;
@@ -67,7 +65,7 @@ public class Partido {
 		return equipo1;
 	}
 
-	public void agregarEquipo1(Inscripcion insc) {
+	public void agregarAEquipo1(Inscripcion insc) {
 		this.equipo1.add(insc);
 	}
 
@@ -75,7 +73,7 @@ public class Partido {
 		return equipo2;
 	}
 
-	public void agregarEquipo2(Inscripcion insc) {
+	public void agregarAEquipo2(Inscripcion insc) {
 		this.equipo1.add(insc);
 	}
 	
@@ -87,27 +85,18 @@ public class Partido {
 		observadores.add(observador);
 	}
 	
-	public Collection<Inscripcion> getInscripcionesPropuestas() {
-		return inscripcionesPropuestas;
-	}
-
-	public void agregarInscripcionPropuesta(Inscripcion inscripcion) {
-		inscripcionesPropuestas.add(inscripcion);
-	}
-	
-	public Collection<InscripcionRechazada> getInscripcionesRechazadas() {
-		return inscripcionesRechazadas;
-	}
-
-	public void agregarInscripcionRechazada(String motivo,Inscripcion inscripcion) {
-		InscripcionRechazada inscRechazada= new InscripcionRechazada(motivo,LocalDate.now(),inscripcion);
-		inscripcionesRechazadas.add(inscRechazada);
-	}
-	
 	public  PriorityQueue<Inscripcion> getInscripciones(){
 		return inscripciones;
 	}
 	
+	public Collection<Criterio> getCriteriosDeOrganizacion() {
+		return criteriosDeOrganizacion;
+	}
+
+	public void agregarcriterioDeOrganizacion(Criterio criterio) {
+		this.criteriosDeOrganizacion.add(criterio);
+	}
+    	
 	public void altaInscripcion(Inscripcion inscripcion) {
 		if(cantidadInscriptosEstandar()>=10){
 			throw new Hay10EstandarException("No se puede realizar la inscripcion porque ya hay 10 inscriptos en modo estandar para el partido");
@@ -144,35 +133,27 @@ public class Partido {
 		return inscripciones.size();  
 	}
 	
-	public void generarEquipos(){
-		for (Observador observador : observadores)  
-			observador.notificarPartidoConfirmado(this);
+	//CAMBIO
+	    public void generarEquipos(){
 		if(this.cantidadTotalInscriptos()<10){
 			throw new NoHay10InscriptosParaGenerarEquiposException("No se puede generarEquipos pq no hay 10 jugadores ");
 		}
-			for(int i=1; i<=5; i++)
-				equipo1.add(inscripciones.poll());
-			for(int i=1; i<=5; i++)
-				equipo2.add(inscripciones.poll());					
+		for (Observador observador : observadores)  
+			observador.notificarPartidoConfirmado(this);
+		for(int i=1; i<=5; i++)
+			equipo1.add(inscripciones.poll());
+		for(int i=1; i<=5; i++)
+			equipo2.add(inscripciones.poll());					
 	}
-	
-	//cambiar de clase, es prioridad de sist no de partido
-	public void aceptarInscripcionesPropuestas(Inscripcion inscripcion){
-		inscripcionesPropuestas.remove(inscripcion);
-		this.altaInscripcion(inscripcion);
-	}
-	//cambiar de clase, es prioridad de sist no de partido	
-	public void rechazarInscripcionesPropuestas(Inscripcion inscripcion){
-		inscripcionesPropuestas.remove(inscripcion);
-		this.agregarInscripcionRechazada(motivoRechazo,inscripcion);
-	}
-	
-	public void agregarCalificacion(Inscripcion inscripcionCalificacdora,Inscripcion inscripcionACalificar,String  comentario,int  nota){
-		if(this.isPartidoJugado()){
-			throw new ElPartidoNoSeJugoException("El partido no se jugo, no se pueden hacer evaluaciones");
+	    
+	    public PriorityQueue<Inscripcion> ordenarPrimeros10(){
+			PriorityQueue<Inscripcion> aux= getInscripciones();
+			PriorityQueue<Inscripcion> primeros10Ordenados=(new PriorityQueue<>(Comparator.
+			comparing(inscripcion->inscripcion.getJugador().obtenerPromedioFinal(criteriosDeOrganizacion) )));		
+			for(int i=1; i<=10; i++)
+				primeros10Ordenados.add(aux.poll());
+			return primeros10Ordenados;
 		}
-		Calificacion calificacion= new Calificacion(inscripcionCalificacdora,inscripcionACalificar,nota,comentario);
-		calificaciones.add(calificacion);
-	}
-}
 
+}
+	

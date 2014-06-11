@@ -3,17 +3,33 @@ package clases;
 
 
 public class Calificacion{
-	int nota;
-	String comentario;
-	Inscripcion calificador;
-	Inscripcion calificado;
 	
-	public Calificacion(Inscripcion calificador,Inscripcion calificado, int nota,String comentario) {
-
-	this.nota= nota;
-	this.comentario= comentario;
+	Jugador calificador;
+	Partido partido;
+	String comentario;
+	int nota;
+	
+	public Calificacion(Jugador calificador, Partido partido,  String comentario, int nota) {
 	this.calificador= calificador;
-	this. calificado= calificado;
+	this.partido=partido;
+	this.comentario= comentario;
+	this.nota= nota;
+	}
+
+	public int getNota() {
+		return nota;
+	}
+
+	public void setNota(int nota) {
+		this.nota = nota;
+	}
+
+	public Partido getPartido() {
+		return partido;
+	}
+
+	public void setPartido(Partido partido) {
+		this.partido = partido;
 	}
 	
 }
