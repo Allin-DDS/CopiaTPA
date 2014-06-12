@@ -20,7 +20,7 @@ public class Partido {
 			comparing(inscripcion->inscripcion.getPrioridad())));
 	private Collection<Inscripcion> equipo1 = new LinkedList<>();
 	private Collection<Inscripcion> equipo2 = new LinkedList<>();
-	private Collection<Criterio> criteriosDeOrganizacion= new LinkedList<>();
+	private Collection<Criterio> criteriosDeOrden= new LinkedList<>();
 	
 	
 	public Partido(LocalDate dia, LocalTime hora,String lugar) {
@@ -90,11 +90,11 @@ public class Partido {
 	}
 	
 	public Collection<Criterio> getCriteriosDeOrganizacion() {
-		return criteriosDeOrganizacion;
+		return criteriosDeOrden;
 	}
 
 	public void agregarcriterioDeOrganizacion(Criterio criterio) {
-		this.criteriosDeOrganizacion.add(criterio);
+		this.criteriosDeOrden.add(criterio);
 	}
     	
 	public void altaInscripcion(Inscripcion inscripcion) {
@@ -146,14 +146,14 @@ public class Partido {
 			equipo2.add(inscripciones.poll());					
 	}
 	    
-	    public PriorityQueue<Inscripcion> ordenarPrimeros10(){
-			PriorityQueue<Inscripcion> aux= getInscripciones();
-			PriorityQueue<Inscripcion> primeros10Ordenados=(new PriorityQueue<>(Comparator.
-			comparing(inscripcion->inscripcion.getJugador().obtenerPromedioFinal(criteriosDeOrganizacion) )));		
-			for(int i=1; i<=10; i++)
-				primeros10Ordenados.add(aux.poll());
-			return primeros10Ordenados;
-		}
+	public PriorityQueue<Inscripcion> ordenarPrimeros10(){
+		PriorityQueue<Inscripcion> aux= getInscripciones();
+		PriorityQueue<Inscripcion> primeros10Ordenados=(new PriorityQueue<>(Comparator.
+		comparing(inscripcion->inscripcion.getJugador().obtenerPromedioFinal(criteriosDeOrden) )));		
+		for(int i=1; i<=10; i++)
+			primeros10Ordenados.add(aux.poll());
+		return primeros10Ordenados;
+	}
 
 }
 	
