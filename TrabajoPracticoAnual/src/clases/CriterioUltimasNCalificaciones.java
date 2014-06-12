@@ -2,7 +2,7 @@ package clases;
 
 import java.util.stream.IntStream;
 
-public class CriterioUltimasNCalificaciones implements Criterio {
+public class CriterioUltimasNCalificaciones implements CriterioDeOrden {
 	private int cantCalific;
 	public CriterioUltimasNCalificaciones(int cantCalific){
 		this.cantCalific=cantCalific;

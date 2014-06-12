@@ -8,7 +8,7 @@ public class Administrador {
 
 	static String motivoRechazo;
 	static Collection<Partido> partidos = new ArrayList<>();
-	static Collection<Jugador> jugadores = new ArrayList<>();
+	//static Collection<Jugador> jugadores = new ArrayList<>();
 	static Collection<InscripcionPropuesta> inscripcionesPropuestas = new ArrayList<>();
 	static Collection<InscripcionRechazada> inscripcionesRechazadas= new LinkedList<>();
     static {
@@ -30,10 +30,11 @@ public class Administrador {
 		return partidos;
 	}
 
-	public static void agregarPartidos(Partido partido) {
+	public static void agregarPartido(Partido partido) {
 		partidos.add(partido);
 	}
 
+	/*
 	public static Collection<Jugador> getJugadores() {
 		return jugadores;
 	}
@@ -41,14 +42,14 @@ public class Administrador {
 	public static void agregarJugador(Jugador jugador) {
 		jugadores.add(jugador);
 	}
-
+	*/
+	
 	public static Collection<InscripcionRechazada> getInscripcionesRechazadas() {
 		return inscripcionesRechazadas;
 	}
 
-	public static void agregarInscripcionRechazada(String motivo,Inscripcion inscripcion) {
-		InscripcionRechazada inscRechazada= new InscripcionRechazada(motivo,LocalDate.now(),inscripcion);
-		inscripcionesRechazadas.add(inscRechazada);
+	public static void agregarAInscripcionesRechazadas(InscripcionRechazada inscripcionRechazada){
+		inscripcionesRechazadas.add(inscripcionRechazada);
 	}
 	
 	public static void aceptarInscripcionesPropuestas(InscripcionPropuesta inscripcionPropuesta){
@@ -58,7 +59,8 @@ public class Administrador {
 		
 	public static void rechazarInscripcionesPropuestas(Inscripcion inscripcion){
 		inscripcionesPropuestas.remove(inscripcion);
-		agregarInscripcionRechazada(motivoRechazo,inscripcion);
+		InscripcionRechazada inscRechazada= new InscripcionRechazada(motivoRechazo,LocalDate.now(),inscripcion);
+		agregarAInscripcionesRechazadas(inscRechazada);
 	}
 	
 }

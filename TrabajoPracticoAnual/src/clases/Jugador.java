@@ -19,14 +19,14 @@ public class Jugador {
 	
 	public Jugador(int edad) {
 		this.edad= edad;
-		Administrador.agregarJugador(this);
+		//Administrador.agregarJugador(this);
 	}	
 	
 	public Collection<Jugador> getAmigos(){
 		return amigos;
 	}
 
-	public Collection<Calificacion> getCalificaciones(){
+	public PriorityQueue<Calificacion> getCalificaciones(){
 		return calificaciones;
 	}
 	
@@ -56,19 +56,19 @@ public class Jugador {
 		Administrador.agregarInscripcionPropuesta(inscripcion,partido);
 	}
 	
-	public void calificarA(Jugador jugador, Partido partido, String comentario, int calificacion){
-		jugador.agregarCalificacion(this,partido,comentario,calificacion);
+	public void calificarA(Jugador jugador, Partido partido, String comentario, int nota){
+		jugador.agregarCalificacion(this,partido,comentario,nota);
 	}
 	
 	public void agregarCalificacion(Jugador calificador, Partido partido, String comentario, int nota){
-		if(partido.isPartidoJugado())
+		if(partido.getPartidoJugado())
 			throw new ElPartidoNoSeJugoException("El partido no se jugo, no se pueden hacer evaluaciones");
 		Calificacion calificacion= new Calificacion(calificador,partido,comentario,nota);
 		calificaciones.add(calificacion);
 	}
 	
-	public double obtenerPromedioFinal(Collection<Criterio> criteriosDeOrganizacion) {
-		return (criteriosDeOrganizacion.stream().mapToDouble(criterio -> criterio.obtenerPromedio(this))).average().getAsDouble();
+	public double obtenerPromedioFinal(Collection<CriterioDeOrden> criteriosDeOrden) {
+		return (criteriosDeOrden.stream().mapToDouble(criterio -> criterio.obtenerPromedio(this))).average().getAsDouble();
 	}
 
 }

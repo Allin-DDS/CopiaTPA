@@ -1,7 +1,5 @@
 package clases;
 
-
-
 public class Calificacion{
 	
 	Jugador calificador;
@@ -32,4 +30,7 @@ public class Calificacion{
 		this.partido = partido;
 	}
 	
+	public boolean esDelPartido(Partido partido){
+		return getPartido().equals(partido);
+	}
 }

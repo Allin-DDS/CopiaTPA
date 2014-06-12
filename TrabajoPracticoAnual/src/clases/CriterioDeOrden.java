@@ -1,5 +1,5 @@
 package clases;
 
-public interface Criterio {
+public interface CriterioDeOrden {
 	public double obtenerPromedio(Jugador jugador);
 }

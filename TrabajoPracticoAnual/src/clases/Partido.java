@@ -14,13 +14,15 @@ public class Partido {
 	private LocalTime horario;
 	private LocalDate fecha;
 	private String lugar;
+	private boolean partidoConfirmado;
 	private boolean partidoJugado;
 	private Collection<Observador> observadores = new ArrayList<>();
 	private PriorityQueue<Inscripcion> inscripciones=(new PriorityQueue<>(Comparator.
 			comparing(inscripcion->inscripcion.getPrioridad())));
 	private Collection<Inscripcion> equipo1 = new LinkedList<>();
 	private Collection<Inscripcion> equipo2 = new LinkedList<>();
-	private Collection<Criterio> criteriosDeOrden= new LinkedList<>();
+	private Collection<CriterioDeOrden> criteriosDeOrden= new LinkedList<>();
+	private CriterioParaDividirEquipos criterioParaDividirEquipos;
 	
 	
 	public Partido(LocalDate dia, LocalTime hora,String lugar) {
@@ -53,12 +55,22 @@ public class Partido {
 		this.lugar = lugar;
 	}
 	
-	public boolean isPartidoJugado() {
+	public boolean getPartidoConfirmado() {
+		return partidoConfirmado;
+	}
+
+	public void confirmarPartido() {
+		this.partidoConfirmado = true;
+		for (Observador observador : observadores)  
+			observador.notificarPartidoConfirmado(this);
+	}
+	
+	public boolean getPartidoJugado() {
 		return partidoJugado;
 	}
 
-	public void setPartidoJugado(boolean partidoJugado) {
-		this.partidoJugado = partidoJugado;
+	public void partidoJugado() {
+		this.partidoJugado = true;
 	}
 	
 	public Collection<Inscripcion> getEquipo1() {
@@ -85,18 +97,27 @@ public class Partido {
 		observadores.add(observador);
 	}
 	
+	public Collection<CriterioDeOrden> getCriteriosDeOrden() {
+		return criteriosDeOrden;
+	}
+
+	public void agregarCriterioDeOrden(CriterioDeOrden criterio) {
+		this.criteriosDeOrden.add(criterio);
+	}
+	
+	public CriterioParaDividirEquipos getCriterioParaDividirEquipos() {
+		return criterioParaDividirEquipos;
+	}
+
+	public void setCriterioParaDividirEquipos(
+			CriterioParaDividirEquipos criterioParaDividirEquipos) {
+		this.criterioParaDividirEquipos = criterioParaDividirEquipos;
+	}
+	
 	public  PriorityQueue<Inscripcion> getInscripciones(){
 		return inscripciones;
 	}
 	
-	public Collection<Criterio> getCriteriosDeOrganizacion() {
-		return criteriosDeOrden;
-	}
-
-	public void agregarcriterioDeOrganizacion(Criterio criterio) {
-		this.criteriosDeOrden.add(criterio);
-	}
-    	
 	public void altaInscripcion(Inscripcion inscripcion) {
 		if(cantidadInscriptosEstandar()>=10){
 			throw new Hay10EstandarException("No se puede realizar la inscripcion porque ya hay 10 inscriptos en modo estandar para el partido");
@@ -132,28 +153,24 @@ public class Partido {
 	public int cantidadTotalInscriptos(){
 		return inscripciones.size();  
 	}
-	
-	//CAMBIO
-	    public void generarEquipos(){
-		if(this.cantidadTotalInscriptos()<10){
-			throw new NoHay10InscriptosParaGenerarEquiposException("No se puede generarEquipos pq no hay 10 jugadores ");
-		}
-		for (Observador observador : observadores)  
-			observador.notificarPartidoConfirmado(this);
-		for(int i=1; i<=5; i++)
-			equipo1.add(inscripciones.poll());
-		for(int i=1; i<=5; i++)
-			equipo2.add(inscripciones.poll());					
-	}
 	    
 	public PriorityQueue<Inscripcion> ordenarPrimeros10(){
-		PriorityQueue<Inscripcion> aux= getInscripciones();
+		//aca utilizo inscripcionesAux pq quiero no quiero modificar inscripciones, ya q el admin puede ordenar tantas veces como quiera
+		LinkedList<Inscripcion> inscripcionesAux= new LinkedList<Inscripcion>();
+		inscripcionesAux.addAll(inscripciones);
+		inscripcionesAux.stream().limit(10);
 		PriorityQueue<Inscripcion> primeros10Ordenados=(new PriorityQueue<>(Comparator.
-		comparing(inscripcion->inscripcion.getJugador().obtenerPromedioFinal(criteriosDeOrden) )));		
-		for(int i=1; i<=10; i++)
-			primeros10Ordenados.add(aux.poll());
+				comparing(inscripcion->inscripcion.getJugador().obtenerPromedioFinal(criteriosDeOrden) )));		
+		primeros10Ordenados.addAll(inscripcionesAux);
 		return primeros10Ordenados;
 	}
+	
+    public void generarEquipos(PriorityQueue<Inscripcion> primeros10Ordenados){
+    	if(this.cantidadTotalInscriptos()<10){
+    		throw new NoHay10InscriptosParaGenerarEquiposException("No se puede generarEquipos pq no hay 10 jugadores ");
+    	}
+    	criterioParaDividirEquipos.dividirEquipos(equipo1,equipo2,primeros10Ordenados);					
+    }
 
 }
 	

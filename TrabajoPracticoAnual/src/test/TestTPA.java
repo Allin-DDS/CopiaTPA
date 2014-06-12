@@ -2,22 +2,15 @@ package test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
 import org.junit.Before;
 import org.junit.Test; 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.PriorityQueue;
-
 import excepciones.Hay10EstandarException;
 import excepciones.NoHay10InscriptosParaGenerarEquiposException;
-
-
-
 import clases.Condicion;
 import clases.CriterioHandicap;
-import clases.Inscripcion;
+import clases.CriterioParesEImpares;
 import clases.InscripcionCondicional;
 import clases.InscripcionEstandar;
 import clases.InscripcionSolidaria;
@@ -59,7 +52,7 @@ public class TestTPA {
 	private Jugador dani;
 	private InscripcionCondicional inscripciondani;
 	private Condicion condiciondani;
-	
+
 	private Jugador maria;
 	private InscripcionSolidaria inscripcionMaria;
 	private Jugador gordo;
@@ -68,6 +61,7 @@ public class TestTPA {
 	private MailAAdministrador mailAAdministradorMock;
 	private MailAAmigos mailAAmigosMock;
 	private CriterioHandicap criterioHandicap;
+	private CriterioParesEImpares criterioParesEImpares;
 	
 	@Before
 	public void init(){
@@ -91,39 +85,42 @@ public class TestTPA {
 		adrian.setHandicap(5);
 		inscripcionadrian= new InscripcionEstandar(adrian);
 		marcos= new Jugador(21);
-		marcos.setHandicap(6);
 		inscripcionmarcos= new InscripcionEstandar(marcos);
 		carlos= new Jugador(21);
-		carlos.setHandicap(7);
 		inscripcioncarlos= new InscripcionEstandar(carlos);
-		turco= new Jugador(21);
-		turco.setHandicap(8);
+		turco= new Jugador(21);	
 		inscripcionturco= new InscripcionEstandar(turco);
 		coqui= new Jugador(21);
-		coqui.setHandicap(9);
 		inscripcioncoqui= new InscripcionEstandar(coqui);
 		mati= new Jugador(21);
-		mati.setHandicap(10);
 		inscripcionmati= new InscripcionEstandar(mati);
-		
+
 		jose= new Jugador(21);
+		jose.setHandicap(6);
 		condicionJose = new Condicion();
 		inscripcionJose= new InscripcionCondicional(jose,condicionJose);
 		franco= new Jugador(21);
+		franco.setHandicap(7);
 		condicionfranco = new Condicion();
 		inscripcionfranco= new InscripcionCondicional(franco,condicionfranco);
 		dani= new Jugador(21);
+		dani.setHandicap(8);
 		condiciondani = new Condicion();
 		inscripciondani= new InscripcionCondicional(dani,condiciondani);
 	
 		maria= new Jugador(21);
+		maria.setHandicap(9);
 		inscripcionMaria= new InscripcionSolidaria(maria);
 		gordo= new Jugador(21);
+		gordo.setHandicap(10);
 		inscripciongordo= new InscripcionSolidaria(gordo);
 		
 		mailAAdministradorMock= mock(MailAAdministrador.class);
 		mailAAmigosMock= mock(MailAAmigos.class);
 	
+		criterioHandicap= new CriterioHandicap();
+		criterioParesEImpares= new CriterioParesEImpares();
+		
 	}
 	
 	@Test 
@@ -172,52 +169,6 @@ public class TestTPA {
 		assertEquals(inscripciongordo,semifinal.getInscripciones().poll());
 		assertEquals(inscripcionMaria,semifinal.getInscripciones().poll());		
 	}
-
-
-//VER SI CAMBIA
-	@Test
-	public void agregar5Estandar3Condicional2Solidario_generarEquipos(){
-		semifinal.altaInscripcion(inscripcionJuan);
-		semifinal.altaInscripcion(inscripcionEsteban);
-		semifinal.altaInscripcion(inscripcionramiro);
-		semifinal.altaInscripcion(inscripcionmario);
-		semifinal.altaInscripcion(inscripcionadrian);
-	
-		semifinal.altaInscripcion(inscripciondani);
-		semifinal.altaInscripcion(inscripcionfranco);
-		semifinal.altaInscripcion(inscripcionJose);
-	
-		semifinal.altaInscripcion(inscripcionMaria);
-		semifinal.altaInscripcion(inscripciongordo);
-		semifinal.generarEquipos();
-	
-		assertTrue(semifinal.getEquipo1().contains(inscripcionJuan));
-		assertTrue(semifinal.getEquipo1().contains(inscripcionEsteban));
-		assertTrue(semifinal.getEquipo1().contains(inscripcionramiro));
-		assertTrue(semifinal.getEquipo1().contains(inscripcionmario));
-		assertTrue(semifinal.getEquipo1().contains(inscripcionadrian));
- 		assertTrue(semifinal.getEquipo2().contains(inscripcionfranco));
-		assertTrue(semifinal.getEquipo2().contains(inscripcionMaria));
-		assertTrue(semifinal.getEquipo2().contains(inscripcionJose));
-		assertTrue(semifinal.getEquipo2().contains(inscripciongordo));
-		assertTrue(semifinal.getEquipo2().contains(inscripciondani));
-}
-
-//VER SI CAMBIA
-	@Test(expected=NoHay10InscriptosParaGenerarEquiposException.class)
-	public void agregar5Estandar3CondicionalYGenerarEquipos_SeGeneraExcepcionPqNoHay10Inscriptos(){
-		semifinal.altaInscripcion(inscripcionJuan);
-		semifinal.altaInscripcion(inscripcionEsteban);
-		semifinal.altaInscripcion(inscripcionramiro);
-		semifinal.altaInscripcion(inscripcionmario);
-		semifinal.altaInscripcion(inscripcionadrian);
-	
-		semifinal.altaInscripcion(inscripciondani);
-		semifinal.altaInscripcion(inscripcionfranco);
-		semifinal.altaInscripcion(inscripcionJose);
-		
-		semifinal.generarEquipos();
-}
 	
 	@Test (expected=Hay10EstandarException.class)
 	public void agregar10EstandarY1Solidaria_Hay10EstandarException(){
@@ -273,33 +224,51 @@ public class TestTPA {
 		verify(mailAAmigosMock).notificarReemplazoDeInscSinSustituto(semifinal);
 	}
 	
-	@Test 
-	public void ordenarPrimeros10_conCriterioHandicap(){
-		//tienen handicap ascendente de 1 a 10
+	
+	@Test(expected=NoHay10InscriptosParaGenerarEquiposException.class)
+	public void agregar5Estandar3CondicionalYGenerarEquipos_SeGeneraExcepcionPqNoHay10Inscriptos(){
 		semifinal.altaInscripcion(inscripcionJuan);
 		semifinal.altaInscripcion(inscripcionEsteban);
 		semifinal.altaInscripcion(inscripcionramiro);
 		semifinal.altaInscripcion(inscripcionmario);
 		semifinal.altaInscripcion(inscripcionadrian);
-		semifinal.altaInscripcion(inscripcionmarcos);
-		semifinal.altaInscripcion(inscripcioncarlos);
-		semifinal.altaInscripcion(inscripcionturco);
-		semifinal.altaInscripcion(inscripcioncoqui);
-		semifinal.altaInscripcion(inscripcionmati);
-		criterioHandicap= new CriterioHandicap();
-		semifinal.agregarcriterioDeOrganizacion(criterioHandicap);	
-		PriorityQueue<Inscripcion> inscripcionesOrdenadas = semifinal.ordenarPrimeros10();
+	
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
 		
-		assertEquals(inscripcionJuan,inscripcionesOrdenadas.poll());
-		assertEquals(inscripcionEsteban,inscripcionesOrdenadas.poll());
-		assertEquals(inscripcionramiro,inscripcionesOrdenadas.poll());
-		assertEquals(inscripcionmario,inscripcionesOrdenadas.poll());	
-		assertEquals(inscripcionadrian,inscripcionesOrdenadas.poll());
-		assertEquals(inscripcionmarcos,inscripcionesOrdenadas.poll());
-		assertEquals(inscripcioncarlos,inscripcionesOrdenadas.poll());
-		assertEquals(inscripcionturco,inscripcionesOrdenadas.poll());
-		assertEquals(inscripcioncoqui,inscripcionesOrdenadas.poll());
-		assertEquals(inscripcionmati,inscripcionesOrdenadas.poll());
+		semifinal.generarEquipos(semifinal.getInscripciones());
+}	
+	
+	@Test
+	public void ordenarInscriptosConCriterioHandicaoYgenerarEquiposConCriterioParEImpar(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+	
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+	
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		
+		semifinal.agregarCriterioDeOrden(criterioHandicap);
+		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
+			
+		assertTrue(semifinal.getEquipo1().contains(inscripcionJuan));
+		assertTrue(semifinal.getEquipo1().contains(inscripcionramiro));
+		assertTrue(semifinal.getEquipo1().contains(inscripcionadrian));
+		assertTrue(semifinal.getEquipo1().contains(inscripcionfranco));
+		assertTrue(semifinal.getEquipo1().contains(inscripcionMaria));
+	 	assertTrue(semifinal.getEquipo2().contains(inscripcionEsteban));
+		assertTrue(semifinal.getEquipo2().contains(inscripcionmario));
+		assertTrue(semifinal.getEquipo2().contains(inscripciondani));
+		assertTrue(semifinal.getEquipo2().contains(inscripcionJose));
+		assertTrue(semifinal.getEquipo2().contains(inscripciongordo));
 	}
 	
 }
