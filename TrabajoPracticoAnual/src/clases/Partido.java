@@ -138,13 +138,6 @@ public class Partido {
 		}
 	}
 	
-	// CODE SMELL DE JUAN M. MANRIQUE
-	//A continuación hay 3 type test, estoy preguntando de q tipo es la clase y en base a eso decido, para solucionarlo se podría 
-	//tener 3 colecc, una por cada tipo de inscripción, aunque esta solucion fue la inicial y genera problemas de mantenibilidad
-	//ya que el codigo es muy extenso y se repite 3 veces generando asi el code smell duplicatedCode.
-	//Otra solución mas viable podria ser tener 3 variables statics e incrementarlas cada vez que se intancian clases de
-	//Inscripcion y decrementar la variable corresp cada vez q se elimina una inscripcion.
-	
 	public int cantidadInscriptosEstandar() {
 		return (int) inscripciones.stream().filter(inscripcion -> inscripcion instanceof InscripcionEstandar).count();
 	}
