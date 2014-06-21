@@ -155,7 +155,8 @@ public class Partido {
 	}
 	    
 	public PriorityQueue<Inscripcion> ordenarPrimeros10(){
-		//aca utilizo inscripcionesAux pq quiero no quiero modificar inscripciones, ya q el admin puede ordenar tantas veces como quiera
+		//aca utilizo inscripcionesAux pq quiero no quiero modificar inscripciones, ya q el admin puede ordenar tantas veces 
+		//como quiera sin necessidad de recortar la colecc de inscripciones de manera definitiva
 		LinkedList<Inscripcion> inscripcionesAux= new LinkedList<Inscripcion>();
 		inscripcionesAux.addAll(inscripciones);
 		inscripcionesAux.stream().limit(10);
