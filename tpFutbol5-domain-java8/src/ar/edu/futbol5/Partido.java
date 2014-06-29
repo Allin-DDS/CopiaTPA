@@ -69,7 +69,7 @@ public class Partido {
 			this.inscriptos.add(jugador);
 		} else {
 			if (this.hayAlgunJugadorQueCedaLugar()) {
-				this.inscriptos.remove(this.jugadorQueCedeLugar());
+				this.eliminarJugadorQueCedeLugar();
 				this.inscriptos.add(jugador);
 			} else {
 				throw new BusinessException("No hay más lugar");
@@ -86,19 +86,13 @@ public class Partido {
 		return false;
 	}
 
-	private Jugador jugadorQueCedeLugar() {
-		if (!hayAlgunJugadorQueCedaLugar()) {
-			return null;
-		}
-		
-		List<Jugador> jugadores=new ArrayList<Jugador>();
+	private void eliminarJugadorQueCedeLugar() {	
 		for (Jugador inscripto : inscriptos) {
 			if(inscripto.dejaLugarAOtro()){
-				jugadores.add(inscripto);
+				inscriptos.remove(inscripto);
+				return;
 			}
 		}
-		
-		return jugadores.get(0);
 	}
 
 	public void cerrar() {
