@@ -1,6 +1,8 @@
-package clases;
+package ordenamiento;
 
 import java.util.stream.IntStream;
+
+import futbol5.Jugador;
 
 public class CriterioUltimasNCalificaciones implements CriterioDeOrden {
 	private int cantCalific;

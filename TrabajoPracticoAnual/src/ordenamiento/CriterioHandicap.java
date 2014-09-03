@@ -1,4 +1,6 @@
-package clases;
+package ordenamiento;
+
+import futbol5.Jugador;
 
 public class CriterioHandicap implements CriterioDeOrden {
 

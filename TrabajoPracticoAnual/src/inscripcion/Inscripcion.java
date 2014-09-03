@@ -1,8 +1,10 @@
-package clases;
+package inscripcion;
+
+import futbol5.Jugador;
 
 
 public class Inscripcion{
-	Jugador jugador;
+	public Jugador jugador;
 	int prioridad;
 	
 	public int getPrioridad() {

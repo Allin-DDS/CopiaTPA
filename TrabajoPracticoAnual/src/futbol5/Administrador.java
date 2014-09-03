@@ -1,4 +1,8 @@
-package clases;
+package futbol5;
+import inscripcion.Inscripcion;
+import inscripcion.InscripcionPropuesta;
+import inscripcion.InscripcionRechazada;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;

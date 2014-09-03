@@ -1,23 +1,27 @@
-package test;
+package testTPA;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import notificaciones.MailAAdministrador;
+import notificaciones.MailAAmigos;
+import ordenamiento.CriterioHandicap;
+
 import org.junit.Before;
 import org.junit.Test; 
+
+import inscripcion.Condicion;
+import inscripcion.InscripcionCondicional;
+import inscripcion.InscripcionEstandar;
+import inscripcion.InscripcionSolidaria;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 import excepciones.Hay10EstandarException;
 import excepciones.NoHay10InscriptosParaGenerarEquiposException;
-import clases.Condicion;
-import clases.CriterioHandicap;
-import clases.CriterioParesEImpares;
-import clases.InscripcionCondicional;
-import clases.InscripcionEstandar;
-import clases.InscripcionSolidaria;
-import clases.Jugador;
-import clases.MailAAdministrador;
-import clases.MailAAmigos;
-import clases.Partido;
+import futbol5.Jugador;
+import futbol5.Partido;
+import dividirEquipos.CriterioParesEImpares;
 
 public class TestTPA {
 
@@ -272,4 +276,3 @@ public class TestTPA {
 	}
 	
 }
-

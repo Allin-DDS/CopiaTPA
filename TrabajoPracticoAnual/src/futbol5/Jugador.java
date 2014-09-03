@@ -1,10 +1,13 @@
-package clases;
+package futbol5;
+
+import inscripcion.Inscripcion;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import ordenamiento.CriterioDeOrden;
 import excepciones.ElPartidoNoSeJugoException;
 import excepciones.PropuestaDeJugadorNoAmigoException;
 

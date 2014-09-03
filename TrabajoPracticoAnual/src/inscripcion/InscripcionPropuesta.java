@@ -1,4 +1,6 @@
-package clases;
+package inscripcion;
+
+import futbol5.Partido;
 
 public class InscripcionPropuesta {
 	private Partido partido;

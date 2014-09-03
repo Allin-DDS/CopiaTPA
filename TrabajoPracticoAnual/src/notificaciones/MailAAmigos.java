@@ -1,4 +1,7 @@
-package clases;
+package notificaciones;
+
+import futbol5.Jugador;
+import futbol5.Partido;
 
 public class MailAAmigos extends Observador{
 

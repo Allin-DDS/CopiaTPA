@@ -1,4 +1,5 @@
-package clases;
+package futbol5;
+
 
 public class Calificacion{
 	

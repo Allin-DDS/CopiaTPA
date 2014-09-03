@@ -1,4 +1,6 @@
-package clases;
+package inscripcion;
+
+import futbol5.Jugador;
 
 public class InscripcionCondicional extends Inscripcion {
 	private Condicion condicion;

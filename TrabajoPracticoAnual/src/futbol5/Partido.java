@@ -1,4 +1,9 @@
-package clases;
+package futbol5;
+import inscripcion.Inscripcion;
+import inscripcion.InscripcionCondicional;
+import inscripcion.InscripcionEstandar;
+import inscripcion.InscripcionSolidaria;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -7,6 +12,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
+import notificaciones.Observador;
+import dividirEquipos.CriterioParaDividirEquipos;
+import ordenamiento.CriterioDeOrden;
 import excepciones.Hay10EstandarException;
 import excepciones.NoHay10InscriptosParaGenerarEquiposException;
 

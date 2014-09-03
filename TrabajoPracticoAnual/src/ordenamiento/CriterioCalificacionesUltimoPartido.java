@@ -1,6 +1,10 @@
-package clases;
+package ordenamiento;
 
 import java.util.stream.Stream;
+
+import futbol5.Calificacion;
+import futbol5.Jugador;
+import futbol5.Partido;
 
 public class CriterioCalificacionesUltimoPartido implements CriterioDeOrden {
 

@@ -1,4 +1,4 @@
-package clases;
+package inscripcion;
 import java.time.LocalDate;
 
 

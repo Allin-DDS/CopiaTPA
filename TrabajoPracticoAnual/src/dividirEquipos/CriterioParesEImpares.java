@@ -1,4 +1,6 @@
-package clases;
+package dividirEquipos;
+
+import inscripcion.Inscripcion;
 
 import java.util.Collection;
 import java.util.PriorityQueue;
