@@ -1,15 +1,13 @@
 package futbol5;
 
 import inscripcion.Inscripcion;
+import excepciones.EquiposConfirmadosException;
+import excepciones.PropuestaDeJugadorNoAmigoException;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.PriorityQueue;
-
-import ordenamiento.CriterioDeOrden;
-import excepciones.ElPartidoNoSeJugoException;
-import excepciones.PropuestaDeJugadorNoAmigoException;
 
 public class Jugador {
 	private int edad;
@@ -64,14 +62,10 @@ public class Jugador {
 	}
 	
 	public void agregarCalificacion(Jugador calificador, Partido partido, String comentario, int nota){
-		if(partido.getPartidoJugado())
-			throw new ElPartidoNoSeJugoException("El partido no se jugo, no se pueden hacer evaluaciones");
+		if(partido.getEquiposConfirmados())
+			throw new EquiposConfirmadosException("El admin no confirmo los equipos, por lo tanto, el partido no se jugo y no se pueden hacer evaluaciones");
 		Calificacion calificacion= new Calificacion(calificador,partido,comentario,nota);
 		calificaciones.add(calificacion);
 	}
 	
-	public double obtenerPromedioFinal(Collection<CriterioDeOrden> criteriosDeOrden) {
-		return (criteriosDeOrden.stream().mapToDouble(criterio -> criterio.obtenerPromedio(this))).average().getAsDouble();
-	}
-
 }

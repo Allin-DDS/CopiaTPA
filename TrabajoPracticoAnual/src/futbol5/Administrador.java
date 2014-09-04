@@ -56,12 +56,12 @@ public class Administrador {
 		inscripcionesRechazadas.add(inscripcionRechazada);
 	}
 	
-	public static void aceptarInscripcionesPropuestas(InscripcionPropuesta inscripcionPropuesta){
+	public static void aceptarInscripcionPropuesta(InscripcionPropuesta inscripcionPropuesta){
 		inscripcionPropuesta.getPartido().altaInscripcion(inscripcionPropuesta.getInscripcion());
 		inscripcionesPropuestas.remove(inscripcionPropuesta);
 	}
 		
-	public static void rechazarInscripcionesPropuestas(Inscripcion inscripcion){
+	public static void rechazarInscripcionPropuesta(Inscripcion inscripcion){
 		inscripcionesPropuestas.remove(inscripcion);
 		InscripcionRechazada inscRechazada= new InscripcionRechazada(motivoRechazo,LocalDate.now(),inscripcion);
 		agregarAInscripcionesRechazadas(inscRechazada);

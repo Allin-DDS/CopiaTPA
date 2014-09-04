@@ -19,4 +19,9 @@ public class MailAAmigos extends Observador{
 		// TODO Auto-generated method stub
 		// método vacío
 	}
+	
+	public void notificarPartidoDesconfirmado(Partido partido) {
+		// TODO Auto-generated method stub
+		// método vacío
+	}
 }

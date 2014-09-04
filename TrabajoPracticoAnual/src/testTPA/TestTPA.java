@@ -1,27 +1,25 @@
 package testTPA;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import notificaciones.MailAAdministrador;
 import notificaciones.MailAAmigos;
 import ordenamiento.CriterioHandicap;
-
-import org.junit.Before;
-import org.junit.Test; 
-
+import futbol5.Jugador;
+import futbol5.Partido;
+import dividirEquipos.CriterioParesEImpares;
 import inscripcion.Condicion;
 import inscripcion.InscripcionCondicional;
 import inscripcion.InscripcionEstandar;
 import inscripcion.InscripcionSolidaria;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import excepciones.Hay10EstandarException;
 import excepciones.NoHay10InscriptosParaGenerarEquiposException;
-import futbol5.Jugador;
-import futbol5.Partido;
-import dividirEquipos.CriterioParesEImpares;
+import excepciones.EquiposConfirmadosException;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test; 
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class TestTPA {
 
@@ -228,6 +226,40 @@ public class TestTPA {
 		verify(mailAAmigosMock).notificarReemplazoDeInscSinSustituto(semifinal);
 	}
 	
+	@Test
+	public void partidoConfirmado_AvisarAAdmin(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		
+		mailAAdministradorMock.notificarPartidoConfirmado(semifinal);
+		verify(mailAAdministradorMock).notificarPartidoConfirmado(semifinal);
+	}
+	
+	@Test
+	public void partidoDesconfirmado_AvisarAAdmin(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.BajaInscripcion(inscripciongordo,null);
+		
+		mailAAdministradorMock.notificarPartidoDesconfirmado(semifinal);
+		verify(mailAAdministradorMock).notificarPartidoDesconfirmado(semifinal);
+	}
 	
 	@Test(expected=NoHay10InscriptosParaGenerarEquiposException.class)
 	public void agregar5Estandar3CondicionalYGenerarEquipos_SeGeneraExcepcionPqNoHay10Inscriptos(){
@@ -244,8 +276,27 @@ public class TestTPA {
 		semifinal.generarEquipos(semifinal.getInscripciones());
 }	
 	
+	@Test(expected=EquiposConfirmadosException.class)
+	public void AdministradorConfirmaEquiposYSeAgregaInscripcion_SeGeneraExcepcion(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.setCriterioDeOrden(criterioHandicap);
+		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
+		semifinal.EquiposConfirmados();
+		semifinal.altaInscripcion(inscripciondani);
+}	
+	
 	@Test
-	public void ordenarInscriptosConCriterioHandicaoYgenerarEquiposConCriterioParEImpar(){
+	public void ordenarInscriptosConCriterioHandicapYgenerarEquiposConCriterioParEImpar(){
 		semifinal.altaInscripcion(inscripcionJuan);
 		semifinal.altaInscripcion(inscripcionEsteban);
 		semifinal.altaInscripcion(inscripcionramiro);
@@ -259,7 +310,7 @@ public class TestTPA {
 		semifinal.altaInscripcion(inscripcionMaria);
 		semifinal.altaInscripcion(inscripciongordo);
 		
-		semifinal.agregarCriterioDeOrden(criterioHandicap);
+		semifinal.setCriterioDeOrden(criterioHandicap);
 		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
 		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
 			

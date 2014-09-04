@@ -1,10 +1,12 @@
 package ordenamiento;
 
+import java.util.stream.DoubleStream;
+
 import futbol5.Jugador;
 
-public class CriterioHandicap implements CriterioDeOrden {
+public class CriterioHandicap extends CriterioDeOrden {
 
-	public double obtenerPromedio(Jugador jugador) {
-		return jugador.getHandicap();
+	public DoubleStream notas(Jugador jugador) {
+		return DoubleStream.builder().add(jugador.getHandicap()).build();
 	}
 }

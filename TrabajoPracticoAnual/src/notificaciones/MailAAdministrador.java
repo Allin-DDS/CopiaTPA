@@ -18,4 +18,10 @@ public class MailAAdministrador extends Observador {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void notificarPartidoDesconfirmado(Partido partido) {
+		// TODO Auto-generated method stub
+		
+	}
 }
