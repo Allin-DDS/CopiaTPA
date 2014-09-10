@@ -1,16 +1,25 @@
 package ui;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 import org.uqbar.commons.utils.Observable;
 
+import dividirEquipos.*;
+import ordenamiento.*;
 
 @Observable
 public class GenerarEquipoViewModel {
-	private String criterioSeleccionado;
+	private CriterioParaDividirEquipos criterioSeleccionado;
 	private String ordenamientoSeleccionado;
+	private int ultimosPartidosSeleccionados;
 	
+	public int getUltimosPartidosSeleccionados() {
+		return ultimosPartidosSeleccionados;
+	}
+	public void setUltimosPartidosSeleccionados(int ultimosPartidosSeleccionados) {
+		this.ultimosPartidosSeleccionados = ultimosPartidosSeleccionados;
+	}
 	public ArrayList<String> getEquipo2Tentativo() {
 		 ArrayList<String> equipo2Tentativo = null;
 		return equipo2Tentativo;
@@ -21,25 +30,27 @@ public class GenerarEquipoViewModel {
 	}
 
 
-	public ArrayList<String> getCriterios(){
-		ArrayList<String> criteriosGenerales = new ArrayList<String>();
-		criteriosGenerales.add("Par/Impar");
-		criteriosGenerales.add("1,4,5,8,9");
+public ArrayList<CriterioParaDividirEquipos> getCriterios(){
+		ArrayList<CriterioParaDividirEquipos> criteriosGenerales = new ArrayList<CriterioParaDividirEquipos>();
+		criteriosGenerales.add(new CriterioParesEImpares());
+		criteriosGenerales.add(new CriterioParaDividir2());
 		return criteriosGenerales;
 	}
-	public ArrayList<String> getOrden(){
+	public ArrayList<CriterioDeOrden> getOrden(){
 
-		ArrayList<String> ordenesGenerales = new ArrayList<String>();
-		ordenesGenerales.add("Por hándicap");
-		ordenesGenerales.add("Por promedio de notas del último partido");
-		ordenesGenerales.add("Por promedio de notas de los últimos n partidos");
-		ordenesGenerales.add("Mixto");
+		ArrayList<CriterioDeOrden> ordenesGenerales = new ArrayList<CriterioDeOrden>();
+		ordenesGenerales.add(new CriterioHandicap());
+		ordenesGenerales.add(new CriterioCalificacionesUltimoPartido());
+		ordenesGenerales.add(new ordenamiento.CriterioUltimasNCalificaciones(this.ultimosPartidosSeleccionados));
+		ordenesGenerales.add(new MixDeCriterios());
 		return ordenesGenerales;
 	}
-	public String getCriterioSeleccionado() {
+
+	public CriterioParaDividirEquipos getCriterioSeleccionado() {
 		return criterioSeleccionado;
 	}
-	public void setCriterioSeleccionado(String criterioSeleccionado) {
+	public void setCriterioSeleccionado(
+			CriterioParaDividirEquipos criterioSeleccionado) {
 		this.criterioSeleccionado = criterioSeleccionado;
 	}
 	public String getOrdenamientoSeleccionado() {

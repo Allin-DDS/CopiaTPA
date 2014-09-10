@@ -8,6 +8,6 @@ public abstract class CriterioDeOrden {
 	public double obtenerPromedio(Jugador jugador){
 		return this.notas(jugador).average().getAsDouble();
 	}
-
+	public abstract String getNombre();
 	public abstract DoubleStream notas(Jugador jugador);
 }

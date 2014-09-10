@@ -8,6 +8,10 @@ import futbol5.Jugador;
 import futbol5.Partido;
 
 public class CriterioCalificacionesUltimoPartido extends CriterioDeOrden {
+	
+	public String getNombre(){
+		return "Promedio de notas del último partido";
+		}
 
 	public DoubleStream notas(Jugador jugador) {
 		Partido ultimoPartido= jugador.getCalificaciones().peek().getPartido();
@@ -20,4 +24,5 @@ public class CriterioCalificacionesUltimoPartido extends CriterioDeOrden {
 		return jugador.getCalificaciones().stream().filter(calificacion -> calificacion.esDelPartido(ultimoPartido));
 	}
 
+	
 }

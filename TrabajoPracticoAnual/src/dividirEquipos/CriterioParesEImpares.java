@@ -13,4 +13,8 @@ public class CriterioParesEImpares implements CriterioParaDividirEquipos {
 			equipo2.add(primeros10Ordenados.poll());
 		}
 	}
+	
+	public String getNombre(){
+		return "Par/Impar";
+	}
 }

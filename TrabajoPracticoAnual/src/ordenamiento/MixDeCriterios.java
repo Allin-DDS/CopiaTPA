@@ -1,6 +1,7 @@
 package ordenamiento;
 
 import futbol5.Jugador;
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.stream.DoubleStream;
@@ -12,7 +13,9 @@ public class MixDeCriterios extends CriterioDeOrden{
 	public Collection<CriterioDeOrden> getCriteriosDeOrden() {
 		return criteriosDeOrden;
 	}
-
+	public String getNombre(){
+		return "Mixto";
+		}
 	public void agregarCriterioDeOrden(CriterioDeOrden criteriosDeOrden) {
 		this.criteriosDeOrden.add(criteriosDeOrden);
 	}

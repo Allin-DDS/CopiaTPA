@@ -1,11 +1,15 @@
 package ordenamiento;
 
 import java.util.stream.DoubleStream;
+
 import futbol5.Jugador;
 
 public class CriterioUltimasNCalificaciones extends CriterioDeOrden {
 	private int cantidadCalificaciones;
 	
+	public String getNombre(){
+		return "Promedio de notas de los últimos n partidos";
+		}
 	public CriterioUltimasNCalificaciones(int cantCalific){
 		this.cantidadCalificaciones=cantCalific;
 	}

@@ -18,4 +18,7 @@ public class CriterioParaDividir2 implements CriterioParaDividirEquipos {
 		equipo1.add(primeros10Ordenados.poll());
 		equipo2.add(primeros10Ordenados.poll());
 	}
+	public String getNombre(){
+		return "1,4,5,8,9";
+		}
 }
