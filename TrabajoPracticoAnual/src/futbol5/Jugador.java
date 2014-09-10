@@ -10,6 +10,15 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class Jugador {
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	private String nombre;
 	private int edad;
 	//private int cantidadInfracPorFaltar;
 	private int handicap;
