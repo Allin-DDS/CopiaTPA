@@ -62,7 +62,7 @@ public class Jugador {
 	}
 	
 	public void agregarCalificacion(Jugador calificador, Partido partido, String comentario, int nota){
-		if(partido.getEquiposConfirmados())
+		if(!partido.getEquiposConfirmados())
 			throw new EquiposConfirmadosException("El admin no confirmo los equipos, por lo tanto, el partido no se jugo y no se pueden hacer evaluaciones");
 		Calificacion calificacion= new Calificacion(calificador,partido,comentario,nota);
 		calificaciones.add(calificacion);
