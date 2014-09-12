@@ -10,6 +10,6 @@ public class CriterioHandicap extends CriterioDeOrden {
 		return DoubleStream.builder().add(jugador.getHandicap()).build();
 	}
 	public String getNombre(){
-		return "Hándícap";
+		return "Hándicap";
 	}
 }

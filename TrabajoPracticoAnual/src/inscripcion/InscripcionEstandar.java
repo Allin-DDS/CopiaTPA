@@ -8,6 +8,9 @@ public class InscripcionEstandar extends Inscripcion {
 		this.jugador=jugador;
 		this.prioridad=1;
 	}
-	
+	public String getNombreJugador(){
+		return jugador.getNombre();
+		
+	}
 	
 }

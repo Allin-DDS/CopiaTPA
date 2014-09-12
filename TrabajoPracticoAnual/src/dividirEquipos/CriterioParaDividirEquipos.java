@@ -5,7 +5,11 @@ import inscripcion.Inscripcion;
 import java.util.Collection;
 import java.util.PriorityQueue;
 
-import org.uqbar.commons.model.IModel;
+import org.uqbar.commons.utils.Observable;
+import org.uqbar.commons.utils.Transactional;
+
+@Transactional
+
 
 public interface CriterioParaDividirEquipos {
 

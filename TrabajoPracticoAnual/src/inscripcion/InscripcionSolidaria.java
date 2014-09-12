@@ -10,7 +10,10 @@ public class InscripcionSolidaria extends Inscripcion{
 		this.jugador=jugador;
 		this.prioridad=getContadorDeInstacias();				
 	}
-
+	public String getNombreJugador(){
+		return jugador.getNombre();
+		
+	}
 	public static int getContadorDeInstacias() {
 		return contadorDeInstacias;
 	}

@@ -2,6 +2,7 @@ package testTPA;
 
 import notificaciones.MailAAdministrador;
 import notificaciones.MailAAmigos;
+import ordenamiento.CriterioCalificacionesUltimoPartido;
 import ordenamiento.CriterioHandicap;
 import futbol5.Jugador;
 import futbol5.Partido;
@@ -13,11 +14,12 @@ import inscripcion.InscripcionSolidaria;
 import excepciones.Hay10EstandarException;
 import excepciones.NoHay10InscriptosParaGenerarEquiposException;
 import excepciones.EquiposConfirmadosException;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test; 
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -63,6 +65,7 @@ public class TestTPA {
 	private MailAAdministrador mailAAdministradorMock;
 	private MailAAmigos mailAAmigosMock;
 	private CriterioHandicap criterioHandicap;
+	private CriterioCalificacionesUltimoPartido criterioCalificacionesUltimoPartido;
 	private CriterioParesEImpares criterioParesEImpares;
 	
 	@Before
@@ -121,6 +124,7 @@ public class TestTPA {
 		mailAAmigosMock= mock(MailAAmigos.class);
 	
 		criterioHandicap= new CriterioHandicap();
+		criterioCalificacionesUltimoPartido = new CriterioCalificacionesUltimoPartido();
 		criterioParesEImpares= new CriterioParesEImpares();
 		
 	}

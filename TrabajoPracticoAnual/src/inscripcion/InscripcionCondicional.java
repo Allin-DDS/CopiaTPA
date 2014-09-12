@@ -10,7 +10,10 @@ public class InscripcionCondicional extends Inscripcion {
 		this.condicion= condicion;
 		this.prioridad=2;
 	}
-	
+	public String getNombreJugador(){
+		return jugador.getNombre();
+		
+	}
 	public Condicion getCondicion() {
 		return condicion;
 	}

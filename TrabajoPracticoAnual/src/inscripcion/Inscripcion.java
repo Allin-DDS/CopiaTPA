@@ -1,11 +1,19 @@
 package inscripcion;
 
-import futbol5.Jugador;
+import org.uqbar.commons.utils.Observable;
+import org.uqbar.commons.utils.Transactional;
 
+import futbol5.Jugador;
+@Transactional
+@Observable
 
 public class Inscripcion{
 	public Jugador jugador;
 	int prioridad;
+	public String getNombreJugador(){
+		return jugador.getNombre();
+		
+	}
 	
 	public int getPrioridad() {
 		return prioridad;
