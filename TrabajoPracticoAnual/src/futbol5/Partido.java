@@ -68,7 +68,13 @@ public class Partido {
 
 	public void equiposConfirmados(){
     	equiposConfirmados= true;
-    }
+    	for(Inscripcion inscripcion: equipo1){
+    		inscripcion.getJugador().aumentarCantidadPartidosJugados();
+    	}
+    	for(Inscripcion inscripcion: equipo2){
+    		inscripcion.getJugador().aumentarCantidadPartidosJugados();
+    	}
+    }	
 	
 	public Collection<Inscripcion> getEquipo1() {
 		return equipo1;

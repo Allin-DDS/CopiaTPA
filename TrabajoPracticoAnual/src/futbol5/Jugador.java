@@ -4,24 +4,36 @@ import inscripcion.Inscripcion;
 import excepciones.EquiposConfirmadosException;
 import excepciones.PropuestaDeJugadorNoAmigoException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 
 public class Jugador {
 	private int edad;
+	private LocalDate fechaDeNacimiento;
+	private int cantidadPartidosJugados;
 	//private int cantidadInfracPorFaltar;
 	private int handicap;
 	private int cantidadInfracPorNoTenerSustituto;
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
 	private PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
 			comparing(calific -> calific.getPartido().getFecha() )));
-	
+	//Arrays.asList(new Calificacion(), new Calificacion().stream().sorted(Comparator.comparing(Calificacion::getFecha()).reversed());
 	public Jugador(int edad) {
 		this.edad= edad;
 		//Administrador.agregarJugador(this);
 	}	
+	
+	public LocalDate getFechaDeNacimiento() {
+		return fechaDeNacimiento;
+	}
+
+	public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
+		this.fechaDeNacimiento = fechaDeNacimiento;
+	}
 	
 	public Collection<Jugador> getAmigos(){
 		return amigos;
@@ -51,6 +63,14 @@ public class Jugador {
 		return cantidadInfracPorNoTenerSustituto;
 	}
 	
+	public void aumentarCantidadPartidosJugados() {
+		cantidadPartidosJugados= cantidadPartidosJugados+1;
+	}
+	
+	public int getCantidadPartidosJugados(){
+		return cantidadPartidosJugados;
+	}
+	
 	public void proponer(Inscripcion inscripcion,Partido partido){
 		if(!amigos.contains(inscripcion.getJugador()) )
 			throw new PropuestaDeJugadorNoAmigoException("no se puede proponer a un jugador que no es amigo");
@@ -68,4 +88,21 @@ public class Jugador {
 		calificaciones.add(calificacion);
 	}
 	
+	public double promedioDeUltimoPartido(){
+		Partido ultimoPartido= obtenerUltimoPartido();
+		return calificaciones.stream().filter(calificacion->calificacion.getPartido()==ultimoPartido).mapToDouble(calific-> calific.nota).average().getAsDouble();
+	}
+
+	public Partido obtenerUltimoPartido() {
+		Calificacion ultima = new Calificacion(null, null, null, 0);
+		for(Calificacion calificacion: calificaciones){
+			ultima= calificacion;
+		}
+		return ultima.getPartido();
+	}
+	
+	public double promedioDeTodosLosPartido(){
+		return calificaciones.stream().mapToDouble(calific-> calific.nota).average().getAsDouble();
+	}
+
 }
