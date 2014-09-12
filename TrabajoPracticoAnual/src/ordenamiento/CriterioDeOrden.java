@@ -2,9 +2,13 @@ package ordenamiento;
 
 import java.util.stream.DoubleStream;
 
-import futbol5.Jugador;
+import org.uqbar.commons.model.Entity;
+import org.uqbar.commons.utils.TransactionalAndObservable;
 
-public abstract class CriterioDeOrden {
+import futbol5.Jugador;
+@SuppressWarnings("serial")
+@TransactionalAndObservable
+public abstract class CriterioDeOrden extends Entity {
 	public double obtenerPromedio(Jugador jugador){
 		return this.notas(jugador).average().getAsDouble();
 	}

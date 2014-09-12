@@ -2,6 +2,8 @@ package ordenamiento;
 
 import java.util.stream.DoubleStream;
 
+import org.uqbar.commons.utils.TransactionalAndObservable;
+
 import futbol5.Jugador;
 
 public class CriterioUltimasNCalificaciones extends CriterioDeOrden {

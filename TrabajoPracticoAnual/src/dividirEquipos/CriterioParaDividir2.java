@@ -12,7 +12,7 @@ import org.uqbar.commons.utils.Transactional;
 
 
 
-public class CriterioParaDividir2 implements CriterioParaDividirEquipos {
+public class CriterioParaDividir2 extends CriterioParaDividirEquipos {
 	public void dividirEquipos(Collection<Inscripcion> equipo1, Collection<Inscripcion> equipo2, PriorityQueue<Inscripcion> primeros10Ordenados){
 		equipo1.add(primeros10Ordenados.poll());
 		equipo2.add(primeros10Ordenados.poll());

@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.stream.DoubleStream;
 
+import org.uqbar.commons.utils.TransactionalAndObservable;
+
 public class MixDeCriterios extends CriterioDeOrden{
 	//Con Composite:
 	private Collection<CriterioDeOrden> criteriosDeOrden= new ArrayList<>();

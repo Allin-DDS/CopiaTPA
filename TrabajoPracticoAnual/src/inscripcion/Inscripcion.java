@@ -1,5 +1,6 @@
 package inscripcion;
 
+import org.uqbar.commons.model.Entity;
 import org.uqbar.commons.utils.Observable;
 import org.uqbar.commons.utils.Transactional;
 
@@ -7,7 +8,7 @@ import futbol5.Jugador;
 @Transactional
 @Observable
 
-public class Inscripcion{
+public class Inscripcion extends Entity{
 	public Jugador jugador;
 	int prioridad;
 	public String getNombreJugador(){

@@ -9,10 +9,17 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import org.uqbar.commons.utils.Observable;
+import org.uqbar.commons.utils.Transactional;
+@Transactional
+@Observable
+
 public class Jugador {
 	private int edad;
 	//private int cantidadInfracPorFaltar;
 	private int handicap;
+
+
 	private int cantidadInfracPorNoTenerSustituto;
 	private String nombre;
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
@@ -75,6 +82,12 @@ public class Jugador {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}	public int getEdad() {
+		return edad;
+	}
+
+	public void setEdad(int edad) {
+		this.edad = edad;
 	}
 
 }

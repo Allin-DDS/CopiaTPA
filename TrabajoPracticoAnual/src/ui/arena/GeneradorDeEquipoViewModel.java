@@ -34,6 +34,7 @@ public class GeneradorDeEquipoViewModel {
 	private List<Inscripcion> equipoNro1;
 	private List<Inscripcion> equipoNro2;
 	private Inscripcion inscriptoSeleccionado;
+	private String nombreJugador;
 	
 	
 	public List<Inscripcion> getEquipoNro2() {
@@ -133,6 +134,23 @@ public class GeneradorDeEquipoViewModel {
 	public void setEquipoNro1(List<Inscripcion> equipoNro1) {
 		this.equipoNro1 = equipoNro1;
 	}
+
+	public String getNombreJugador() {
+		return this.inscriptoSeleccionado.getNombreJugador();
+	}
+
+	public void confirmarEquipos() {
+		this.partidoYjugadores.getPartido().equiposConfirmados();
+		//ver como devuelvo un mensaje, o como cerrarlo
+		
+	}
+
+	public Jugador getJugadorSeleccionado() {
+		
+		return this.inscriptoSeleccionado.getJugador();
+	}
+
+	
 
 
 

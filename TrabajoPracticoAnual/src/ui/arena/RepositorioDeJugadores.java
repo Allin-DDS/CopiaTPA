@@ -11,6 +11,7 @@ import inscripcion.InscripcionEstandar;
 import inscripcion.InscripcionSolidaria;
 import ordenamiento.CriterioDeOrden;
 import ordenamiento.CriterioHandicap;
+import ordenamiento.CriterioUltimasNCalificaciones;
 import dividirEquipos.CriterioParaDividirEquipos;
 import dividirEquipos.CriterioParesEImpares;
 
@@ -69,6 +70,7 @@ public class RepositorioDeJugadores {
 
 	private CriterioHandicap criterioHandicap;
 	private CriterioParesEImpares criterioParesEImpares;
+//	private Partido partidoAnterior;
 	
 	
 
@@ -76,8 +78,9 @@ public RepositorioDeJugadores(){
 
 	LocalDate hoy=LocalDate.now();
 	LocalTime hora=LocalTime.of(22,00);
-	this.partido= new Partido(hoy,hora,"calleFalsa1234");
-	
+	Partido partidoAnterior= new Partido(hoy,hora,"calleFalsa1234");
+	partido= new Partido(hoy,hora,"calleFalsa1234");
+
 	juan= new Jugador(21);
 	juan.setHandicap(1);
 	juan.setNombre("Juan");
@@ -151,30 +154,60 @@ public RepositorioDeJugadores(){
 	gordo.setNombre("Gordo");
 	inscripciongordo= new InscripcionSolidaria(gordo);
 	
+
+
+	partidoAnterior.altaInscripcion(inscripcionJuan);
+	partidoAnterior.altaInscripcion(inscripcionEsteban);
+	partidoAnterior.altaInscripcion(inscripcionramiro);
+	partidoAnterior.altaInscripcion(inscripcionmario);
+	partidoAnterior.altaInscripcion(inscripcionadrian);
+	partidoAnterior.altaInscripcion(inscripciondani);
+	partidoAnterior.altaInscripcion(inscripcionfranco);
+	partidoAnterior.altaInscripcion(inscripcionJose);
+	partidoAnterior.altaInscripcion(inscripcionMaria);
+	partidoAnterior.altaInscripcion(inscripciongordo);
+	
+	partidoAnterior.setCriterioDeOrden(new CriterioHandicap());
+	partidoAnterior.setCriterioParaDividirEquipos(new CriterioParesEImpares());
+	partidoAnterior.generarEquipos(partidoAnterior.ordenarPrimeros10());
+	partidoAnterior.equiposConfirmados();
+	esteban.calificarA(juan,partidoAnterior,"bla",2);
+	ramiro.calificarA(juan,partidoAnterior,"bla",4);
+	juan.calificarA(esteban,partidoAnterior,"bla",2);
+	esteban.calificarA(esteban,partidoAnterior,"bla",2);
+	juan.calificarA(ramiro,partidoAnterior,"bla",4);
+	esteban.calificarA(ramiro,partidoAnterior,"bla",4);
+	juan.calificarA(mario,partidoAnterior,"bla",5);
+	esteban.calificarA(mario,partidoAnterior,"bla",5);
+	juan.calificarA(adrian,partidoAnterior,"bla",6);
+	esteban.calificarA(adrian,partidoAnterior,"bla",6);
+	juan.calificarA(dani,partidoAnterior,"bla",7);
+	esteban.calificarA(dani,partidoAnterior,"bla",7);
+	juan.calificarA(franco,partidoAnterior,"bla",8);
+	esteban.calificarA(franco,partidoAnterior,"bla",8);
+	juan.calificarA(jose,partidoAnterior,"bla",9);
+	esteban.calificarA(jose,partidoAnterior,"bla",9);
+	juan.calificarA(maria,partidoAnterior,"bla",9);
+	esteban.calificarA(maria,partidoAnterior,"bla",10);
+	juan.calificarA(gordo,partidoAnterior,"bla",10);
+	esteban.calificarA(gordo,partidoAnterior,"bla",10);
+
 	partido.altaInscripcion(inscripcionJuan);
 	partido.altaInscripcion(inscripcionEsteban);
 	partido.altaInscripcion(inscripcionramiro);
 	partido.altaInscripcion(inscripcionmario);
 	partido.altaInscripcion(inscripcionadrian);
-
 	partido.altaInscripcion(inscripciondani);
 	partido.altaInscripcion(inscripcionfranco);
 	partido.altaInscripcion(inscripcionJose);
-
 	partido.altaInscripcion(inscripcionMaria);
 	partido.altaInscripcion(inscripciongordo);
+
 	}
 
 
 
-public Partido generadorDePartido(CriterioDeOrden ordenamientoSeleccionado,
-		CriterioParaDividirEquipos criterioSeleccionado) {
-	//this.inicializar();
-	partido.setCriterioDeOrden(ordenamientoSeleccionado);
-	partido.setCriterioParaDividirEquipos(criterioSeleccionado);
-	partido.generarEquipos(partido.ordenarPrimeros10());
-	return partido;
-}
+
 
 
 

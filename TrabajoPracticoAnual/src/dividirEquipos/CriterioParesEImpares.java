@@ -9,7 +9,7 @@ import org.uqbar.commons.utils.Observable;
 import org.uqbar.commons.utils.Transactional;
 @Transactional
 
-public class CriterioParesEImpares implements CriterioParaDividirEquipos {
+public class CriterioParesEImpares extends CriterioParaDividirEquipos {
 	
 	public void dividirEquipos(Collection<Inscripcion> equipo1, Collection<Inscripcion> equipo2, PriorityQueue<Inscripcion> primeros10Ordenados){
 		for (int i=1;i<=5;i++){

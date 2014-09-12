@@ -168,8 +168,7 @@ public class Partido {
 		LinkedList<Inscripcion> inscripcionesAux= new LinkedList<Inscripcion>();
 		inscripcionesAux.addAll(inscripciones);
 		inscripcionesAux.stream().limit(10);
-		PriorityQueue<Inscripcion> primeros10Ordenados= new PriorityQueue<>(Comparator.comparing(inscripcion->
-			this.getCriterioDeOrden().obtenerPromedio(inscripcion.getJugador()) ));		
+		PriorityQueue<Inscripcion> primeros10Ordenados= new PriorityQueue<>(Comparator.comparing(inscripcion -> this.getCriterioDeOrden().obtenerPromedio(inscripcion.getJugador())));		
 		primeros10Ordenados.addAll(inscripcionesAux);
 		return primeros10Ordenados;
 	}
