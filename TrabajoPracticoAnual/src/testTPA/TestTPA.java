@@ -2,12 +2,11 @@ package testTPA;
 
 import notificaciones.MailAAdministrador;
 import notificaciones.MailAAmigos;
-import ordenamiento.CriterioCalificacionesUltimoPartido;
-import ordenamiento.CriterioHandicap;
 import futbol5.Jugador;
 import futbol5.Partido;
 import dividirEquipos.CriterioParesEImpares;
 import inscripcion.Condicion;
+import inscripcion.Inscripcion;
 import inscripcion.InscripcionCondicional;
 import inscripcion.InscripcionEstandar;
 import inscripcion.InscripcionSolidaria;
@@ -16,12 +15,14 @@ import excepciones.NoHay10InscriptosParaGenerarEquiposException;
 import excepciones.EquiposConfirmadosException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import ordenamiento.CriterioHandicap;
 
 import org.junit.Before;
 import org.junit.Test; 
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 
 public class TestTPA {
 
@@ -64,9 +65,9 @@ public class TestTPA {
 	
 	private MailAAdministrador mailAAdministradorMock;
 	private MailAAmigos mailAAmigosMock;
-	private CriterioHandicap criterioHandicap;
-	private CriterioCalificacionesUltimoPartido criterioCalificacionesUltimoPartido;
+
 	private CriterioParesEImpares criterioParesEImpares;
+	private CriterioHandicap criterioHandicap;
 	
 	@Before
 	public void init(){
@@ -122,11 +123,8 @@ public class TestTPA {
 		
 		mailAAdministradorMock= mock(MailAAdministrador.class);
 		mailAAmigosMock= mock(MailAAmigos.class);
-	
 		criterioHandicap= new CriterioHandicap();
-		criterioCalificacionesUltimoPartido = new CriterioCalificacionesUltimoPartido();
 		criterioParesEImpares= new CriterioParesEImpares();
-		
 	}
 	
 	@Test 
@@ -295,39 +293,8 @@ public class TestTPA {
 		semifinal.setCriterioDeOrden(criterioHandicap);
 		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
 		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
-		semifinal.EquiposConfirmados();
+		semifinal.equiposConfirmados();
 		semifinal.altaInscripcion(inscripciondani);
-}	
-	
-	@Test
-	public void ordenarInscriptosConCriterioHandicapYgenerarEquiposConCriterioParEImpar(){
-		semifinal.altaInscripcion(inscripcionJuan);
-		semifinal.altaInscripcion(inscripcionEsteban);
-		semifinal.altaInscripcion(inscripcionramiro);
-		semifinal.altaInscripcion(inscripcionmario);
-		semifinal.altaInscripcion(inscripcionadrian);
-	
-		semifinal.altaInscripcion(inscripciondani);
-		semifinal.altaInscripcion(inscripcionfranco);
-		semifinal.altaInscripcion(inscripcionJose);
-	
-		semifinal.altaInscripcion(inscripcionMaria);
-		semifinal.altaInscripcion(inscripciongordo);
-		
-		semifinal.setCriterioDeOrden(criterioHandicap);
-		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
-		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
-			
-		assertTrue(semifinal.getEquipo1().contains(inscripcionJuan));
-		assertTrue(semifinal.getEquipo1().contains(inscripcionramiro));
-		assertTrue(semifinal.getEquipo1().contains(inscripcionadrian));
-		assertTrue(semifinal.getEquipo1().contains(inscripcionfranco));
-		assertTrue(semifinal.getEquipo1().contains(inscripcionMaria));
-	 	assertTrue(semifinal.getEquipo2().contains(inscripcionEsteban));
-		assertTrue(semifinal.getEquipo2().contains(inscripcionmario));
-		assertTrue(semifinal.getEquipo2().contains(inscripciondani));
-		assertTrue(semifinal.getEquipo2().contains(inscripcionJose));
-		assertTrue(semifinal.getEquipo2().contains(inscripciongordo));
-	}
+	}	
 	
 }

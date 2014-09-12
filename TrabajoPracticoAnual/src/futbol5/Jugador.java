@@ -10,19 +10,11 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class Jugador {
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	private String nombre;
 	private int edad;
 	//private int cantidadInfracPorFaltar;
 	private int handicap;
 	private int cantidadInfracPorNoTenerSustituto;
+	private String nombre;
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
 	private PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
 			comparing(calific -> calific.getPartido().getFecha() )));
@@ -71,10 +63,18 @@ public class Jugador {
 	}
 	
 	public void agregarCalificacion(Jugador calificador, Partido partido, String comentario, int nota){
-		if(partido.getEquiposConfirmados())
+		if(!partido.getEquiposConfirmados())
 			throw new EquiposConfirmadosException("El admin no confirmo los equipos, por lo tanto, el partido no se jugo y no se pueden hacer evaluaciones");
 		Calificacion calificacion= new Calificacion(calificador,partido,comentario,nota);
 		calificaciones.add(calificacion);
 	}
-	
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
 }

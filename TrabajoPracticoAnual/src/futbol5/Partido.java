@@ -66,7 +66,7 @@ public class Partido {
 		return equiposConfirmados;
 	}
 
-	public void EquiposConfirmados(){
+	public void equiposConfirmados(){
     	equiposConfirmados= true;
     }
 	

@@ -99,7 +99,7 @@ public ArrayList<CriterioParaDividirEquipos> getCriterios(){
 	}
 
 	public void confirmarEquipo() {
-		this.partido.EquiposConfirmados();
+		//this.partido.EquiposConfirmados();
 		//tendría que tirar error si no se armaron los equipos
 	}
 
