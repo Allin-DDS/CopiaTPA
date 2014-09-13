@@ -68,7 +68,13 @@ public class Partido {
 
 	public void equiposConfirmados(){
     	equiposConfirmados= true;
-    }
+    	for(Inscripcion inscripcion: equipo1){
+    		inscripcion.getJugador().aumentarCantidadPartidosJugados();
+    	}
+    	for(Inscripcion inscripcion: equipo2){
+    		inscripcion.getJugador().aumentarCantidadPartidosJugados();
+    	}
+    }	
 	
 	public Collection<Inscripcion> getEquipo1() {
 		return equipo1;
@@ -168,7 +174,8 @@ public class Partido {
 		LinkedList<Inscripcion> inscripcionesAux= new LinkedList<Inscripcion>();
 		inscripcionesAux.addAll(inscripciones);
 		inscripcionesAux.stream().limit(10);
-		PriorityQueue<Inscripcion> primeros10Ordenados= new PriorityQueue<>(Comparator.comparing(inscripcion -> this.getCriterioDeOrden().obtenerPromedio(inscripcion.getJugador())));		
+		PriorityQueue<Inscripcion> primeros10Ordenados= new PriorityQueue<>(Comparator.comparing(inscripcion->
+			this.getCriterioDeOrden().obtenerPromedio(inscripcion.getJugador()) ));		
 		primeros10Ordenados.addAll(inscripcionesAux);
 		return primeros10Ordenados;
 	}

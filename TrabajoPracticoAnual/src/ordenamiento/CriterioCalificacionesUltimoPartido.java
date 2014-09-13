@@ -14,9 +14,17 @@ public class CriterioCalificacionesUltimoPartido extends CriterioDeOrden {
 	public String getNombre(){
 		return "Promedio de notas del último partido";
 		}
-
+	
+	public Partido obtenerUltimoPartido(Jugador jugador) {
+		Calificacion ultima = new Calificacion(null, null, null, 0);
+		for(Calificacion calificacion: jugador.getCalificaciones()){
+			ultima= calificacion;
+		}
+		return ultima.getPartido();
+	}
+	
 	public DoubleStream notas(Jugador jugador) {
-		Partido ultimoPartido= jugador.getCalificaciones().peek().getPartido();
+		Partido ultimoPartido= this.obtenerUltimoPartido(jugador);
 		return this.obtenerCalificacionesUltimoPartido(jugador,ultimoPartido).
 					mapToDouble(calif -> calif.getNota());
 		

@@ -25,7 +25,7 @@ import java.time.LocalTime;
 
 
 public class TestTPA {
-
+	private Partido pfinal;
 	private Partido semifinal;
 	private Jugador juan;
 	private InscripcionEstandar inscripcionJuan;
@@ -74,6 +74,7 @@ public class TestTPA {
 		LocalDate hoy=LocalDate.now();
 		LocalTime hora=LocalTime.of(22,00);
 		semifinal= new Partido(hoy,hora,"calleFalsa1234");
+		pfinal= new Partido(hoy,hora,"calleFalsa1234");
 		
 		juan= new Jugador(21);
 		juan.setHandicap(1);
@@ -297,4 +298,114 @@ public class TestTPA {
 		semifinal.altaInscripcion(inscripciondani);
 	}	
 	
+	@Test
+	public void promedioDeUltimoPartido(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.setCriterioDeOrden(criterioHandicap);
+		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
+		semifinal.equiposConfirmados();
+		esteban.calificarA(juan, semifinal, "ceack",10);
+		ramiro.calificarA(juan, semifinal, "ceack",10);
+		
+		pfinal.altaInscripcion(inscripcionJuan);
+		pfinal.altaInscripcion(inscripcionEsteban);
+		pfinal.altaInscripcion(inscripcionramiro);
+		pfinal.altaInscripcion(inscripcionmario);
+		pfinal.altaInscripcion(inscripcionadrian);
+		pfinal.altaInscripcion(inscripciondani);
+		pfinal.altaInscripcion(inscripcionfranco);
+		pfinal.altaInscripcion(inscripcionJose);
+		pfinal.altaInscripcion(inscripcionMaria);
+		pfinal.altaInscripcion(inscripciongordo);
+		pfinal.setCriterioDeOrden(criterioHandicap);
+		pfinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		pfinal.generarEquipos(pfinal.ordenarPrimeros10());
+		pfinal.equiposConfirmados();
+		esteban.calificarA(juan, pfinal, "pobre",1);
+		ramiro.calificarA(juan, pfinal, "pobre",3);
+		assertEquals(2,juan.promedioDeUltimoPartido(),0);	
+	}
+
+	@Test
+	public void promedioDeTodosLosPartido(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.setCriterioDeOrden(criterioHandicap);
+		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
+		semifinal.equiposConfirmados();
+		esteban.calificarA(juan, semifinal, "ceack",10);
+		ramiro.calificarA(juan, semifinal, "ceack",10);
+		
+		pfinal.altaInscripcion(inscripcionJuan);
+		pfinal.altaInscripcion(inscripcionEsteban);
+		pfinal.altaInscripcion(inscripcionramiro);
+		pfinal.altaInscripcion(inscripcionmario);
+		pfinal.altaInscripcion(inscripcionadrian);
+		pfinal.altaInscripcion(inscripciondani);
+		pfinal.altaInscripcion(inscripcionfranco);
+		pfinal.altaInscripcion(inscripcionJose);
+		pfinal.altaInscripcion(inscripcionMaria);
+		pfinal.altaInscripcion(inscripciongordo);
+		pfinal.setCriterioDeOrden(criterioHandicap);
+		pfinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		pfinal.generarEquipos(pfinal.ordenarPrimeros10());
+		pfinal.equiposConfirmados();
+		esteban.calificarA(juan, pfinal, "pobre",1);
+		ramiro.calificarA(juan, pfinal, "pobre",3);
+		assertEquals(6,juan.promedioDeTodosLosPartido(),0);	
+	}
+	
+	@Test
+	public void cantidadDePartidosQueJugo(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.setCriterioDeOrden(criterioHandicap);
+		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
+		semifinal.equiposConfirmados();
+		
+		pfinal.altaInscripcion(inscripcionJuan);
+		pfinal.altaInscripcion(inscripcionEsteban);
+		pfinal.altaInscripcion(inscripcionramiro);
+		pfinal.altaInscripcion(inscripcionmario);
+		pfinal.altaInscripcion(inscripcionadrian);
+		pfinal.altaInscripcion(inscripciondani);
+		pfinal.altaInscripcion(inscripcionfranco);
+		pfinal.altaInscripcion(inscripcionJose);
+		pfinal.altaInscripcion(inscripcionMaria);
+		pfinal.altaInscripcion(inscripciongordo);
+		pfinal.setCriterioDeOrden(criterioHandicap);
+		pfinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		pfinal.generarEquipos(pfinal.ordenarPrimeros10());
+		pfinal.equiposConfirmados();
+
+		assertEquals(2,juan.getCantidadPartidosJugados());	
+	}
 }
