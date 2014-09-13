@@ -1,8 +1,12 @@
 package ui.arena;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
 
+import futbol5.Administrador;
 import futbol5.Jugador;
 import futbol5.Partido;
 import inscripcion.Condicion;
@@ -70,7 +74,9 @@ public class RepositorioDeJugadores {
 
 	private CriterioHandicap criterioHandicap;
 	private CriterioParesEImpares criterioParesEImpares;
-//	private Partido partidoAnterior;
+	
+	private Partido partidoAnterior;
+
 	
 	
 
@@ -78,80 +84,57 @@ public RepositorioDeJugadores(){
 
 	LocalDate hoy=LocalDate.now();
 	LocalTime hora=LocalTime.of(22,00);
-	Partido partidoAnterior= new Partido(hoy,hora,"calleFalsa1234");
+	partidoAnterior= new Partido(hoy,hora,"calleFalsa1234");
 	partido= new Partido(hoy,hora,"calleFalsa1234");
 
-	juan= new Jugador(21);
-	juan.setHandicap(1);
-	juan.setNombre("Juan");
+	juan = nuevoJugador(21,"Juan","Juancito","01-02-1992",1);
 	inscripcionJuan= new InscripcionEstandar(juan);
 	
-	esteban= new Jugador(21);
-	esteban.setHandicap(2);
-	esteban.setNombre("Esteban");
+	esteban= nuevoJugador(21,"Esteban","Steve","01-02-1992",2);
 	inscripcionEsteban= new InscripcionEstandar(esteban);
 	
-	ramiro= new Jugador(21);
-	ramiro.setHandicap(3);
-	ramiro.setNombre("Ramiro");
+	ramiro= nuevoJugador(21,"Ramiro","Rama","01-02-1992",3);
 	inscripcionramiro= new InscripcionEstandar(ramiro);
 	
-	mario= new Jugador(21);
-	mario.setHandicap(4);
-	mario.setNombre("Mario");
+	mario= nuevoJugador(34,"Mario","It's My Mario!","01-02-1992",4);
 	inscripcionmario= new InscripcionEstandar(mario);
 	
-	adrian= new Jugador(21);
-	adrian.setHandicap(5);
-	adrian.setNombre("Adrian");
+	adrian= nuevoJugador(21,"Adrian","Adri","01-02-1992",5);
 	inscripcionadrian= new InscripcionEstandar(adrian);
 	
-	marcos= new Jugador(21);
-	marcos.setNombre("Marcos");
+	marcos= nuevoJugador(27,"Marcos","Marco","01-02-1992",6);
 	inscripcionmarcos= new InscripcionEstandar(marcos);
 	
-	carlos= new Jugador(21);
-	carlos.setNombre("Carlos");
+	carlos= nuevoJugador(19,"Carlos","Charly","01-02-1992",2);
 	inscripcioncarlos= new InscripcionEstandar(carlos);
 	
-	turco= new Jugador(21);	
-	turco.setNombre("Turco");
+	turco= nuevoJugador(45,"Carlitos","Turco","01-02-1992",1);
 	inscripcionturco= new InscripcionEstandar(turco);
 	
-	coqui= new Jugador(21);
+	coqui= nuevoJugador(23,"Damian","Coqui","01-02-1992",6);
 	inscripcioncoqui= new InscripcionEstandar(coqui);
 	coqui.setNombre("Coqui");
 	
-	mati= new Jugador(21);
+	mati= nuevoJugador(21,"Matias","Mati","01-02-1992",6);
 	inscripcionmati= new InscripcionEstandar(mati);
 	mati.setNombre("Mati");
 
-	jose= new Jugador(21);
-	jose.setHandicap(6);
-	jose.setNombre("Jose");
+	jose= nuevoJugador(21,"Jose Maria","Josema","01-02-1992",6);
 	condicionJose = new Condicion();
 	inscripcionJose= new InscripcionCondicional(jose,condicionJose);
 	
-	franco= new Jugador(21);
-	franco.setHandicap(7);
-	franco.setNombre("Franco");
+	franco= nuevoJugador(32,"Franco","Fran","01-02-1992",7);
 	condicionfranco = new Condicion();
 	inscripcionfranco= new InscripcionCondicional(franco,condicionfranco);
 	
-	dani= new Jugador(21);
-	dani.setHandicap(8);
-	dani.setNombre("Dani");
+	dani= nuevoJugador(17,"Daniel","Dani","01-02-1992",8);
 	condiciondani = new Condicion();
 	inscripciondani= new InscripcionCondicional(dani,condiciondani);
 
-	maria= new Jugador(21);
-	maria.setHandicap(9);
-	maria.setNombre("Maria");
+	maria= nuevoJugador(22,"Maria","Mary","01-02-1992",9);
 	inscripcionMaria= new InscripcionSolidaria(maria);
 	
-	gordo= new Jugador(21);
-	gordo.setHandicap(10);
-	gordo.setNombre("Gordo");
+	gordo= nuevoJugador(22,"Raul","Gordo","01-02-1992",10);
 	inscripciongordo= new InscripcionSolidaria(gordo);
 	
 
@@ -204,6 +187,20 @@ public RepositorioDeJugadores(){
 	partido.altaInscripcion(inscripciongordo);
 
 	}
+
+
+
+private Jugador nuevoJugador(int edad, String nombre, String apodo,String fecha, int handicap) {
+	Jugador jugador = new Jugador(edad);
+	jugador.setNombre(nombre);
+		
+
+	jugador.setFechaDeNacimiento(fecha);
+	//jugador.setFechaDeNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(date));
+	jugador.setApodo(apodo);
+	jugador.setHandicap(handicap);
+	return jugador;
+}
 
 
 

@@ -4,10 +4,14 @@ import inscripcion.Inscripcion;
 import excepciones.EquiposConfirmadosException;
 import excepciones.PropuestaDeJugadorNoAmigoException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.PriorityQueue;
 
 import org.uqbar.commons.utils.Observable;
@@ -17,12 +21,15 @@ import org.uqbar.commons.utils.Transactional;
 
 public class Jugador {
 	private String nombre;
+	private String apodo;
 	private int edad;
-	private LocalDate fechaDeNacimiento;
+	private Date fechaDeNacimiento;
 	private int cantidadPartidosJugados;
 	//private int cantidadInfracPorFaltar;
 	private int handicap;
 	private int cantidadInfracPorNoTenerSustituto;
+
+	private Collection<Infraccion> infracciones = new ArrayList<Infraccion>();
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
 	private PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
 			comparing(calific -> calific.getPartido().getFecha() )));
@@ -38,18 +45,34 @@ public class Jugador {
 		return nombre;
 	}
 
+	public String getApodo() {
+		return apodo;
+	}
+	
+	public void setApodo(String apodo) {
+		this.apodo = apodo;
+	}
 	public int getEdad() {
 		return edad;
 	}
 
-	public LocalDate getFechaDeNacimiento() {
-		return fechaDeNacimiento;
+	public String getFechaDeNacimiento() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		return formatter.format(fechaDeNacimiento);
 	}
 
-	public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
-		this.fechaDeNacimiento = fechaDeNacimiento;
-	}
+
 	
+	public void setFechaDeNacimiento(String fechaDeNacimiento) {  
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		
+		try {
+			this.fechaDeNacimiento = df.parse(fechaDeNacimiento);
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+	}
 	public Collection<Jugador> getAmigos(){
 		return amigos;
 	}
@@ -103,7 +126,7 @@ public class Jugador {
 		calificaciones.add(calificacion);
 	}
 	
-	public double promedioDeUltimoPartido(){
+	public double getPromedioDeUltimoPartido(){
 		Partido ultimoPartido= obtenerUltimoPartido();
 		return calificaciones.stream().filter(calificacion->calificacion.getPartido()==ultimoPartido).mapToDouble(calific-> calific.nota).average().getAsDouble();
 	}
@@ -116,8 +139,12 @@ public class Jugador {
 		return ultima.getPartido();
 	}
 	
-	public double promedioDeTodosLosPartido(){
+	public double getPromedioDeTodosLosPartido(){
 		return calificaciones.stream().mapToDouble(calific-> calific.nota).average().getAsDouble();
+	}
+	public void agregarInfraccion(Partido partido, String motivo) {
+		infracciones.add(new Infraccion(partido,motivo));
+	
 	}
 	
 

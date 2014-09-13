@@ -4,10 +4,10 @@ import org.uqbar.arena.widgets.Panel;
 import org.uqbar.arena.windows.SimpleWindow;
 import org.uqbar.arena.windows.WindowOwner;
 
-public class BuscadorDeJugadorView extends SimpleWindow<BuscadorDeJugadorViewModel> {
+public class BuscadorDeJugadorView extends SimpleWindow<GeneradorDeEquipoViewModel> {
 
 	public BuscadorDeJugadorView(WindowOwner parent) {
-		super(parent, new BuscadorDeJugadorViewModel());
+		super(parent, new GeneradorDeEquipoViewModel());
 		// TODO Auto-generated constructor stub
 	}
 

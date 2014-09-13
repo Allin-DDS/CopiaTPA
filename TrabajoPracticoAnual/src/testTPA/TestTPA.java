@@ -333,7 +333,7 @@ public class TestTPA {
 		pfinal.equiposConfirmados();
 		esteban.calificarA(juan, pfinal, "pobre",1);
 		ramiro.calificarA(juan, pfinal, "pobre",3);
-		assertEquals(2,juan.promedioDeUltimoPartido(),0);	
+		assertEquals(2,juan.getPromedioDeUltimoPartido(),0);	
 	}
 
 	@Test
@@ -371,7 +371,7 @@ public class TestTPA {
 		pfinal.equiposConfirmados();
 		esteban.calificarA(juan, pfinal, "pobre",1);
 		ramiro.calificarA(juan, pfinal, "pobre",3);
-		assertEquals(6,juan.promedioDeTodosLosPartido(),0);	
+		assertEquals(6,juan.getPromedioDeTodosLosPartido(),0);	
 	}
 	
 	@Test

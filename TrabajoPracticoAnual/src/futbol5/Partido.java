@@ -147,7 +147,8 @@ public class Partido {
 			this.altaInscripcion(inscripcionAlta);
 		else{
 			inscripcionBaja.jugador.incrementarcantidadInfracPorNoTenerSustituto();
-			for (Observador observador : observadores)  
+			inscripcionBaja.jugador.agregarInfraccion(this, "No tiene sustituto");
+				for (Observador observador : observadores)  
 				observador.notificarReemplazoDeInscSinSustituto(this);
 		}
 	}

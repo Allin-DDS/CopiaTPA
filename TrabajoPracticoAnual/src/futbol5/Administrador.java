@@ -19,7 +19,7 @@ public class Administrador {
     	//Inicializacion del singleton
     }
 
-    private Administrador() { }
+    public Administrador() { }
 
     public Collection<InscripcionPropuesta> getInscripcionesPropuestas() {
 		return inscripcionesPropuestas;
