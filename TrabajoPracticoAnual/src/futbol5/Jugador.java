@@ -3,13 +3,14 @@ package futbol5;
 import inscripcion.Inscripcion;
 import excepciones.EquiposConfirmadosException;
 import excepciones.PropuestaDeJugadorNoAmigoException;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.stream.Stream;
+
 
 public class Jugador {
 	private int edad;
@@ -19,7 +20,7 @@ public class Jugador {
 	private int handicap;
 	private int cantidadInfracPorNoTenerSustituto;
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
-	private PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
+	public PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
 			comparing(calific -> calific.getPartido().getFecha() )));
 	//Arrays.asList(new Calificacion(), new Calificacion().stream().sorted(Comparator.comparing(Calificacion::getFecha()).reversed());
 	public Jugador(int edad) {
@@ -39,10 +40,21 @@ public class Jugador {
 		return amigos;
 	}
 
-	public PriorityQueue<Calificacion> getCalificaciones(){
-		return calificaciones;
+	public LinkedList<Calificacion> getCalificaciones(){
+		return invertirColeccion(calificaciones);
 	}
-	
+
+	private LinkedList<Calificacion> invertirColeccion(PriorityQueue<Calificacion> calificaciones) {
+		LinkedList<Calificacion> copiaCalific = new LinkedList<>();//para no modificar la colecc original
+		LinkedList<Calificacion> calificacionesInvertidas= new LinkedList<>();
+		copiaCalific.addAll(calificaciones);		
+		int i;
+		for(i=0;i<calificaciones.size();i++){
+			calificacionesInvertidas.add(copiaCalific.pollLast());
+		}
+		return calificacionesInvertidas;
+	}
+
 	public void agregarAmigo(Jugador jugador){
 		amigos.add(jugador);	
 	}
@@ -88,21 +100,23 @@ public class Jugador {
 		calificaciones.add(calificacion);
 	}
 	
+	public double promedioDeCalificaciones(Stream<Calificacion> calificaciones){
+		return calificaciones.mapToDouble(calific-> calific.getNota()).average().getAsDouble();
+	}
+	
 	public double promedioDeUltimoPartido(){
-		Partido ultimoPartido= obtenerUltimoPartido();
-		return calificaciones.stream().filter(calificacion->calificacion.getPartido()==ultimoPartido).mapToDouble(calific-> calific.nota).average().getAsDouble();
+		Partido ultimoPartido= this.obtenerUltimoPartido();
+		return this.promedioDeCalificaciones(this.getCalificaciones().stream().filter
+				(calificacion->calificacion.getPartido().equals(ultimoPartido)));
+			
 	}
 
 	public Partido obtenerUltimoPartido() {
-		Calificacion ultima = new Calificacion(null, null, null, 0);
-		for(Calificacion calificacion: calificaciones){
-			ultima= calificacion;
-		}
-		return ultima.getPartido();
+		return this.getCalificaciones().peek().getPartido();
 	}
 	
 	public double promedioDeTodosLosPartido(){
-		return calificaciones.stream().mapToDouble(calific-> calific.nota).average().getAsDouble();
+		return this.promedioDeCalificaciones(this.getCalificaciones().stream());
 	}
-
+	
 }

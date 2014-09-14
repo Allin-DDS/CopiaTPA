@@ -8,17 +8,9 @@ import futbol5.Jugador;
 import futbol5.Partido;
 
 public class CriterioCalificacionesUltimoPartido extends CriterioDeOrden {
-
-	public Partido obtenerUltimoPartido(Jugador jugador) {
-		Calificacion ultima = new Calificacion(null, null, null, 0);
-		for(Calificacion calificacion: jugador.getCalificaciones()){
-			ultima= calificacion;
-		}
-		return ultima.getPartido();
-	}
 	
 	public DoubleStream notas(Jugador jugador) {
-		Partido ultimoPartido= this.obtenerUltimoPartido(jugador);
+		Partido ultimoPartido= jugador.obtenerUltimoPartido();
 		return this.obtenerCalificacionesUltimoPartido(jugador,ultimoPartido).
 					mapToDouble(calif -> calif.getNota());
 		
