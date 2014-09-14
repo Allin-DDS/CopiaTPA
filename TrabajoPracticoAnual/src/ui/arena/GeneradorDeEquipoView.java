@@ -6,7 +6,6 @@ import ordenamiento.CriterioDeOrden;
 
 import org.uqbar.arena.bindings.NotNullObservable;
 import org.uqbar.arena.bindings.PropertyAdapter;
-import org.uqbar.arena.layout.ColumnLayout;
 import org.uqbar.arena.widgets.Button;
 import org.uqbar.arena.widgets.Label;
 import org.uqbar.arena.widgets.Panel;
@@ -16,18 +15,20 @@ import org.uqbar.arena.widgets.tables.Column;
 import org.uqbar.arena.widgets.tables.Table;
 import org.uqbar.arena.windows.SimpleWindow;
 import org.uqbar.arena.windows.WindowOwner;
-import org.uqbar.lacar.ui.model.ControlBuilder;
 import org.uqbar.lacar.ui.model.ListBuilder;
 import org.uqbar.lacar.ui.model.bindings.Binding;
 
 import dividirEquipos.CriterioParaDividirEquipos;
 
 
+@SuppressWarnings("serial")
 public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewModel> {
 	
+	private BienvenidoViewModel unModel;
 	public GeneradorDeEquipoView(WindowOwner parent) {
 		super(parent, new GeneradorDeEquipoViewModel());
 		this.getModelObject().init();
+		this.unModel = new BienvenidoViewModel();
 		
 	}
 	@Override
@@ -46,7 +47,7 @@ public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewMod
 		
 		new Button(actionsPanel)//
 		.setCaption("Ver datos del Jugador")
-		.onClick(()-> new DatosDeJugador(this,this.getModelObject().getJugadorSeleccionado()).open());
+		.onClick(()-> new DatosDeJugadorView(this,this.getModelObject().getJugadorSeleccionado()).open());
 		
 		new Button(actionsPanel)//
 		.setCaption("Confirmar Equipo")
@@ -56,14 +57,14 @@ public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewMod
 
 	@Override
 	protected void createFormPanel(Panel mainPanel) {
-		Panel SelectorCriterioFormPanel = this.nuevoPanel(mainPanel,2);
-		Panel  SelectorOrdenFormPanel = this.nuevoPanel(mainPanel,4);
+		Panel SelectorCriterioFormPanel = this.unModel.nuevoPanel(mainPanel, 2);
+		Panel SelectorOrdenFormPanel = this.unModel.nuevoPanel(mainPanel, 4);
 	
 
 		this.crearCriterioDeDivisionDeEquipo(SelectorCriterioFormPanel);	
 		this.crearCriterioDeOrdenamiento(SelectorOrdenFormPanel);
 		
-		Panel equiposFormPanel = this.nuevoPanel(mainPanel,2);
+		Panel equiposFormPanel = this.unModel.nuevoPanel(mainPanel,2);
 	
 	    new Label(equiposFormPanel).setText("Equipo Nº1");
 	    new Label(equiposFormPanel).setText("Equipo Nº2");
@@ -72,12 +73,8 @@ public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewMod
 	    this.crearGrillaDeEquipo("equipoNro2",equiposFormPanel);
 		
 	}
-	private Panel nuevoPanel(Panel mainPanel, int i) {
-		Panel panel = new Panel(mainPanel);
-		panel.setLayout(new ColumnLayout(i));
-		return panel;
-	}
-	public <C extends ControlBuilder> Binding<C> crearGrillaDeEquipo(String string, Panel panel) {
+
+	public Table<Inscripcion> crearGrillaDeEquipo(String string, Panel panel) {
 		
 		Table<Inscripcion> table = new Table<Inscripcion>(panel, Inscripcion.class);
 		table.setHeigth(100);
@@ -92,7 +89,7 @@ public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewMod
 		.bindContentsToProperty("nombreJugador");
 
 		
-		return null;
+		return table;
 		
 		
 	}

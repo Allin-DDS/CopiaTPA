@@ -5,6 +5,7 @@ import org.uqbar.commons.utils.Observable;
 import org.uqbar.commons.utils.Transactional;
 
 import futbol5.Jugador;
+@SuppressWarnings("serial")
 @Transactional
 @Observable
 

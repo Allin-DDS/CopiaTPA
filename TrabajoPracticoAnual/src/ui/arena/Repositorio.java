@@ -1,39 +1,27 @@
 package ui.arena;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import futbol5.Administrador;
+import futbol5.Infraccion;
 import futbol5.Jugador;
 import futbol5.Partido;
 import inscripcion.Condicion;
 import inscripcion.InscripcionCondicional;
 import inscripcion.InscripcionEstandar;
 import inscripcion.InscripcionSolidaria;
-import ordenamiento.CriterioDeOrden;
 import ordenamiento.CriterioHandicap;
-import ordenamiento.CriterioUltimasNCalificaciones;
-import dividirEquipos.CriterioParaDividirEquipos;
 import dividirEquipos.CriterioParesEImpares;
 
-public class RepositorioDeJugadores {
-
+public class Repositorio {
+	private static Repositorio instance;	
 	private Partido partido;
-	
-	public Partido getPartido() {
-		return partido;
-	}
-
-
-
-	public void setPartido(Partido partido) {
-		this.partido = partido;
-	}
-
-
+	private List<Jugador> jugadores;
 
 	private Jugador juan;
 	private InscripcionEstandar inscripcionJuan;
@@ -55,7 +43,6 @@ public class RepositorioDeJugadores {
 	private	InscripcionEstandar inscripcioncoqui;
 	private Jugador mati;
 	private	InscripcionEstandar inscripcionmati;
-	
 	private Jugador jose;
 	private InscripcionCondicional inscripcionJose;
 	private Condicion condicionJose;
@@ -80,61 +67,61 @@ public class RepositorioDeJugadores {
 	
 	
 
-public RepositorioDeJugadores(){
+public Repositorio(){
 
 	LocalDate hoy=LocalDate.now();
 	LocalTime hora=LocalTime.of(22,00);
 	partidoAnterior= new Partido(hoy,hora,"calleFalsa1234");
 	partido= new Partido(hoy,hora,"calleFalsa1234");
 
-	juan = nuevoJugador(21,"Juan","Juancito","01-02-1992",1);
+	jugadores = new ArrayList<Jugador>();
+	
+	juan = nuevoJugador(21,"Juan","Juancito","01/02/1992",1);
 	inscripcionJuan= new InscripcionEstandar(juan);
 	
-	esteban= nuevoJugador(21,"Esteban","Steve","01-02-1992",2);
+	esteban= nuevoJugador(21,"Esteban","Steve","01/02/1992",2);
 	inscripcionEsteban= new InscripcionEstandar(esteban);
 	
-	ramiro= nuevoJugador(21,"Ramiro","Rama","01-02-1992",3);
+	ramiro= nuevoJugador(21,"Ramiro","Rama","01/02/1992",3);
 	inscripcionramiro= new InscripcionEstandar(ramiro);
 	
-	mario= nuevoJugador(34,"Mario","It's My Mario!","01-02-1992",4);
+	mario= nuevoJugador(34,"Mario","It's My Mario!","01/02/1992",4);
 	inscripcionmario= new InscripcionEstandar(mario);
 	
-	adrian= nuevoJugador(21,"Adrian","Adri","01-02-1992",5);
+	adrian= nuevoJugador(21,"Adrian","Adri","01/02/1992",5);
 	inscripcionadrian= new InscripcionEstandar(adrian);
 	
-	marcos= nuevoJugador(27,"Marcos","Marco","01-02-1992",6);
+	marcos= nuevoJugador(27,"Marcos","Marco","01/02/1992",6);
 	inscripcionmarcos= new InscripcionEstandar(marcos);
 	
-	carlos= nuevoJugador(19,"Carlos","Charly","01-02-1992",2);
+	carlos= nuevoJugador(19,"Carlos","Charly","01/02/1992",2);
 	inscripcioncarlos= new InscripcionEstandar(carlos);
 	
-	turco= nuevoJugador(45,"Carlitos","Turco","01-02-1992",1);
+	turco= nuevoJugador(45,"Carlitos","Turco","01/02/1992",1);
 	inscripcionturco= new InscripcionEstandar(turco);
 	
-	coqui= nuevoJugador(23,"Damian","Coqui","01-02-1992",6);
+	coqui= nuevoJugador(23,"Damian","Coqui","01/02/1992",6);
 	inscripcioncoqui= new InscripcionEstandar(coqui);
-	coqui.setNombre("Coqui");
 	
-	mati= nuevoJugador(21,"Matias","Mati","01-02-1992",6);
+	mati= nuevoJugador(21,"Matias","Mati","01/02/1992",6);
 	inscripcionmati= new InscripcionEstandar(mati);
-	mati.setNombre("Mati");
 
-	jose= nuevoJugador(21,"Jose Maria","Josema","01-02-1992",6);
+	jose= nuevoJugador(21,"Jose Maria","Josema","01/02/1992",6);
 	condicionJose = new Condicion();
 	inscripcionJose= new InscripcionCondicional(jose,condicionJose);
 	
-	franco= nuevoJugador(32,"Franco","Fran","01-02-1992",7);
+	franco= nuevoJugador(32,"Franco","Fran","01/02/1992",7);
 	condicionfranco = new Condicion();
 	inscripcionfranco= new InscripcionCondicional(franco,condicionfranco);
 	
-	dani= nuevoJugador(17,"Daniel","Dani","01-02-1992",8);
+	dani= nuevoJugador(17,"Daniel","Dani","01/02/1992",8);
 	condiciondani = new Condicion();
 	inscripciondani= new InscripcionCondicional(dani,condiciondani);
 
-	maria= nuevoJugador(22,"Maria","Mary","01-02-1992",9);
+	maria= nuevoJugador(22,"Maria","Mary","01/02/1992",9);
 	inscripcionMaria= new InscripcionSolidaria(maria);
 	
-	gordo= nuevoJugador(22,"Raul","Gordo","01-02-1992",10);
+	gordo= nuevoJugador(22,"Raul","Gordo","01/02/1992",10);
 	inscripciongordo= new InscripcionSolidaria(gordo);
 	
 
@@ -186,25 +173,137 @@ public RepositorioDeJugadores(){
 	partido.altaInscripcion(inscripcionMaria);
 	partido.altaInscripcion(inscripciongordo);
 
+	Infraccion infraccionAJuan = new Infraccion(partido,"Llego tarde");
+	juan.getInfracciones().add(infraccionAJuan);
+	
+	juan.agregarAmigo(adrian);
+	juan.agregarAmigo(carlos);
 	}
 
 
 
 private Jugador nuevoJugador(int edad, String nombre, String apodo,String fecha, int handicap) {
+	
+	Date date = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	try {
+		date = formatter.parse(fecha);
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
 	Jugador jugador = new Jugador(edad);
 	jugador.setNombre(nombre);
-		
-
-	jugador.setFechaDeNacimiento(fecha);
-	//jugador.setFechaDeNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(date));
+	jugador.setFechaDeNacimiento(date);
 	jugador.setApodo(apodo);
 	jugador.setHandicap(handicap);
+	this.jugadores.add(jugador);
 	return jugador;
+}
+
+public Partido getPartido() {
+	return partido;
 }
 
 
 
+public void setPartido(Partido partido) {
+	this.partido = partido;
+}
 
+
+public List<Jugador> getJugadores() {
+	return jugadores;
+}
+
+
+public void setJugadores(List<Jugador> jugadores) {
+	this.jugadores = jugadores;
+}
+
+
+
+public static synchronized Repositorio getInstance() {
+	if (instance == null) {
+		instance = new Repositorio();
+	}
+	return instance;
+}
+
+public List<Jugador> buscar(Jugador jugadorBuscado) {
+	List<Jugador> resultados = new ArrayList<Jugador>();
+
+	for (Jugador jugador : this.jugadores) {
+		if (this.matchearDatos(jugador,jugadorBuscado)&& this.fechaAnterior(jugador,jugadorBuscado)
+				&& this.infraccion(jugador,jugadorBuscado) && this.desdeHastaHandicap(jugador,jugadorBuscado) 
+				&& this.desdeHastaPromedio(jugador,jugadorBuscado)) {
+			
+			resultados.add(jugador);
+		}
+	}
+	return resultados;
+}
+
+
+
+private boolean desdeHastaPromedio(Jugador jugador, Jugador jugadorBuscado) {
+	double promedioBuscado = jugadorBuscado.getPromedioDeUltimoPartido();
+	double promedio = jugador.getPromedioDeUltimoPartido();
+	if((jugadorBuscado.isPromedioCriterio() && promedio >  promedioBuscado)|| !jugadorBuscado.isHandicapCriterio() && promedio <= promedioBuscado){ //desde es true
+		return true;
+	}
+	return false;
+}
+
+
+
+private boolean desdeHastaHandicap(Jugador jugador, Jugador jugadorBuscado) {
+	int handicapBuscado = jugadorBuscado.getHandicap();
+	int handicap = jugador.getHandicap();
+	if((jugadorBuscado.isHandicapCriterio() && handicap >  handicapBuscado)|| !jugadorBuscado.isHandicapCriterio() && handicap <= handicapBuscado){ //desde es true
+		return true;
+	}
+	return false;
+}
+
+
+
+private boolean infraccion(Jugador jugador, Jugador jugadorBuscado) {
+
+	int infracciones = jugador.getInfracciones().size();
+	int criterio = jugadorBuscado.getInfraccionesCriterio();
+	
+	if( (criterio < 0) || (infracciones == 0 && criterio == 0) || (infracciones > 0 && criterio > 0) ){
+		return true;
+		}
+
+	
+	return false;
+}
+
+
+
+private boolean fechaAnterior(Jugador jugador, Jugador jugadorBuscado) {
+	if(jugador.getFechaDeNacimientoDate().before(jugadorBuscado.getFechaDeNacimientoDate())){
+		return true;
+	}
+	return false;
+}
+
+
+
+private boolean matchearDatos(Jugador jugador, Jugador jugadorBuscado) {
+	if(	match(jugadorBuscado.getNombre(), jugador.getNombre()) && match(jugadorBuscado.getApodo(), jugador.getApodo())){
+		return true;
+	};
+	return false;
+}
+
+
+
+protected boolean match(Object expectedValue, Object realValue) {
+	return expectedValue == null
+		|| realValue.toString().toLowerCase().contains(expectedValue.toString().toLowerCase());
+}
 
 
 

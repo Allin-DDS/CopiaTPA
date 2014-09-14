@@ -24,75 +24,26 @@ public class Jugador {
 	private String apodo;
 	private int edad;
 	private Date fechaDeNacimiento;
-	private int cantidadPartidosJugados;
-	//private int cantidadInfracPorFaltar;
+	private int cantidadPartidosJugados = 0;
 	private int handicap;
 	private int cantidadInfracPorNoTenerSustituto;
+	private double promedioDeUltimoPartido;
+	private boolean handicapCriterio;
+	private int infraccionesCriterio;
+	private boolean promedioCriterio;
+
 
 	private Collection<Infraccion> infracciones = new ArrayList<Infraccion>();
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
 	private PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
 			comparing(calific -> calific.getPartido().getFecha() )));
 	//Arrays.asList(new Calificacion(), new Calificacion().stream().sorted(Comparator.comparing(Calificacion::getFecha()).reversed());
+	
 	public Jugador(int edad) {
 		this.edad= edad;
 		//Administrador.agregarJugador(this);
 	}	
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	public String getNombre() {
-		return nombre;
-	}
 
-	public String getApodo() {
-		return apodo;
-	}
-	
-	public void setApodo(String apodo) {
-		this.apodo = apodo;
-	}
-	public int getEdad() {
-		return edad;
-	}
-
-	public String getFechaDeNacimiento() {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		return formatter.format(fechaDeNacimiento);
-	}
-
-
-	
-	public void setFechaDeNacimiento(String fechaDeNacimiento) {  
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		
-		try {
-			this.fechaDeNacimiento = df.parse(fechaDeNacimiento);
-		} catch (ParseException e) {
-
-			e.printStackTrace();
-		}
-	}
-	public Collection<Jugador> getAmigos(){
-		return amigos;
-	}
-
-	public PriorityQueue<Calificacion> getCalificaciones(){
-		return calificaciones;
-	}
-	
-	public void agregarAmigo(Jugador jugador){
-		amigos.add(jugador);	
-	}
-
-	public int getHandicap() {
-		return handicap;
-	}
-
-	public void setHandicap(int handicap) {
-		this.handicap = handicap;
-	}
-	
 	public void incrementarcantidadInfracPorNoTenerSustituto(){
 		cantidadInfracPorNoTenerSustituto++;
 	}
@@ -125,7 +76,11 @@ public class Jugador {
 		Calificacion calificacion= new Calificacion(calificador,partido,comentario,nota);
 		calificaciones.add(calificacion);
 	}
-	
+
+	public void setPromedioDeUltimoPartido(double promedioDeUltimoPartido) {
+		this.promedioDeUltimoPartido = promedioDeUltimoPartido;
+	}
+
 	public double getPromedioDeUltimoPartido(){
 		Partido ultimoPartido= obtenerUltimoPartido();
 		return calificaciones.stream().filter(calificacion->calificacion.getPartido()==ultimoPartido).mapToDouble(calific-> calific.nota).average().getAsDouble();
@@ -140,12 +95,117 @@ public class Jugador {
 	}
 	
 	public double getPromedioDeTodosLosPartido(){
-		return calificaciones.stream().mapToDouble(calific-> calific.nota).average().getAsDouble();
+		double promedio = 0;
+		if(this.cantidadPartidosJugados != 0){
+			promedio = calificaciones.stream().mapToDouble(calific-> calific.nota).average().getAsDouble();
+		}
+		return promedio;
 	}
 	public void agregarInfraccion(Partido partido, String motivo) {
 		infracciones.add(new Infraccion(partido,motivo));
 	
 	}
 	
+	public String getFechaDeNacimiento() {
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String reportDate = df.format(this.fechaDeNacimiento);
 
+		return reportDate;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getApodo() {
+		return apodo;
+	}
+	
+	public void setApodo(String apodo) {
+		this.apodo = apodo;
+	}
+	public int getEdad() {
+		return edad;
+	}
+
+	public Collection<Jugador> getAmigos(){
+		return amigos;
+	}
+
+	public PriorityQueue<Calificacion> getCalificaciones(){
+		return calificaciones;
+	}
+	
+	public void agregarAmigo(Jugador jugador){
+		amigos.add(jugador);	
+	}
+
+	public int getHandicap() {
+		return handicap;
+	}
+
+	public void setHandicap(int handicap) {
+		this.handicap = handicap;
+	}
+	
+	public void setFechaDeNacimiento(Date fechaDeNacimiento) {
+		this.fechaDeNacimiento = fechaDeNacimiento;
+	}
+	public Collection<Infraccion> getInfracciones() {
+		return infracciones;
+	}
+	public void setInfracciones(Collection<Infraccion> infracciones) {
+		this.infracciones = infracciones;
+	}
+	public void setAmigos(Collection<Jugador> amigos) {
+		this.amigos = amigos;
+	}
+
+	/**
+	 * @return the handicapCriterio
+	 */
+	public boolean isHandicapCriterio() {
+		return handicapCriterio;
+	}
+
+	/**
+	 * @param handicapCriterio the handicapCriterio to set
+	 */
+	public void setHandicapCriterio(boolean handicapCriterio) {
+		this.handicapCriterio = handicapCriterio;
+	}
+
+	/**
+	 * @return the promedioCriterio
+	 */
+	public boolean isPromedioCriterio() {
+		return promedioCriterio;
+	}
+
+	/**
+	 * @param promedioCriterio the promedioCriterio to set
+	 */
+	public void setPromedioCriterio(boolean promedioCriterio) {
+		this.promedioCriterio = promedioCriterio;
+	}
+
+	/**
+	 * @return the infraccionesCriterio
+	 */
+	public int getInfraccionesCriterio() {
+		return infraccionesCriterio;
+	}
+
+	/**
+	 * @param infraccionesCriterio the infraccionesCriterio to set
+	 */
+	public void setInfraccionesCriterio(int infraccionesCriterio) {
+		this.infraccionesCriterio = infraccionesCriterio;
+	}
+
+	public Date getFechaDeNacimientoDate(){
+		return this.fechaDeNacimiento;
+	}
 }

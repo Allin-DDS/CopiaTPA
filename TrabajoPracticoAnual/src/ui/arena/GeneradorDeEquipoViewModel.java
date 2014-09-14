@@ -2,14 +2,14 @@ package ui.arena;
 
 import inscripcion.Inscripcion;
 
+
 import java.util.ArrayList;
+
 import java.util.List;
 
-import org.uqbar.arena.widgets.Label;
-import org.uqbar.arena.widgets.Panel;
-import org.uqbar.arena.widgets.TextBox;
+
 import org.uqbar.commons.utils.Observable;
-import org.uqbar.lacar.ui.model.Action;
+
 
 import ordenamiento.CriterioCalificacionesUltimoPartido;
 import ordenamiento.CriterioDeOrden;
@@ -30,13 +30,50 @@ public class GeneradorDeEquipoViewModel {
 	private int ultimosPartidosSeleccionados;
 	private List<CriterioParaDividirEquipos> criteriosDisponibles;
 	private List<CriterioDeOrden> ordenamientosDisponibles;
-	private RepositorioDeJugadores partidoYjugadores;
+	private Repositorio partidoYjugadores;
 	private List<Inscripcion> equipoNro1;
 	private List<Inscripcion> equipoNro2;
 	private Inscripcion inscriptoSeleccionado;
-	private String nombreJugador;
+		
+	public void init() {
+		
+		List<CriterioParaDividirEquipos> criterios = new ArrayList<CriterioParaDividirEquipos>();
+		criterios.add(new CriterioParesEImpares());
+		criterios.add(new CriterioParaDividir2());
+		
+		List<CriterioDeOrden> ordenesGenerales = new ArrayList<CriterioDeOrden>();
+		ordenesGenerales.add(new CriterioHandicap());
+		ordenesGenerales.add(new CriterioCalificacionesUltimoPartido());
+		ordenesGenerales.add(new ordenamiento.CriterioUltimasNCalificaciones(this.ultimosPartidosSeleccionados));
+		ordenesGenerales.add(new MixDeCriterios());
+
+		this.setOrdenamientosDisponibles(ordenesGenerales);
+		this.setCriteriosDisponibles(criterios);
+		
+		partidoYjugadores = new Repositorio();
+		
+		
+	}
+	public void generarEquiposTentativos() {
+
+		this.partidoYjugadores = new Repositorio();
+		Partido partido = this.partidoYjugadores.getPartido();
+		
+		partido.setCriterioDeOrden(ordenamientoSeleccionado);
+		partido.setCriterioParaDividirEquipos(criterioSeleccionado);
+		partido.generarEquipos(partido.ordenarPrimeros10());
+		
+		 setEquipoNro1((List<Inscripcion>) partido.getEquipo1());
+		 setEquipoNro2((List<Inscripcion>) partido.getEquipo2());
+	}
+	public void confirmarEquipos() {
+		this.partidoYjugadores.getPartido().equiposConfirmados();
+		//ver como devuelvo un mensaje, o como cerrarlo
+		
+	}
 	
 	
+	//Getters and Setters
 	public List<Inscripcion> getEquipoNro2() {
 		return equipoNro2;
 	}
@@ -52,29 +89,7 @@ public class GeneradorDeEquipoViewModel {
 	public void setInscriptoSeleccionado(Inscripcion inscriptoSeleccionado) {
 		this.inscriptoSeleccionado = inscriptoSeleccionado;
 	}
-
-
 	
-
-	public void init() {
-		List<CriterioParaDividirEquipos> criterios = new ArrayList<CriterioParaDividirEquipos>();
-		criterios.add(new CriterioParesEImpares());
-		criterios.add(new CriterioParaDividir2());
-		
-		List<CriterioDeOrden> ordenesGenerales = new ArrayList<CriterioDeOrden>();
-		ordenesGenerales.add(new CriterioHandicap());
-		ordenesGenerales.add(new CriterioCalificacionesUltimoPartido());
-		ordenesGenerales.add(new ordenamiento.CriterioUltimasNCalificaciones(this.ultimosPartidosSeleccionados));
-		ordenesGenerales.add(new MixDeCriterios());
-
-		this.setOrdenamientosDisponibles(ordenesGenerales);
-		this.setCriteriosDisponibles(criterios);
-		
-		partidoYjugadores = new RepositorioDeJugadores();
-		
-		
-	}
-
 	public List<CriterioDeOrden> getOrdenamientosDisponibles() {
 		return ordenamientosDisponibles;
 	}
@@ -98,6 +113,7 @@ public class GeneradorDeEquipoViewModel {
 	public void setCriteriosDisponibles(List<CriterioParaDividirEquipos> criteriosDisponibles) {
 		this.criteriosDisponibles = criteriosDisponibles;
 	}
+	
 	public int getUltimosPartidosSeleccionados() {
 		return ultimosPartidosSeleccionados;
 	}
@@ -114,19 +130,6 @@ public class GeneradorDeEquipoViewModel {
 		this.ordenamientoSeleccionado = ordenamientoSeleccionado;
 	}
 
-	public void generarEquiposTentativos() {
-
-		this.partidoYjugadores = new RepositorioDeJugadores();
-		Partido partido = this.partidoYjugadores.getPartido();
-		
-		partido.setCriterioDeOrden(ordenamientoSeleccionado);
-		partido.setCriterioParaDividirEquipos(criterioSeleccionado);
-		partido.generarEquipos(partido.ordenarPrimeros10());
-		
-		 setEquipoNro1((List<Inscripcion>) partido.getEquipo1());
-		 setEquipoNro2((List<Inscripcion>) partido.getEquipo2());
-	}
-
 	public List<Inscripcion> getEquipoNro1() {
 		return equipoNro1;
 	}
@@ -139,16 +142,16 @@ public class GeneradorDeEquipoViewModel {
 		return this.inscriptoSeleccionado.getNombreJugador();
 	}
 
-	public void confirmarEquipos() {
-		this.partidoYjugadores.getPartido().equiposConfirmados();
-		//ver como devuelvo un mensaje, o como cerrarlo
-		
-	}
-
 	public Jugador getJugadorSeleccionado() {
 		
 		return this.inscriptoSeleccionado.getJugador();
 	}
+
+
+
+
+	
+
 
 	
 
