@@ -36,9 +36,8 @@ public class Futbol5ViewModel {
 		Table<Jugador> table = new Table<Jugador>(panelGrilla, Jugador.class);
 		table.setHeigth(80);
 		table.setWidth(300);		
-		
-		new Column<Jugador>(table) //
-		.setTitle("Nombre")
+		Column nombreCell = new Column<Jugador>(table) //
+		.setTitle("Nombre")	
 		.setFixedSize(75)
 		.bindContentsToProperty("nombre");
 		
@@ -47,7 +46,7 @@ public class Futbol5ViewModel {
 		.setFixedSize(75)
 		.bindContentsToProperty("apodo");
 		
-		new Column<Jugador>(table) //
+		Column handicapCell = new Column<Jugador>(table) //
 		.setTitle("Handicap")
 		.setFixedSize(75)
 		.bindContentsToProperty("handicap");
@@ -57,6 +56,7 @@ public class Futbol5ViewModel {
 		.setFixedSize(75)
 		.bindContentsToProperty("promedioDeTodosLosPartido");
 		return table;
+		
 	}
 
 }

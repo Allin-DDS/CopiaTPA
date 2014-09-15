@@ -93,6 +93,8 @@ public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewMod
 		.setFixedSize(150)
 		.bindContentsToProperty("nombreJugador");
 		
+		
+		
 
 		return table;
 		

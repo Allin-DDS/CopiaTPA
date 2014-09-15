@@ -217,6 +217,9 @@ public Repositorio(){
 	juan.getInfracciones().add(infraccionAJuan);
 	esteban.getInfracciones().add(infraccionAJuan);
 	
+	esteban.agregarAmigo(juan);
+	esteban.agregarAmigo(gordo);
+	
 	juan.agregarAmigo(adrian);
 	juan.agregarAmigo(carlos);
 	}
