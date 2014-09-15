@@ -13,4 +13,9 @@ public class CriterioHandicap extends CriterioDeOrden {
 	public String getNombre(){
 		return "Hándicap";
 	}
+	@Override
+	public void setPartidos(int ultimosPartidosSeleccionados) {
+		// TODO Auto-generated method stub
+		
+	}
 }

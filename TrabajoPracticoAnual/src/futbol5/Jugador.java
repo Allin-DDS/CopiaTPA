@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.stream.Stream;
 
 import org.uqbar.commons.utils.Observable;
 import org.uqbar.commons.utils.Transactional;
@@ -25,9 +27,9 @@ public class Jugador {
 	private int edad;
 	private Date fechaDeNacimiento;
 	private int cantidadPartidosJugados = 0;
-	private int handicap;
+	private double handicap;
 	private int cantidadInfracPorNoTenerSustituto;
-	private double promedioDeUltimoPartido;
+	//private double promedioDeUltimoPartido = 0;
 	private double promedioBuscado;
 	private boolean handicapCriterio;
 	private int infraccionesCriterio;
@@ -35,7 +37,7 @@ public class Jugador {
 
 	private Collection<Infraccion> infracciones = new ArrayList<Infraccion>();
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
-	private PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
+	public  PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
 			comparing(calific -> calific.getPartido().getFecha() )));
 	//Arrays.asList(new Calificacion(), new Calificacion().stream().sorted(Comparator.comparing(Calificacion::getFecha()).reversed());
 	
@@ -77,21 +79,18 @@ public class Jugador {
 		calificaciones.add(calificacion);
 	}
 
-	public void setPromedioDeUltimoPartido(double promedioDeUltimoPartido) {
-		this.promedioDeUltimoPartido = promedioDeUltimoPartido;
-	}
-
 	public double getPromedioDeUltimoPartido(){
-		Partido ultimoPartido= obtenerUltimoPartido();
-		return calificaciones.stream().filter(calificacion->calificacion.getPartido()==ultimoPartido).mapToDouble(calific-> calific.nota).average().getAsDouble();
+		double promedio = 0;
+		if(this.cantidadPartidosJugados != 0){
+		Partido ultimoPartido= this.obtenerUltimoPartido();
+			promedio = this.promedioDeCalificaciones(this.getCalificaciones().stream().filter
+						(calificacion->calificacion.getPartido().equals(ultimoPartido)));
+			}
+	return promedio;	
 	}
 
 	public Partido obtenerUltimoPartido() {
-		Calificacion ultima = new Calificacion(null, null, null, 0);
-		for(Calificacion calificacion: calificaciones){
-			ultima= calificacion;
-		}
-		return ultima.getPartido();
+		return this.getCalificaciones().peek().getPartido();
 	}
 	
 	public double getPromedioDeTodosLosPartido(){
@@ -134,19 +133,35 @@ public class Jugador {
 		return amigos;
 	}
 
-	public PriorityQueue<Calificacion> getCalificaciones(){
-		return calificaciones;
+	public LinkedList<Calificacion> getCalificaciones(){
+		return invertirColeccion(calificaciones);
 	}
 	
+	private LinkedList<Calificacion> invertirColeccion(
+			PriorityQueue<Calificacion> calificaciones2) {
+		
+		LinkedList<Calificacion> copiaCalific = new LinkedList<>();//para no modificar la colecc original
+		LinkedList<Calificacion> calificacionesInvertidas= new LinkedList<>();
+		copiaCalific.addAll(calificaciones);		
+		int i;
+		for(i=0;i<calificaciones.size();i++){
+			calificacionesInvertidas.add(copiaCalific.pollLast());
+			}
+		return calificacionesInvertidas;
+	}
+	public double promedioDeCalificaciones(Stream<Calificacion> calificaciones){
+				return calificaciones.mapToDouble(calific-> calific.getNota()).average().getAsDouble();
+			}
+
 	public void agregarAmigo(Jugador jugador){
 		amigos.add(jugador);	
 	}
 
-	public int getHandicap() {
+	public double getHandicap() {
 		return handicap;
 	}
 
-	public void setHandicap(int handicap) {
+	public void setHandicap(double handicap) {
 		this.handicap = handicap;
 	}
 	

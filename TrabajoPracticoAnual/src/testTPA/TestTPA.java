@@ -6,7 +6,6 @@ import futbol5.Jugador;
 import futbol5.Partido;
 import dividirEquipos.CriterioParesEImpares;
 import inscripcion.Condicion;
-import inscripcion.Inscripcion;
 import inscripcion.InscripcionCondicional;
 import inscripcion.InscripcionEstandar;
 import inscripcion.InscripcionSolidaria;
@@ -27,6 +26,7 @@ import java.time.LocalTime;
 public class TestTPA {
 	private Partido pfinal;
 	private Partido semifinal;
+	private Partido amistoso;
 	private Jugador juan;
 	private InscripcionEstandar inscripcionJuan;
 	private Jugador esteban;
@@ -71,10 +71,13 @@ public class TestTPA {
 	
 	@Before
 	public void init(){
+		LocalDate antesDeAyer=LocalDate.of(2014,9,12);
+		LocalDate ayer=LocalDate.of(2014,9,13);
 		LocalDate hoy=LocalDate.now();
 		LocalTime hora=LocalTime.of(22,00);
-		semifinal= new Partido(hoy,hora,"calleFalsa1234");
-		pfinal= new Partido(hoy,hora,"calleFalsa1234");
+		semifinal= new Partido(antesDeAyer,hora,"calleFalsa1234");
+		pfinal= new Partido(ayer,hora,"calleFalsa1234");
+		amistoso =  new Partido(hoy,hora,"calleFalsa1234");
 		
 		juan= new Jugador(21);
 		juan.setHandicap(1);
@@ -315,7 +318,7 @@ public class TestTPA {
 		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
 		semifinal.equiposConfirmados();
 		esteban.calificarA(juan, semifinal, "ceack",10);
-		ramiro.calificarA(juan, semifinal, "ceack",10);
+		ramiro.calificarA(juan, semifinal, "ceack",8);
 		
 		pfinal.altaInscripcion(inscripcionJuan);
 		pfinal.altaInscripcion(inscripcionEsteban);
@@ -331,11 +334,83 @@ public class TestTPA {
 		pfinal.setCriterioParaDividirEquipos(criterioParesEImpares);
 		pfinal.generarEquipos(pfinal.ordenarPrimeros10());
 		pfinal.equiposConfirmados();
-		esteban.calificarA(juan, pfinal, "pobre",1);
-		ramiro.calificarA(juan, pfinal, "pobre",3);
-		assertEquals(2,juan.getPromedioDeUltimoPartido(),0);	
+		esteban.calificarA(juan, pfinal, "pobre",5);
+		ramiro.calificarA(juan, pfinal, "pobre",5);
+		
+		amistoso.altaInscripcion(inscripcionJuan);
+		amistoso.altaInscripcion(inscripcionEsteban);
+		amistoso.altaInscripcion(inscripcionramiro);
+		amistoso.altaInscripcion(inscripcionmario);
+		amistoso.altaInscripcion(inscripcionadrian);
+		amistoso.altaInscripcion(inscripciondani);
+		amistoso.altaInscripcion(inscripcionfranco);
+		amistoso.altaInscripcion(inscripcionJose);
+		amistoso.altaInscripcion(inscripcionMaria);
+		amistoso.altaInscripcion(inscripciongordo);
+		amistoso.setCriterioDeOrden(criterioHandicap);
+		amistoso.setCriterioParaDividirEquipos(criterioParesEImpares);
+		amistoso.generarEquipos(pfinal.ordenarPrimeros10());
+		amistoso.equiposConfirmados();
+		esteban.calificarA(juan, amistoso, "pobre",1);
+		ramiro.calificarA(juan, amistoso, "pobre",3);
+		
+		assertEquals(2,juan.getPromedioDeUltimoPartido(),0);
 	}
-
+	@Test
+	public void promedioDeUltimoPartido2(){
+		semifinal.altaInscripcion(inscripcionJuan);
+		semifinal.altaInscripcion(inscripcionEsteban);
+		semifinal.altaInscripcion(inscripcionramiro);
+		semifinal.altaInscripcion(inscripcionmario);
+		semifinal.altaInscripcion(inscripcionadrian);
+		semifinal.altaInscripcion(inscripciondani);
+		semifinal.altaInscripcion(inscripcionfranco);
+		semifinal.altaInscripcion(inscripcionJose);
+		semifinal.altaInscripcion(inscripcionMaria);
+		semifinal.altaInscripcion(inscripciongordo);
+		semifinal.setCriterioDeOrden(criterioHandicap);
+		semifinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
+		semifinal.equiposConfirmados();
+		esteban.calificarA(juan, semifinal, "ceack",10);
+		ramiro.calificarA(juan, semifinal, "ceack",8);
+		
+		pfinal.altaInscripcion(inscripcionJuan);
+		pfinal.altaInscripcion(inscripcionEsteban);
+		pfinal.altaInscripcion(inscripcionramiro);
+		pfinal.altaInscripcion(inscripcionmario);
+		pfinal.altaInscripcion(inscripcionadrian);
+		pfinal.altaInscripcion(inscripciondani);
+		pfinal.altaInscripcion(inscripcionfranco);
+		pfinal.altaInscripcion(inscripcionJose);
+		pfinal.altaInscripcion(inscripcionMaria);
+		pfinal.altaInscripcion(inscripciongordo);
+		pfinal.setCriterioDeOrden(criterioHandicap);
+		pfinal.setCriterioParaDividirEquipos(criterioParesEImpares);
+		pfinal.generarEquipos(pfinal.ordenarPrimeros10());
+		pfinal.equiposConfirmados();
+		esteban.calificarA(juan, pfinal, "pobre",5);
+		ramiro.calificarA(juan, pfinal, "pobre",5);
+		
+		amistoso.altaInscripcion(inscripcionJuan);
+		amistoso.altaInscripcion(inscripcionEsteban);
+		amistoso.altaInscripcion(inscripcionramiro);
+		amistoso.altaInscripcion(inscripcionmario);
+		amistoso.altaInscripcion(inscripcionadrian);
+		amistoso.altaInscripcion(inscripciondani);
+		amistoso.altaInscripcion(inscripcionfranco);
+		amistoso.altaInscripcion(inscripcionJose);
+		amistoso.altaInscripcion(inscripcionMaria);
+		amistoso.altaInscripcion(inscripciongordo);
+		amistoso.setCriterioDeOrden(criterioHandicap);
+		amistoso.setCriterioParaDividirEquipos(criterioParesEImpares);
+		amistoso.generarEquipos(pfinal.ordenarPrimeros10());
+//		amistoso.equiposConfirmados();
+//		esteban.calificarA(juan, amistoso, "pobre",1);
+//		ramiro.calificarA(juan, amistoso, "pobre",3);
+		
+		assertEquals(5,juan.getPromedioDeUltimoPartido(),0);
+	}
 	@Test
 	public void promedioDeTodosLosPartido(){
 		semifinal.altaInscripcion(inscripcionJuan);
@@ -353,7 +428,7 @@ public class TestTPA {
 		semifinal.generarEquipos(semifinal.ordenarPrimeros10());
 		semifinal.equiposConfirmados();
 		esteban.calificarA(juan, semifinal, "ceack",10);
-		ramiro.calificarA(juan, semifinal, "ceack",10);
+		ramiro.calificarA(juan, semifinal, "ceack",5);
 		
 		pfinal.altaInscripcion(inscripcionJuan);
 		pfinal.altaInscripcion(inscripcionEsteban);
@@ -369,9 +444,9 @@ public class TestTPA {
 		pfinal.setCriterioParaDividirEquipos(criterioParesEImpares);
 		pfinal.generarEquipos(pfinal.ordenarPrimeros10());
 		pfinal.equiposConfirmados();
-		esteban.calificarA(juan, pfinal, "pobre",1);
-		ramiro.calificarA(juan, pfinal, "pobre",3);
-		assertEquals(6,juan.getPromedioDeTodosLosPartido(),0);	
+		esteban.calificarA(juan, pfinal, "pobre",5);
+		ramiro.calificarA(juan, pfinal, "pobre",10);
+		assertEquals(7.5,juan.getPromedioDeTodosLosPartido(),0);	
 	}
 	
 	@Test
@@ -405,7 +480,7 @@ public class TestTPA {
 		pfinal.setCriterioParaDividirEquipos(criterioParesEImpares);
 		pfinal.generarEquipos(pfinal.ordenarPrimeros10());
 		pfinal.equiposConfirmados();
-
+		
 		assertEquals(2,juan.getCantidadPartidosJugados());	
 	}
 }

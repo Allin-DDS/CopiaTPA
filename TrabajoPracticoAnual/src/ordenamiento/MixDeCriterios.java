@@ -9,6 +9,8 @@ import java.util.stream.DoubleStream;
 import org.uqbar.commons.utils.TransactionalAndObservable;
 
 public class MixDeCriterios extends CriterioDeOrden{
+
+
 	//Con Composite:
 	private Collection<CriterioDeOrden> criteriosDeOrden= new ArrayList<>();
 	
@@ -24,6 +26,11 @@ public class MixDeCriterios extends CriterioDeOrden{
 
 	public DoubleStream notas(Jugador jugador) {
 		return criteriosDeOrden.stream().mapToDouble(criterio -> criterio.obtenerPromedio(jugador));
+	}
+	@Override
+	public void setPartidos(int ultimosPartidosSeleccionados) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

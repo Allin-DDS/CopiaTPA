@@ -63,6 +63,7 @@ public class Repositorio {
 	private CriterioParesEImpares criterioParesEImpares;
 	
 	private Partido partidoAnterior;
+	private Partido amistoso;
 
 	
 	
@@ -72,8 +73,9 @@ public Repositorio(){
 	LocalDate hoy=LocalDate.now();
 	LocalTime hora=LocalTime.of(22,00);
 	partidoAnterior= new Partido(hoy,hora,"calleFalsa1234");
-	partido= new Partido(hoy,hora,"calleFalsa1234");
-
+	amistoso =  new Partido(hoy,hora,"calleFalsa1234");
+	partido =  new Partido(hoy,hora,"calleFalsa1234");
+	
 	jugadores = new ArrayList<Jugador>();
 	
 	juan = nuevoJugador(21,"Juan","Juancito","01/02/1992",10);
@@ -141,6 +143,7 @@ public Repositorio(){
 	partidoAnterior.setCriterioParaDividirEquipos(new CriterioParesEImpares());
 	partidoAnterior.generarEquipos(partidoAnterior.ordenarPrimeros10());
 	partidoAnterior.equiposConfirmados();
+	
 	esteban.calificarA(juan,partidoAnterior,"bla",2);
 	ramiro.calificarA(juan,partidoAnterior,"bla",4);
 	juan.calificarA(esteban,partidoAnterior,"bla",2);
@@ -161,6 +164,43 @@ public Repositorio(){
 	esteban.calificarA(maria,partidoAnterior,"bla",10);
 	juan.calificarA(gordo,partidoAnterior,"bla",10);
 	esteban.calificarA(gordo,partidoAnterior,"bla",10);
+	
+	amistoso.altaInscripcion(inscripcionJuan);
+	amistoso.altaInscripcion(inscripcionEsteban);
+	amistoso.altaInscripcion(inscripcionramiro);
+	amistoso.altaInscripcion(inscripcionmario);
+	amistoso.altaInscripcion(inscripcionadrian);
+	amistoso.altaInscripcion(inscripciondani);
+	amistoso.altaInscripcion(inscripcionfranco);
+	amistoso.altaInscripcion(inscripcionJose);
+	amistoso.altaInscripcion(inscripcionMaria);
+	amistoso.altaInscripcion(inscripciongordo);
+	
+	amistoso.setCriterioDeOrden(new CriterioHandicap());
+	amistoso.setCriterioParaDividirEquipos(new CriterioParesEImpares());
+	amistoso.generarEquipos(amistoso.ordenarPrimeros10());
+	amistoso.equiposConfirmados();
+	
+	esteban.calificarA(juan,amistoso,"bla",1);
+	ramiro.calificarA(juan,amistoso,"bla",3);
+	juan.calificarA(esteban,amistoso,"bla",5);
+	esteban.calificarA(esteban,amistoso,"bla",6);
+	juan.calificarA(ramiro,amistoso,"bla",6);
+	esteban.calificarA(ramiro,amistoso,"bla",10);
+	juan.calificarA(mario,amistoso,"bla",1);
+	esteban.calificarA(mario,amistoso,"bla",2);
+	juan.calificarA(adrian,amistoso,"bla",3);
+	esteban.calificarA(adrian,amistoso,"bla",6);
+	juan.calificarA(dani,amistoso,"bla",8);
+	esteban.calificarA(dani,amistoso,"bla",1);
+	juan.calificarA(franco,amistoso,"bla",2);
+	esteban.calificarA(franco,amistoso,"bla",3);
+	juan.calificarA(jose,amistoso,"bla",9);
+	esteban.calificarA(jose,amistoso,"bla",9);
+	juan.calificarA(maria,amistoso,"bla",4);
+	esteban.calificarA(maria,amistoso,"bla",6);
+	juan.calificarA(gordo,amistoso,"bla",10);
+	esteban.calificarA(gordo,amistoso,"bla",10);
 
 	partido.altaInscripcion(inscripcionJuan);
 	partido.altaInscripcion(inscripcionEsteban);
@@ -172,17 +212,16 @@ public Repositorio(){
 	partido.altaInscripcion(inscripcionJose);
 	partido.altaInscripcion(inscripcionMaria);
 	partido.altaInscripcion(inscripciongordo);
-
-	Infraccion infraccionAJuan = new Infraccion(partido,"Llego tarde");
+	
+	Infraccion infraccionAJuan = new Infraccion(amistoso,"Llego tarde");
 	juan.getInfracciones().add(infraccionAJuan);
+	esteban.getInfracciones().add(infraccionAJuan);
 	
 	juan.agregarAmigo(adrian);
 	juan.agregarAmigo(carlos);
 	}
 
-
-
-private Jugador nuevoJugador(int edad, String nombre, String apodo,String fecha, int handicap) {
+private Jugador nuevoJugador(int edad, String nombre, String apodo,String fecha, double handicap) {
 	
 	Date date = null;
 	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -224,7 +263,8 @@ public void setJugadores(List<Jugador> jugadores) {
 
 public static synchronized Repositorio getInstance() {
 	if (instance == null) {
-		instance = new Repositorio();
+		Repositorio repo = new Repositorio();
+		instance = repo;
 	}
 	return instance;
 }
@@ -237,7 +277,7 @@ public List<Jugador> buscar(Jugador jugadorBuscado) {
 				&& this.fechaAnterior(jugador,jugadorBuscado)
 				&& this.infraccion(jugador,jugadorBuscado)
 				&& this.desdeHastaHandicap(jugador,jugadorBuscado) 
-				//&& this.desdeHastaPromedio(jugador,jugadorBuscado)
+				&& this.desdeHastaPromedio(jugador,jugadorBuscado)
 				) {
 			
 			

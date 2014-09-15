@@ -13,6 +13,7 @@ public class CriterioUltimasNCalificaciones extends CriterioDeOrden {
 		return "Promedio de notas de los últimos n partidos";
 		}
 	public CriterioUltimasNCalificaciones(int cantCalific){
+		
 		this.cantidadCalificaciones=cantCalific;
 	}
 	
@@ -35,6 +36,11 @@ public class CriterioUltimasNCalificaciones extends CriterioDeOrden {
 	private DoubleStream ultimosNCalificaciones(DoubleStream doubleStream) {
 		//son los primeros N pq las calificaciones estan ordenadas de la fecha más reciente a la más vieja
 		return doubleStream.limit(cantidadCalificaciones);
+	}
+	@Override
+	public void setPartidos(int ultimosPartidosSeleccionados) {
+		this.cantidadCalificaciones = ultimosPartidosSeleccionados;
+		
 	}
 	
 }

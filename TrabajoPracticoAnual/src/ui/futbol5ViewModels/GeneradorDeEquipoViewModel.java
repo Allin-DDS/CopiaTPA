@@ -6,6 +6,7 @@ import inscripcion.Inscripcion;
 
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +14,13 @@ import java.util.List;
 
 
 
+
 import javax.swing.JOptionPane;
 
+import org.uqbar.commons.model.ObservableUtils;
 import org.uqbar.commons.model.UserException;
 import org.uqbar.commons.utils.Observable;
+
 
 
 
@@ -39,7 +43,7 @@ public class GeneradorDeEquipoViewModel {
 
 	private CriterioParaDividirEquipos criterioSeleccionado;
 	private CriterioDeOrden ordenamientoSeleccionado;
-	private int ultimosPartidosSeleccionados;
+	private int ultimosPartidosSeleccionados = 1;
 	private List<CriterioParaDividirEquipos> criteriosDisponibles;
 	private List<CriterioDeOrden> ordenamientosDisponibles;
 	private Repositorio partidoYjugadores;
@@ -53,12 +57,16 @@ public class GeneradorDeEquipoViewModel {
 		criterios.add(new CriterioParesEImpares());
 		criterios.add(new CriterioParaDividir2());
 		
+		MixDeCriterios criterioMixto = new MixDeCriterios();
+		criterioMixto.agregarCriterioDeOrden(new CriterioHandicap());
+		criterioMixto.agregarCriterioDeOrden(new CriterioCalificacionesUltimoPartido());
+		
 		List<CriterioDeOrden> ordenesGenerales = new ArrayList<CriterioDeOrden>();
 		ordenesGenerales.add(new CriterioHandicap());
 		ordenesGenerales.add(new CriterioCalificacionesUltimoPartido());
-		ordenesGenerales.add(new ordenamiento.CriterioUltimasNCalificaciones(this.ultimosPartidosSeleccionados));
-		ordenesGenerales.add(new MixDeCriterios());
-
+		ordenesGenerales.add(new ordenamiento.CriterioUltimasNCalificaciones(this.getUltimosPartidosSeleccionados()));
+		ordenesGenerales.add(criterioMixto);
+	
 		this.setOrdenamientosDisponibles(ordenesGenerales);
 		this.setCriteriosDisponibles(criterios);
 		
@@ -72,9 +80,20 @@ public class GeneradorDeEquipoViewModel {
 		this.partidoYjugadores = new Repositorio();
 		Partido partido = this.partidoYjugadores.getPartido();
 		
-		partido.setCriterioDeOrden(ordenamientoSeleccionado);
+		try{
+			
+		this.ordenamientoSeleccionado.setPartidos(this.getUltimosPartidosSeleccionados());
+		partido.setCriterioDeOrden(this.ordenamientoSeleccionado);
 		partido.setCriterioParaDividirEquipos(criterioSeleccionado);
 		partido.generarEquipos(partido.ordenarPrimeros10());
+		
+		}
+		catch(Exception e){
+			throw new UserException("Error al generar los equipos");
+			
+		}
+
+
 		
 		 setEquipoNro1((List<Inscripcion>) partido.getEquipo1());
 		 setEquipoNro2((List<Inscripcion>) partido.getEquipo2());
