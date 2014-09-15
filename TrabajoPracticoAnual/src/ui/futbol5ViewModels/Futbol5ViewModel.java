@@ -1,4 +1,4 @@
-package ui.arena;
+package ui.futbol5ViewModels;
 
 import java.awt.Color;
 
@@ -13,7 +13,7 @@ import org.uqbar.commons.utils.Observable;
 import futbol5.Jugador;
 
 @Observable
-public class BienvenidoViewModel {
+public class Futbol5ViewModel {
 
 	public void crearLabelDeDatos(String string, String string2, Panel panel) {
 		 new Label(panel).setText(string).setForeground(Color.blue);

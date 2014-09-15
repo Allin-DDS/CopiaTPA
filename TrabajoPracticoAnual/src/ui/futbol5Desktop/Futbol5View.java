@@ -1,16 +1,18 @@
-package ui.arena;
+package ui.futbol5Desktop;
 
 import org.uqbar.arena.layout.VerticalLayout;
 import org.uqbar.arena.widgets.Button;
 import org.uqbar.arena.widgets.Panel;
 import org.uqbar.arena.windows.MainWindow;
 
+import ui.futbol5ViewModels.Futbol5ViewModel;
 
 
-public class BienvenidoView extends MainWindow<BienvenidoViewModel>{ 
+
+public class Futbol5View extends MainWindow<Futbol5ViewModel>{ 
 	
-	public BienvenidoView() {
-		super(new BienvenidoViewModel());
+	public Futbol5View() {
+		super(new Futbol5ViewModel());
 }
 
 	@Override
@@ -28,7 +30,7 @@ public class BienvenidoView extends MainWindow<BienvenidoViewModel>{
 			.onClick(() -> new GeneradorDeEquipoView(this).open());
 	  }
 	 public static void main(String[] args) {
-		    new BienvenidoView().startApplication();
+		    new Futbol5View().startApplication();
 		  }		
 
 }

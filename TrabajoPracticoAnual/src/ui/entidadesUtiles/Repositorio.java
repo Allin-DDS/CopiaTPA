@@ -1,4 +1,4 @@
-package ui.arena;
+package ui.entidadesUtiles;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,7 +76,7 @@ public Repositorio(){
 
 	jugadores = new ArrayList<Jugador>();
 	
-	juan = nuevoJugador(21,"Juan","Juancito","01/02/1992",1);
+	juan = nuevoJugador(21,"Juan","Juancito","01/02/1992",10);
 	inscripcionJuan= new InscripcionEstandar(juan);
 	
 	esteban= nuevoJugador(21,"Esteban","Steve","01/02/1992",2);
@@ -233,9 +233,13 @@ public List<Jugador> buscar(Jugador jugadorBuscado) {
 	List<Jugador> resultados = new ArrayList<Jugador>();
 
 	for (Jugador jugador : this.jugadores) {
-		if (this.matchearDatos(jugador,jugadorBuscado)&& this.fechaAnterior(jugador,jugadorBuscado)
-				&& this.infraccion(jugador,jugadorBuscado) && this.desdeHastaHandicap(jugador,jugadorBuscado) 
-				&& this.desdeHastaPromedio(jugador,jugadorBuscado)) {
+		if (this.matchearDatos(jugador,jugadorBuscado)
+				&& this.fechaAnterior(jugador,jugadorBuscado)
+				&& this.infraccion(jugador,jugadorBuscado)
+				&& this.desdeHastaHandicap(jugador,jugadorBuscado) 
+				//&& this.desdeHastaPromedio(jugador,jugadorBuscado)
+				) {
+			
 			
 			resultados.add(jugador);
 		}
@@ -246,9 +250,10 @@ public List<Jugador> buscar(Jugador jugadorBuscado) {
 
 
 private boolean desdeHastaPromedio(Jugador jugador, Jugador jugadorBuscado) {
-	double promedioBuscado = jugadorBuscado.getPromedioDeUltimoPartido();
+	double promedioBuscado = jugadorBuscado.getPromedioBuscado();
 	double promedio = jugador.getPromedioDeUltimoPartido();
-	if((jugadorBuscado.isPromedioCriterio() && promedio >  promedioBuscado)|| !jugadorBuscado.isHandicapCriterio() && promedio <= promedioBuscado){ //desde es true
+	
+	if((jugadorBuscado.isPromedioCriterio() && promedio >  promedioBuscado)|| (!jugadorBuscado.isHandicapCriterio() && promedio <= promedioBuscado)){ //desde es true
 		return true;
 	}
 	return false;
@@ -257,9 +262,9 @@ private boolean desdeHastaPromedio(Jugador jugador, Jugador jugadorBuscado) {
 
 
 private boolean desdeHastaHandicap(Jugador jugador, Jugador jugadorBuscado) {
-	int handicapBuscado = jugadorBuscado.getHandicap();
-	int handicap = jugador.getHandicap();
-	if((jugadorBuscado.isHandicapCriterio() && handicap >  handicapBuscado)|| !jugadorBuscado.isHandicapCriterio() && handicap <= handicapBuscado){ //desde es true
+	double handicapBuscado = jugadorBuscado.getHandicap();
+	double handicap = jugador.getHandicap();
+	if((jugadorBuscado.isHandicapCriterio() && handicap >  handicapBuscado)|| (!jugadorBuscado.isHandicapCriterio() && handicap <= handicapBuscado)){ //desde es true
 		return true;
 	}
 	return false;

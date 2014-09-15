@@ -1,6 +1,10 @@
-package ui.arena;
+package ui.futbol5Desktop;
 
 import java.awt.Color;
+
+
+
+
 
 
 
@@ -19,18 +23,21 @@ import org.uqbar.arena.windows.WindowOwner;
 import org.uqbar.lacar.ui.model.ListBuilder;
 import org.uqbar.lacar.ui.model.bindings.Binding;
 
+import ui.entidadesUtiles.ComboBoxBoolean;
+import ui.entidadesUtiles.ComboBoxSerial;
+import ui.futbol5ViewModels.BuscadorDeJugadorViewModel;
+import ui.futbol5ViewModels.Futbol5ViewModel;
 import futbol5.Jugador;
 
 @SuppressWarnings("serial")
 public class BuscadorDeJugadorView extends SimpleWindow<BuscadorDeJugadorViewModel> {
 
 
-	private ui.arena.BienvenidoViewModel unModel;
+	private ui.futbol5ViewModels.Futbol5ViewModel unModel;
 
 	public BuscadorDeJugadorView(WindowOwner parent) {
 		super(parent, new BuscadorDeJugadorViewModel());
-		unModel = new BienvenidoViewModel();
-		//this.getModelObject().buscar();
+		unModel = new Futbol5ViewModel();
 	}
 
 	@Override
@@ -38,7 +45,13 @@ public class BuscadorDeJugadorView extends SimpleWindow<BuscadorDeJugadorViewMod
 	
 		  new Button(actionsPanel)//
 		.setCaption("Buscar jugador")
+		.disableOnError()
 		.onClick(()-> this.getModelObject().buscar());
+		  
+		  new Button(actionsPanel)//
+		.setCaption("Datos del Jugador")
+		.disableOnError()
+		.onClick(()-> new DatosDeJugadorView(this,this.getModelObject().getJugadorSeleccionado()).open());
 			
 	}
 
@@ -61,6 +74,7 @@ public class BuscadorDeJugadorView extends SimpleWindow<BuscadorDeJugadorViewMod
 		Table<Jugador> table = this.unModel.generarTablaJugador(grillaEquiposFormPanel);
 
 		table.bindItemsToProperty("resultadoDeBusqueda");
+		table.bindValueToProperty("jugadorSeleccionado");
 	}
 
 	private void crearFiltroInfracciones(Panel panel) {

@@ -1,5 +1,8 @@
-package ui.arena;
+package ui.futbol5Desktop;
 
+
+import java.awt.Color;
+import java.util.List;
 
 import inscripcion.Inscripcion;
 import ordenamiento.CriterioDeOrden;
@@ -18,17 +21,19 @@ import org.uqbar.arena.windows.WindowOwner;
 import org.uqbar.lacar.ui.model.ListBuilder;
 import org.uqbar.lacar.ui.model.bindings.Binding;
 
+import ui.futbol5ViewModels.Futbol5ViewModel;
+import ui.futbol5ViewModels.GeneradorDeEquipoViewModel;
 import dividirEquipos.CriterioParaDividirEquipos;
 
 
 @SuppressWarnings("serial")
 public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewModel> {
 	
-	private BienvenidoViewModel unModel;
+	private Futbol5ViewModel unModel;
 	public GeneradorDeEquipoView(WindowOwner parent) {
 		super(parent, new GeneradorDeEquipoViewModel());
 		this.getModelObject().init();
-		this.unModel = new BienvenidoViewModel();
+		this.unModel = new Futbol5ViewModel();
 		
 	}
 	@Override
@@ -83,12 +88,12 @@ public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewMod
 		table.bindItemsToProperty(string);
 		table.bindValueToProperty("inscriptoSeleccionado");
 
-		new Column<Inscripcion>(table) //
+		Column<Inscripcion> columnaJugador = new Column<Inscripcion>(table) //
 		.setTitle("Jugadores del Equipo")
 		.setFixedSize(150)
 		.bindContentsToProperty("nombreJugador");
-
 		
+
 		return table;
 		
 		

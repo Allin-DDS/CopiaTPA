@@ -28,10 +28,10 @@ public class Jugador {
 	private int handicap;
 	private int cantidadInfracPorNoTenerSustituto;
 	private double promedioDeUltimoPartido;
+	private double promedioBuscado;
 	private boolean handicapCriterio;
 	private int infraccionesCriterio;
 	private boolean promedioCriterio;
-
 
 	private Collection<Infraccion> infracciones = new ArrayList<Infraccion>();
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
@@ -207,5 +207,19 @@ public class Jugador {
 
 	public Date getFechaDeNacimientoDate(){
 		return this.fechaDeNacimiento;
+	}
+
+	/**
+	 * @return the promedioBuscado
+	 */
+	public double getPromedioBuscado() {
+		return promedioBuscado;
+	}
+
+	/**
+	 * @param promedioBuscado the promedioBuscado to set
+	 */
+	public void setPromedioBuscado(double promedioBuscado) {
+		this.promedioBuscado = promedioBuscado;
 	}
 }

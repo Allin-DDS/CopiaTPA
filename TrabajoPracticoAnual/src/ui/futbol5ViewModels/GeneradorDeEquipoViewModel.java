@@ -1,20 +1,32 @@
-package ui.arena;
+package ui.futbol5ViewModels;
 
 import inscripcion.Inscripcion;
 
 
-import java.util.ArrayList;
 
+
+
+import java.util.ArrayList;
 import java.util.List;
 
 
+
+
+
+import javax.swing.JOptionPane;
+
+import org.uqbar.commons.model.UserException;
 import org.uqbar.commons.utils.Observable;
+
+
+
 
 
 import ordenamiento.CriterioCalificacionesUltimoPartido;
 import ordenamiento.CriterioDeOrden;
 import ordenamiento.CriterioHandicap;
 import ordenamiento.MixDeCriterios;
+import ui.entidadesUtiles.Repositorio;
 import dividirEquipos.CriterioParaDividir2;
 import dividirEquipos.CriterioParaDividirEquipos;
 import dividirEquipos.CriterioParesEImpares;
@@ -55,7 +67,8 @@ public class GeneradorDeEquipoViewModel {
 		
 	}
 	public void generarEquiposTentativos() {
-
+		
+		this.validar();
 		this.partidoYjugadores = new Repositorio();
 		Partido partido = this.partidoYjugadores.getPartido();
 		
@@ -66,10 +79,28 @@ public class GeneradorDeEquipoViewModel {
 		 setEquipoNro1((List<Inscripcion>) partido.getEquipo1());
 		 setEquipoNro2((List<Inscripcion>) partido.getEquipo2());
 	}
-	public void confirmarEquipos() {
-		this.partidoYjugadores.getPartido().equiposConfirmados();
-		//ver como devuelvo un mensaje, o como cerrarlo
+	private void validar() {
+		if (this.criterioSeleccionado == null) {
+			throw new UserException("Debe elegir un criterio de división de equipo");
+		}
+		if (this.ordenamientoSeleccionado == null) {
+			throw new UserException("Debe elegir un criterio de ordenamiento de equipo");
+		}
 		
+	}
+	public void confirmarEquipos() {
+		if(this.equipoNro1 == null && this.equipoNro2 == null){
+			throw new UserException("Primero debe generar los equipos tentantivos");
+			}
+		try{
+		this.partidoYjugadores.getPartido().equiposConfirmados();
+			}
+		catch(Exception e){
+			
+			throw new UserException(e.toString());
+		}
+		//No se como mostrarlo con el formato que usa arena. 
+		JOptionPane.showMessageDialog(null,"Los equipos se han confirmado satisfactoriamente");
 	}
 	
 	
@@ -143,7 +174,9 @@ public class GeneradorDeEquipoViewModel {
 	}
 
 	public Jugador getJugadorSeleccionado() {
-		
+		if (this.inscriptoSeleccionado == null) {
+			throw new UserException("Debe seleccionar un jugador");
+		}
 		return this.inscriptoSeleccionado.getJugador();
 	}
 
