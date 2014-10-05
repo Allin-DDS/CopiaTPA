@@ -7,6 +7,11 @@ import inscripcion.Inscripcion;
 
 
 
+
+
+
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +20,22 @@ import java.util.List;
 
 
 
+
+
+
+
 import javax.swing.JOptionPane;
 
+import org.uqbar.arena.widgets.Panel;
+import org.uqbar.arena.widgets.tables.Column;
+import org.uqbar.arena.widgets.tables.Table;
 import org.uqbar.commons.model.ObservableUtils;
 import org.uqbar.commons.model.UserException;
 import org.uqbar.commons.utils.Observable;
+
+
+
+
 
 
 
@@ -50,6 +66,7 @@ public class GeneradorDeEquipoViewModel {
 	private List<Inscripcion> equipoNro1;
 	private List<Inscripcion> equipoNro2;
 	private Inscripcion inscriptoSeleccionado;
+	private Inscripcion inscripto;
 		
 	public void init() {
 		
@@ -93,9 +110,7 @@ public class GeneradorDeEquipoViewModel {
 			
 		}
 
-
-		
-		 setEquipoNro1((List<Inscripcion>) partido.getEquipo1());
+		setEquipoNro1((List<Inscripcion>) partido.getEquipo1());
 		 setEquipoNro2((List<Inscripcion>) partido.getEquipo2());
 	}
 	private void validar() {
@@ -197,6 +212,36 @@ public class GeneradorDeEquipoViewModel {
 			throw new UserException("Debe seleccionar un jugador");
 		}
 		return this.inscriptoSeleccionado.getJugador();
+	}
+	public void crear(Panel mainPanel) {
+		Table<Inscripcion> table = new Table<Inscripcion>(mainPanel, Inscripcion.class);
+		table.setHeigth(100);
+		table.setWidth(150);
+
+		table.bindValueToProperty("inscriptoSeleccionado");
+
+		Column<Inscripcion> columnaJugador = new Column<Inscripcion>(table) //
+		.setTitle("Jugadores del Equipo")
+		.setFixedSize(150)
+		.bindContentsToProperty("nombreJugador");
+
+	if(this.equipoNro1 != null){
+		this.generarEquiposTentativos();
+		for(Inscripcion ins : this.equipoNro1){
+			if(ins.getJugador().getHandicap() > 8){
+				columnaJugador.setForeground(Color.blue);
+				
+			}
+		table.bindItemsToProperty("equipoNro1");	
+		}
+	}
+		
+	}
+	public Inscripcion getInscripto() {
+		return inscripto;
+	}
+	public void setInscripto(Inscripcion inscripto) {
+		this.inscripto = inscripto;
 	}
 
 

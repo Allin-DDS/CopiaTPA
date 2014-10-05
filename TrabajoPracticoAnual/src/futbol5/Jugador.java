@@ -34,7 +34,7 @@ public class Jugador {
 	private boolean handicapCriterio;
 	private int infraccionesCriterio;
 	private boolean promedioCriterio;
-
+	private Jugador jugador;
 	private Collection<Infraccion> infracciones = new ArrayList<Infraccion>();
 	private Collection<Jugador> amigos = new ArrayList<Jugador>();
 	public  PriorityQueue<Calificacion> calificaciones = (new PriorityQueue<>(Comparator.
@@ -43,6 +43,7 @@ public class Jugador {
 	
 	public Jugador(int edad) {
 		this.edad= edad;
+		this.setJugador(this);
 		//Administrador.agregarJugador(this);
 	}	
 
@@ -237,4 +238,19 @@ public class Jugador {
 	public void setPromedioBuscado(double promedioBuscado) {
 		this.promedioBuscado = promedioBuscado;
 	}
+
+	/**
+	 * @return the jugador
+	 */
+	public Jugador getJugador() {
+		return jugador;
+	}
+
+	/**
+	 * @param jugador the jugador to set
+	 */
+	public void setJugador(Jugador jugador) {
+		this.jugador = jugador;
+	}
+
 }

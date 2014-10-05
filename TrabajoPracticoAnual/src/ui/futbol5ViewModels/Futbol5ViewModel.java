@@ -10,6 +10,7 @@ import org.uqbar.arena.widgets.tables.Column;
 import org.uqbar.arena.widgets.tables.Table;
 import org.uqbar.commons.utils.Observable;
 
+import ui.futbol5Desktop.Transformadors;
 import futbol5.Jugador;
 
 @Observable
@@ -35,18 +36,19 @@ public class Futbol5ViewModel {
 		
 		Table<Jugador> table = new Table<Jugador>(panelGrilla, Jugador.class);
 		table.setHeigth(80);
-		table.setWidth(300);		
-		Column nombreCell = new Column<Jugador>(table) //
+		table.setWidth(300);
+		
+		new Column<Jugador>(table) //
 		.setTitle("Nombre")	
 		.setFixedSize(75)
 		.bindContentsToProperty("nombre");
-		
+
 		new Column<Jugador>(table) //
 		.setTitle("Apodo")
 		.setFixedSize(75)
 		.bindContentsToProperty("apodo");
 		
-		Column handicapCell = new Column<Jugador>(table) //
+		new Column<Jugador>(table) //
 		.setTitle("Handicap")
 		.setFixedSize(75)
 		.bindContentsToProperty("handicap");
@@ -55,8 +57,12 @@ public class Futbol5ViewModel {
 		.setTitle("Promedio")
 		.setFixedSize(75)
 		.bindContentsToProperty("promedioDeTodosLosPartido");
-		return table;
 		
+		new Column<Jugador>(table)
+		.setFixedSize(0)
+		.bindBackground("jugador", new Transformadors());
+		
+		return table;
 	}
 
 }

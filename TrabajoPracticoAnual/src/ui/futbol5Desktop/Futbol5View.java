@@ -34,11 +34,11 @@ public class Futbol5View extends MainWindow<Futbol5ViewModel>{
 		new Label(panelBusqueda).setText("Clickear para generar los equipos")
 		.setForeground(Color.blue);
 		new Button(panelBusqueda)//
-			.setCaption("Generear Equipos")
+			.setCaption("Generar Equipos")
 			.onClick(() -> new GeneradorDeEquipoView(this).open());
 		
 		new Label(panelBusqueda).setText("Clickear para buscar a determinados jugadores")
-		.setForeground(Color.blue);;
+		.setForeground(Color.blue);
 		new Button(panelBusqueda)
 		.setCaption("Buscar Jugador")
 		.onClick(() -> new BuscadorDeJugadorView(this).open());

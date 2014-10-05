@@ -1,9 +1,5 @@
 package ui.futbol5Desktop;
 
-
-import java.awt.Color;
-import java.util.List;
-
 import inscripcion.Inscripcion;
 import ordenamiento.CriterioDeOrden;
 
@@ -75,6 +71,7 @@ public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewMod
 	    new Label(equiposFormPanel).setText("Equipo Nº2");
 
 	    this.crearGrillaDeEquipo("equipoNro1",equiposFormPanel);
+	   // this.getModelObject().crear(mainPanel);
 	    this.crearGrillaDeEquipo("equipoNro2",equiposFormPanel);
 		
 	}
@@ -93,6 +90,10 @@ public class GeneradorDeEquipoView extends SimpleWindow<GeneradorDeEquipoViewMod
 		.setFixedSize(150)
 		.bindContentsToProperty("nombreJugador");
 		
+		new Column<Inscripcion>(table) //
+		.setFixedSize(0)
+		.bindBackground("jugador", new Transformadors())
+		;
 		
 		
 
